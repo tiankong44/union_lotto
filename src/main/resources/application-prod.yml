@@ -5,13 +5,13 @@ spring:
       strict: false
       datasource:
         master:
-          url: jdbc:mysql://192.168.2.103:6001/tk_tabs?characterEncoding=utf8&verifyServerCertificate=false&useSSL=true&serverTimezone=Asia/Shanghai
+          url: jdbc:mysql://192.168.2.103:6001/union_lotto?characterEncoding=utf8&verifyServerCertificate=false&useSSL=true&serverTimezone=Asia/Shanghai
           username: root
           password: zh34864486
-        slave:
-          url: jdbc:mysql://192.168.2.103:6002/tk_tabs?characterEncoding=utf8&verifyServerCertificate=false&useSSL=true&serverTimezone=Asia/Shanghai
-          username: root
-          password: zh34864486
+#        slave:
+#          url: jdbc:mysql://192.168.2.103:6002/tk_tabs?characterEncoding=utf8&verifyServerCertificate=false&useSSL=true&serverTimezone=Asia/Shanghai
+#          username: root
+#          password: zh34864486
     hikari:
       minimum-idle: 10
       maximum-pool-size: 20
@@ -33,4 +33,3 @@ spring:
       location: /usr/local/soft/tk_tabs/upload
       max-request-size: 50MB
       resolve-lazily: false
-images-url-prefix: http://xy.tiankong44.vip:9200/images/

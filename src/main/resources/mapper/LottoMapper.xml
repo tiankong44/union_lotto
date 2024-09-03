@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tiankong44.tool.mapper.LottoMapper">
+    <!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.tiankong44.tool.lotto.entity.Lotto" id="BaseResultMap">
+        <result property="id" column="id"/>
+        <result property="period" column="period"/>
+        <result property="redOne" column="red_one"/>
+        <result property="redTwo" column="red_two"/>
+        <result property="redTree" column="red_tree"/>
+        <result property="redFour" column="red_four"/>
+        <result property="redFive" column="red_five"/>
+        <result property="redSix" column="red_six"/>
+        <result property="blueOne" column="blue_one"/>
+        <result property="datetime" column="datetime"/>
+        <result property="dayOfWeek" column="day_of_week"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,
+        period,
+        red_one,
+        red_two,
+        red_tree,
+        red_four,
+        red_five,
+        red_six,
+        blue_one,
+        datetime,
+        day_of_week
+    </sql>
+    <select id="getPredict" resultType="com.tiankong44.tool.lotto.entity.Lotto">
+        select
+        <include refid="Base_Column_List"/>
+        from predict
+        order by datetime desc
+        limit 1
+
+    </select>
+</mapper>

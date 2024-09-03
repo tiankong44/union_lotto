@@ -10,7 +10,7 @@ import com.tiankong44.tool.common.entity.Appearance;
 import com.tiankong44.tool.common.entity.ClientEnum;
 import com.tiankong44.tool.common.entity.Image;
 import com.tiankong44.tool.common.service.CommonService;
-import com.tiankong44.tool.mapper.slave.AppearanceMapper;
+
 import com.tiankong44.tool.util.RedisUtil;
 import com.tiankong44.tool.util.getImageUtil;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,8 +36,6 @@ public class CommonServiceImpl implements CommonService {
     @Resource
     RedisUtil redisUtil;
 
-    @Resource
-    AppearanceMapper appearanceMapper;
 
     @Value("${images-url-prefix}")
     String imagesUrlPrefix;
@@ -47,37 +45,7 @@ public class CommonServiceImpl implements CommonService {
 
     private static List<Image> images = new ArrayList<>();
 
-    @Override
-    public BaseRes getBackgroundImage(int clientType) {
-        Appearance appearance = appearanceMapper.selectById(1);
-        if (appearance.getBackgroundMode() == 0) {
-            List<Image> images = new ArrayList<>();
-            String redisKey = "";
-            if (clientType == ClientEnum.PC.getValue()) {
-                redisKey = ClientEnum.PC.getLabel();
-            } else if (clientType == ClientEnum.MOBILE.getValue()) {
-                redisKey = ClientEnum.MOBILE.getLabel();
-            }
-            String s = redisUtil.lLeftPop(redisKey);
-            JSONArray array = JSONArray.parseArray(s);
-            if (array == null || array.size() == 0) {
-                images = getImageUtil.getImages(clientType);
-                if (images.size() > 0) {
-                    redisUtil.lLeftPush(redisKey, JSONArray.toJSON(images).toString());
-                    redisUtil.expire(redisKey, 1, TimeUnit.DAYS);
-                } else {
-                    return BaseRes.success(defaultImage);
-                }
 
-            } else {
-                images = array.toJavaList(Image.class);
-            }
-
-            return BaseRes.success(images.get(RandomUtil.randomInt(0, images.size())).getUrl());
-        } else {
-            return BaseRes.success(appearance.getBackgroundUrl());
-        }
-    }
 
     @Override
     public BaseRes uploadIcon(MultipartFile uploadFile) {
@@ -129,16 +97,5 @@ public class CommonServiceImpl implements CommonService {
         return BaseRes.success();
     }
 
-    @Override
-    public BaseRes getSettingData() {
-        JSONObject resObject = new JSONObject();
-        /**
-         *  基础设置
-         */
 
-        Appearance appearance = appearanceMapper.selectById(1);
-        resObject.put("base", appearance);
-
-        return BaseRes.success(resObject);
-    }
 }

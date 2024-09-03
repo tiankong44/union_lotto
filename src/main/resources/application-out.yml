@@ -1,26 +1,17 @@
 spring:
   datasource:
-    dynamic:
-      primary: master # 配置默认数据库
-      strict: false
-      datasource:
-        master:
-          # tcpRcvBuf/tcpSndBuf 缓冲区参数 rewriteBatchedStatements batchUpdate参数
-          url: jdbc:mysql://xy.tiankong44.vip:6001/tk_tabs?characterEncoding=utf8&verifyServerCertificate=false&useSSL=true&serverTimezone=Asia/Shanghai
-          username: root
-          password: zh34864486
-#        slave:
-#          # tcpRcvBuf/tcpSndBuf 缓冲区参数 rewriteBatchedStatements batchUpdate参数
-#          url: jdbc:mysql://xy.tiankong44.vip:6002/tk_tabs?characterEncoding=utf8&verifyServerCertificate=false&useSSL=true&serverTimezone=Asia/Shanghai
-#          username: root
-#          password: zh34864486
+    # tcpRcvBuf/tcpSndBuf 缓冲区参数 rewriteBatchedStatements batchUpdate参数
+    url: jdbc:mysql://xy.tiankong44.vip:6001/union_lotto?characterEncoding=utf8&verifyServerCertificate=false&useSSL=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: zh34864486
+    driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       minimum-idle: 10
       maximum-pool-size: 20
       idle-timeout: 10000
       max-lifetime: 1800000
       connection-timeout: 30000
-  driver-class-name: com.mysql.cj.jdbc.Driver
+
   redis:
     #    cluster:
     #      nodes: 127.0.0.1:6379
