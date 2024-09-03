@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    dynamic:
+      primary: master # 配置默认数据库
+      strict: false
+      datasource:
+        master:
+          url: jdbc:mysql://192.168.2.103:6001/tk_tabs?characterEncoding=utf8&verifyServerCertificate=false&useSSL=true&serverTimezone=Asia/Shanghai
+          username: root
+          password: zh34864486
+        slave:
+          url: jdbc:mysql://192.168.2.103:6002/tk_tabs?characterEncoding=utf8&verifyServerCertificate=false&useSSL=true&serverTimezone=Asia/Shanghai
+          username: root
+          password: zh34864486
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 20
+      idle-timeout: 10000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+  driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    cluster:
+      nodes: 192.168.2.103:7001
+    password: zh34864486
+  config:
+    activate:
+      on-profile: home
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 10MB
+      location: E:\upload
+      max-request-size: 50MB
+      resolve-lazily: false
+images-url-prefix: http://xy.tiankong44.vip:9200/images/
