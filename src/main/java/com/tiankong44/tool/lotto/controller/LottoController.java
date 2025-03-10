@@ -83,4 +83,12 @@ public class LottoController {
 
         return BaseRes.success(draw);
     }
+
+
+    @PostMapping("/test")
+    public BaseRes test() {
+
+        int a = 1 / 0;
+        return BaseRes.success(a);
+    }
 }
