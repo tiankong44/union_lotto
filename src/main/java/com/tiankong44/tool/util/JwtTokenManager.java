@@ -28,18 +28,19 @@ public class JwtTokenManager {
     private static final String REDIS_KEY = "jwt_token_hf_weather";
     @Autowired
     private RedisUtil redisUtil;
-
+    private final Object lock = new Object();
     public String getValidJWT() {
         // 从 Redis 中获取 JWT
         String jwt = redisUtil.get(REDIS_KEY);
-
-        // 如果 JWT 不存在或即将过期，则重新生成 JWT
         if (jwt == null || isJwtExpiringSoon(jwt)) {
-            jwt = generateNewJWT();
-            // 将新的 JWT 保存到 Redis，设置过期时间为 15 分钟
-            redisUtil.setEx(REDIS_KEY, jwt, 10, TimeUnit.MINUTES);
+            synchronized (lock) {
+                jwt = redisUtil.get(REDIS_KEY); // 再次检查
+                if (jwt == null || isJwtExpiringSoon(jwt)) {
+                    jwt = generateNewJWT();
+                    redisUtil.setEx(REDIS_KEY, jwt, 10, TimeUnit.MINUTES);
+                }
+            }
         }
-
         return jwt;
     }
 
