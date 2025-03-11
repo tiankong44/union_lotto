@@ -37,25 +37,44 @@ public class WeatherController {
         return weatherService.getRealTimeWeatherParsed("101040700");
     }
 
+    /**
+     * 获取指定城市的逐小时天气预报（原始 JSON）
+     *
+     * @return 逐小时天气预报的JSON字符串
+     */
     @PostMapping("/getHourlyWeather")
     public BaseRes getHourlyWeather() {
-
         return weatherService.getHourlyWeatherParsed("101040700");
-
     }
 
+    /**
+     * 获取指定城市的分钟级降水预报（解析后）
+     * GCJ-02坐标系
+     *
+     * @return 解析后的降水信息
+     */
     @PostMapping("/getMinutelyWeather")
     public BaseRes getMinutelyWeather() {
-
         return weatherService.getMinutelyWeatherParsed("106.527538", "29.708000");
-
     }
 
+    /**
+     * 获取指定城市的每日天气预报（解析后）
+     *
+     * @return 解析后的每日天气信息
+     */
     @PostMapping("/getSevenDaysWeather")
     public BaseRes getSevenDaysWeather() {
-
         return weatherService.getSevenDaysWeatherParsed("101040700");
+    }
 
-
+    /**
+     * 获取指定城市的每日天气预报（解析后）
+     *
+     * @return 解析后的每日天气信息
+     */
+    @PostMapping("/getFuture15DaysWeather")
+    public BaseRes getFuture15DaysWeather() {
+        return weatherService.getFuture15DaysWeather("重庆","渝北");
     }
 }

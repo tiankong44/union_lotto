@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 public class HeFengWeatherClient {
     private static final String API_URL_NOW = "https://devapi.qweather.com/v7/weather/now";
-    private static final String API_URL_MINUTELY = "https://devapi.qweather.com/v7/weather/minutely";
+    private static final String API_URL_MINUTELY = "https://devapi.qweather.com/v7/minutely/5m";
     private static final String API_URL_HOURLY = "https://devapi.qweather.com/v7/weather/24h";
     private static final String API_URL_DAILY = "https://devapi.qweather.com/v7/weather/7d";
 
@@ -57,7 +57,7 @@ public class HeFengWeatherClient {
      * @return 降水预报的JSON字符串
      */
     public String getMinutelyWeather(String longitude, String latitude) {
-        String url = API_URL_MINUTELY + "?location=" + longitude + ",=" + latitude;
+        String url = API_URL_MINUTELY + "?location=" + longitude + "," + latitude;
         return HttpUtils.get(url, jwtTokenManager.getValidJWT());
     }
 
@@ -70,7 +70,7 @@ public class HeFengWeatherClient {
      * @return 解析后的降水信息
      */
     public JSONObject getMinutelyWeatherParsed(String longitude, String latitude) {
-        String jsonData = getMinutelyWeather(longitude, longitude);
+        String jsonData = getMinutelyWeather(longitude, latitude);
         return parseMinutelyWeather(jsonData);
     }
 
@@ -191,8 +191,8 @@ public class HeFengWeatherClient {
 
         }
 
-        JSONObject minutely = jsonObject.getJSONObject("minutely");
-        String summary = minutely.getString("summary");
+
+        String summary = jsonObject.getString("summary");
         parseJSONObject.put("Summary", summary);
         return parseJSONObject;
     }

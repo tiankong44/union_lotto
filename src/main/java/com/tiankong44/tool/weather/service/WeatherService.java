@@ -23,4 +23,6 @@ public interface WeatherService {
     BaseRes getMinutelyWeatherParsed(String longitude, String latitude);
 
     BaseRes getSevenDaysWeatherParsed(String location);
+
+    BaseRes getFuture15DaysWeather(String sheng, String place);
 }
