@@ -22,10 +22,15 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class JwtTokenManager {
 
-    private static final String PRIVATE_KEY = "MC4CAQAwBQYDK2VwBCIEIKSWbSMO+g1lU2XwoaRdwO6ldod/I7zWwl0VZPkH0+4n";
-    private static final String KID = "TAGXUWFNUR";
-    private static final String SUB = "2CTM7THK8C";
+    //private static final String PRIVATE_KEY = "MC4CAQAwBQYDK2VwBCIEIKSWbSMO+g1lU2XwoaRdwO6ldod/I7zWwl0VZPkH0+4n";
+    //private static final String KID = "TAGXUWFNUR";
+    //private static final String SUB = "2CTM7THK8C";
     private static final String REDIS_KEY = "jwt_token_hf_weather";
+
+    private static final String PRIVATE_KEY = "MC4CAQAwBQYDK2VwBCIEIJ3vpJ3+wjxNCFsObT764wh8UEWsIvZC8lm2ejKvd0jg";
+    private static final String KID = "T9PRDBDBXH";
+    private static final String SUB = "3DE2J252N4";
+
     @Autowired
     private RedisUtil redisUtil;
     private final Object lock = new Object();
