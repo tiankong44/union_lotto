@@ -43,7 +43,8 @@ public class HttpUtils {
 
             return response.body().string();
         } catch (IOException e) {
-            log.error("Error occurred during request");
+            log.info("Error occurred during request");
+            log.info(e.getMessage());
 
             return null;
         }

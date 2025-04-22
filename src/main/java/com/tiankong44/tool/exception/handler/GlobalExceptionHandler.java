@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public BaseRes handleConstraintViolationException(ConstraintViolationException e) {
-        log.error("发生异常", e);
+       log.info("发生异常", e);
         String message = e.getMessage();
 
         BaseRes failure = BaseRes.failure(message);
@@ -54,7 +54,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(DifferentCoordinateException.class)
     public BaseRes handleDifferentCoordinateExceptio(DifferentCoordinateException e) {
-        log.error("发生异常", e);
+       log.info("发生异常", e);
         String message = e.getMessage();
 
         BaseRes failure = BaseRes.failure(message);
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NullPointerException.class)
     public BaseRes handleNullPointerException(NullPointerException e) {
-        log.error("发生异常", e);
+       log.info("发生异常", e);
         String message = e.getMessage();
 
         BaseRes failure = BaseRes.failure(message);
@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public BaseRes handleException(Exception e) {
         
-        log.error("发生异常", e); // 这会将异常信息和堆栈跟踪记录到日志文件中
+       log.info("发生异常", e); // 这会将异常信息和堆栈跟踪记录到日志文件中
         String message = e.getMessage();
         BaseRes failure = BaseRes.failure(message);
         log.info("方法回参:"+ JSONObject.toJSONString(failure));
