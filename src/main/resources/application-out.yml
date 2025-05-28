@@ -1,6 +1,5 @@
 spring:
   datasource:
-    # tcpRcvBuf/tcpSndBuf 缓冲区参数 rewriteBatchedStatements batchUpdate参数
     url: jdbc:mysql://xy.tiankong44.vip:6001/union_lotto?characterEncoding=utf8&verifyServerCertificate=false&useSSL=true&serverTimezone=Asia/Shanghai
     username: root
     password: zh34864486

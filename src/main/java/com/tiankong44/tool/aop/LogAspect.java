@@ -4,6 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.tiankong44.tool.annotation.SkipLogging;
 import com.tiankong44.tool.base.entity.BaseRes;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -41,6 +42,19 @@ public class LogAspect {
 
     @Around("controllerReqCut()")
     public Object interceptorReq(ProceedingJoinPoint joinPoint) throws Throwable {
+        MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+        Method currentMethod = methodSignature.getMethod();
+        Class<?> targetClass = joinPoint.getTarget().getClass();
+        // 检查类上是否存在 @SkipLogging 注解
+        if (targetClass.isAnnotationPresent(SkipLogging.class)) {
+            return joinPoint.proceed(); // 跳过日志记录
+        }
+
+        // 检查方法上是否存在 @SkipLogging 注解
+        if (currentMethod.isAnnotationPresent(SkipLogging.class)) {
+            return joinPoint.proceed(); // 跳过日志记录
+        }
+
         String traceId = RandomUtil.randomNumbers(6);
         MDC.put("traceId", traceId);
         StopWatch stopWatch = new StopWatch();
@@ -51,14 +65,14 @@ public class LogAspect {
         String url = request.getRequestURI();
         log.info("请求地址: {}", url);
         Signature signature = joinPoint.getSignature();//获取连接点的方法签名对象
-        MethodSignature methodSignature = null;
+
         if (!(signature instanceof MethodSignature)) {
             throw new IllegalArgumentException("该注解只能用于方法");
         }
         methodSignature = (MethodSignature) signature;
         Object o = joinPoint.getTarget();//获取连接点所在的目标对象
         Object[] args = joinPoint.getArgs();//获取参数
-        Method currentMethod = methodSignature.getMethod();
+
         String funcName = o.getClass() + "." + currentMethod.getName();
         StringBuilder bf = new StringBuilder(funcName + "方法入参：");
         for (int i = 0; i < args.length; i++) {
