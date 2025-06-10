@@ -6,13 +6,16 @@ import com.tiankong44.tool.base.entity.BaseRes;
 import com.tiankong44.tool.mapper.FutureWorkDayMapper;
 import com.tiankong44.tool.mapper.HisWorkDayMapper;
 import com.tiankong44.tool.mapper.LottoMapper;
+import com.tiankong44.tool.mapper.WorkdayConfigMapper;
 import com.tiankong44.tool.workday.entity.FutureWorkDay;
 import com.tiankong44.tool.workday.entity.HisWorkDay;
+import com.tiankong44.tool.workday.entity.config.WorkdayConfig;
 import com.tiankong44.tool.workday.service.WorkDayService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +30,8 @@ public class WorkDayServiceImpl implements WorkDayService {
     HisWorkDayMapper hisWorkDayMapper;
     @Resource
     FutureWorkDayMapper futureWorkDayMapper;
+    @Resource
+    WorkdayConfigMapper workdayConfigMapper;
 
     @Override
     public BaseRes getSchedule() {
@@ -43,5 +48,13 @@ public class WorkDayServiceImpl implements WorkDayService {
         jsonObject.put("hisWorkDays", hisWorkDays);
         jsonObject.put("futureWorkDays", futureWorkDays);
         return BaseRes.success(jsonObject);
+    }
+
+    @Override
+    public BaseRes getConfig() {
+        List<WorkdayConfig> workdayConfigs = new ArrayList<>();
+        workdayConfigs = workdayConfigMapper.selectList(new LambdaQueryWrapper<WorkdayConfig>().eq(WorkdayConfig::getStatus, 1));
+
+        return BaseRes.success(workdayConfigs);
     }
 }

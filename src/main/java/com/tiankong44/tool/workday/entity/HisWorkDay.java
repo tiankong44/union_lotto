@@ -20,38 +20,38 @@ public class HisWorkDay implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /**
-     * 日期
-     */
-
+    ///**
+    // * 日期
+    // */
+    //
     private String  workDate;
-
-    /**
-     *排班符号代表
-     */
-
+    //
+    ///**
+    // *排班符号代表
+    // */
+    //
     private String workStatus;
-
-    /**
-     * 状态
-     */
-
+    //
+    ///**
+    // * 状态
+    // */
+    //
     private Integer status;
-
-    /**
-     * 排班情况中文表述
-     */
-
-    private String workStatusDesc;
-
-    /**
-     * 工作时间段
-     */
-
-    private String workTime;
-
-
-    private String icon;
-    private String color;
+    //
+    ///**
+    // * 排班情况中文表述
+    // */
+    //
+    //private String workStatusDesc;
+    //
+    ///**
+    // * 工作时间段
+    // */
+    //
+    //private String workTime;
+    //
+    //
+    //private String icon;
+    //private String color;
 
 }

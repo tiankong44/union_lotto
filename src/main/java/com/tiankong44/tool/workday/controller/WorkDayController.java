@@ -44,5 +44,10 @@ public class WorkDayController {
 
     }
 
+    @PostMapping("/config")
+    @SkipLogging
+    public BaseRes config() {
+        return workDayService.getConfig();
 
+    }
 }

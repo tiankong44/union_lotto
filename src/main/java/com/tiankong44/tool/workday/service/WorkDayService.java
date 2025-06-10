@@ -14,4 +14,6 @@ import java.time.LocalDate;
  **/
 public interface WorkDayService  {
     BaseRes getSchedule();
+
+    BaseRes getConfig();
 }

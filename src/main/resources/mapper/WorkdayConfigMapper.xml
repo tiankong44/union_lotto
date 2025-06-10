@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tiankong44.tool.mapper.WorkdayConfigMapper">
+
+    <resultMap id="BaseResultMap" type="com.tiankong44.tool.workday.entity.config.WorkdayConfig">
+            <id property="id" column="id" />
+            <result property="workStatus" column="work_status" />
+            <result property="workStatusDesc" column="work_status_desc" />
+            <result property="workTime" column="work_time" />
+            <result property="icon" column="icon" />
+            <result property="color" column="color" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,work_status,work_status_desc,work_time,icon,color
+    </sql>
+</mapper>

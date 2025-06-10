@@ -42,11 +42,11 @@ public class UpdateHisWorkDay {
             hisWorkDay=new HisWorkDay();
             hisWorkDay.setWorkStatus(futureWorkDay.getWorkStatus());
             hisWorkDay.setWorkDate(futureWorkDay.getWorkDate());
-            hisWorkDay.setWorkTime(futureWorkDay.getWorkTime());
-            hisWorkDay.setWorkStatusDesc(futureWorkDay.getWorkStatusDesc());
+            //hisWorkDay.setWorkTime(futureWorkDay.getWorkTime());
+            //hisWorkDay.setWorkStatusDesc(futureWorkDay.getWorkStatusDesc());
             hisWorkDay.setStatus(1);
-            hisWorkDay.setIcon(futureWorkDay.getIcon());
-            hisWorkDay.setColor(futureWorkDay.getColor());
+            //hisWorkDay.setIcon(futureWorkDay.getIcon());
+            //hisWorkDay.setColor(futureWorkDay.getColor());
 
             hisWorkDayMapper.insert(hisWorkDay);
         }
