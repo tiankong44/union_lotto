@@ -19,7 +19,7 @@ import java.time.LocalDate;
  * Apex用户统计接口控制器
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/apex")
 @Validated
 public class ApexController {
     @Autowired
@@ -27,7 +27,7 @@ public class ApexController {
 
     /**
      * 获取用户统计数据
-     * URL: /api/users/{userId}/stats
+     * URL: /apex/users/{userId}/stats
      * Method: GET
      */
     @GetMapping("/users/{userId}/stats")
@@ -37,7 +37,7 @@ public class ApexController {
 
     /**
      * 获取用户每日记录
-     * URL: /api/users/{userId}/daily-records
+     * URL: /apex/users/{userId}/daily-records
      * Method: GET
      */
     @GetMapping("/users/{userId}/daily-records")
@@ -50,7 +50,7 @@ public class ApexController {
 
     /**
      * 增加今日开启数量
-     * URL: /api/users/{userId}/open
+     * URL: /apex/users/{userId}/open
      * Method: POST
      */
     @PostMapping("/users/{userId}/open")
@@ -62,7 +62,7 @@ public class ApexController {
 
     /**
      * 补录历史记录
-     * URL: /api/users/{userId}/backfill
+     * URL: /apex/users/{userId}/backfill
      * Method: POST
      */
     @PostMapping("/users/{userId}/backfill")
@@ -74,7 +74,7 @@ public class ApexController {
 
     /**
      * 获取指定日期记录
-     * URL: /api/users/{userId}/daily-records/{date}
+     * URL: /apex/users/{userId}/daily-records/{date}
      * Method: GET
      */
     @GetMapping("/users/{userId}/daily-records/{date}")
@@ -86,7 +86,7 @@ public class ApexController {
 
     /**
      * 检查用户是否存在
-     * URL: /api/users/{userId}
+     * URL: /apex/users/{userId}
      * Method: GET
      */
     @GetMapping("/users/{userId}")
@@ -96,7 +96,7 @@ public class ApexController {
 
     /**
      * 创建新用户
-     * URL: /api/users
+     * URL: /apex/users
      * Method: POST
      */
     @PostMapping("/users")

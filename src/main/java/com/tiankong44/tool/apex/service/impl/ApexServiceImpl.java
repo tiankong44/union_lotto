@@ -3,10 +3,8 @@ package com.tiankong44.tool.apex.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tiankong44.tool.apex.entity.ApexUser;
 import com.tiankong44.tool.apex.entity.ApexUserDailyRecord;
-import com.tiankong44.tool.apex.entity.ApexUserStats;
 import com.tiankong44.tool.apex.mapper.ApexUserDailyRecordMapper;
 import com.tiankong44.tool.apex.mapper.ApexUserMapper;
-import com.tiankong44.tool.apex.mapper.ApexUserStatsMapper;
 import com.tiankong44.tool.apex.service.ApexService;
 import com.tiankong44.tool.base.entity.BaseRes;
 import org.springframework.stereotype.Service;
@@ -28,9 +26,6 @@ public class ApexServiceImpl implements ApexService {
     private ApexUserMapper apexUserMapper;
 
     @Resource
-    private ApexUserStatsMapper apexUserStatsMapper;
-
-    @Resource
     private ApexUserDailyRecordMapper apexUserDailyRecordMapper;
 
     @Override
@@ -38,15 +33,6 @@ public class ApexServiceImpl implements ApexService {
         // 检查用户是否存在
         if (!doesUserExist(userId)) {
             return BaseRes.failure("用户不存在");
-        }
-
-        // 查询用户统计信息
-        QueryWrapper<ApexUserStats> statsQuery = new QueryWrapper<>();
-        statsQuery.eq("user_id", userId);
-        ApexUserStats userStats = apexUserStatsMapper.selectOne(statsQuery);
-
-        if (userStats == null) {
-            return BaseRes.failure("无法获取用户统计信息");
         }
 
         // 查询用户创建时间
@@ -58,9 +44,21 @@ public class ApexServiceImpl implements ApexService {
             return BaseRes.failure("无法获取用户信息");
         }
 
+        // 统计用户的总开启数量
+        QueryWrapper<ApexUserDailyRecord> recordQuery = new QueryWrapper<>();
+        recordQuery.eq("user_id", userId);
+        List<ApexUserDailyRecord> records = apexUserDailyRecordMapper.selectList(recordQuery);
+
+        int totalOpened = 0;
+        if (records != null) {
+            for (ApexUserDailyRecord record : records) {
+                totalOpened += record.getCount();
+            }
+        }
+
         Map<String, Object> result = new HashMap<>();
         result.put("userId", userId);
-        result.put("totalOpened", userStats.getTotalOpened());
+        result.put("totalOpened", totalOpened);
         result.put("createdAt", user.getCreatedAt());
 
         return BaseRes.success(result);
@@ -118,19 +116,20 @@ public class ApexServiceImpl implements ApexService {
             apexUserDailyRecordMapper.updateById(todayRecord);
         }
 
-        // 更新总统计数
-        int updated = apexUserStatsMapper.incrementTotalOpened(userId, count);
-        if (updated == 0) {
-            return BaseRes.failure("更新总统计数失败");
+        // 重新统计总开启数量
+        QueryWrapper<ApexUserDailyRecord> recordQuery = new QueryWrapper<>();
+        recordQuery.eq("user_id", userId);
+        List<ApexUserDailyRecord> records = apexUserDailyRecordMapper.selectList(recordQuery);
+
+        int totalOpened = 0;
+        if (records != null) {
+            for (ApexUserDailyRecord record : records) {
+                totalOpened += record.getCount();
+            }
         }
 
-        // 查询最新的总统计数
-        QueryWrapper<ApexUserStats> statsQuery = new QueryWrapper<>();
-        statsQuery.eq("user_id", userId);
-        ApexUserStats userStats = apexUserStatsMapper.selectOne(statsQuery);
-
         Map<String, Object> result = new HashMap<>();
-        result.put("totalOpened", userStats.getTotalOpened());
+        result.put("totalOpened", totalOpened);
         result.put("todayCount", todayRecord.getCount());
 
         Map<String, Object> responseData = new HashMap<>();
@@ -159,7 +158,6 @@ public class ApexServiceImpl implements ApexService {
         // 查询指定日期的记录
         ApexUserDailyRecord record = apexUserDailyRecordMapper.selectByUserIdAndDate(userId, date);
 
-        int difference = count;
         if (record == null) {
             // 如果记录不存在，则创建新记录
             record = new ApexUserDailyRecord();
@@ -168,27 +166,25 @@ public class ApexServiceImpl implements ApexService {
             record.setCount(count);
             apexUserDailyRecordMapper.insert(record);
         } else {
-            // 如果记录已存在，则计算差值并更新记录
-            difference = count - record.getCount();
+            // 如果记录已存在，则更新记录
             record.setCount(count);
             apexUserDailyRecordMapper.updateById(record);
         }
 
-        // 更新总统计数
-        if (difference != 0) {
-            int updated = apexUserStatsMapper.incrementTotalOpened(userId, difference);
-            if (updated == 0) {
-                return BaseRes.failure("更新总统计数失败");
+        // 重新统计总开启数量
+        QueryWrapper<ApexUserDailyRecord> recordQuery = new QueryWrapper<>();
+        recordQuery.eq("user_id", userId);
+        List<ApexUserDailyRecord> records = apexUserDailyRecordMapper.selectList(recordQuery);
+
+        int totalOpened = 0;
+        if (records != null) {
+            for (ApexUserDailyRecord r : records) {
+                totalOpened += r.getCount();
             }
         }
 
-        // 查询最新的总统计数
-        QueryWrapper<ApexUserStats> statsQuery = new QueryWrapper<>();
-        statsQuery.eq("user_id", userId);
-        ApexUserStats userStats = apexUserStatsMapper.selectOne(statsQuery);
-
         Map<String, Object> result = new HashMap<>();
-        result.put("totalOpened", userStats.getTotalOpened());
+        result.put("totalOpened", totalOpened);
 
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("message", "Successfully backfilled " + count + " boxes for " + date.toString());
@@ -245,14 +241,6 @@ public class ApexServiceImpl implements ApexService {
         user.setCreatedAt(java.time.LocalDateTime.now());
         user.setUpdatedAt(java.time.LocalDateTime.now());
         apexUserMapper.insert(user);
-
-        // 创建用户统计记录
-        ApexUserStats userStats = new ApexUserStats();
-        userStats.setUserId(userId);
-        userStats.setTotalOpened(0);
-        userStats.setCreatedAt(java.time.LocalDateTime.now());
-        userStats.setUpdatedAt(java.time.LocalDateTime.now());
-        apexUserStatsMapper.insert(userStats);
 
         Map<String, Object> result = new HashMap<>();
         result.put("userId", userId);

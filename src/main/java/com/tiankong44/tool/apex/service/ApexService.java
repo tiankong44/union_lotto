@@ -2,7 +2,6 @@ package com.tiankong44.tool.apex.service;
 
 import com.tiankong44.tool.apex.entity.ApexUser;
 import com.tiankong44.tool.apex.entity.ApexUserDailyRecord;
-import com.tiankong44.tool.apex.entity.ApexUserStats;
 import com.tiankong44.tool.base.entity.BaseRes;
 
 import java.time.LocalDate;
