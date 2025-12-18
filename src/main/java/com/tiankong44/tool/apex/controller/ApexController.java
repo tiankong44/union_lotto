@@ -1,6 +1,7 @@
 package com.tiankong44.tool.apex.controller;
 
 import com.tiankong44.tool.apex.dto.BackfillRequest;
+import com.tiankong44.tool.apex.dto.DeleteRecordRequest;
 import com.tiankong44.tool.apex.dto.OpenCountRequest;
 import com.tiankong44.tool.apex.dto.UserCreateRequest;
 import com.tiankong44.tool.apex.service.ApexService;
@@ -58,6 +59,18 @@ public class ApexController {
             @PathVariable @NotBlank String userId,
             @RequestBody @Valid OpenCountRequest request) {
         return apexService.addTodayCount(userId, request.getCount());
+    }
+
+    /**
+     * 删除某条记录
+     * URL: /apex/users/{userId}/deleteRecord
+     * Method: POST
+     */
+    @PostMapping("/users/{userId}/deleteRecord")
+    public BaseRes deleteRecord(
+            @PathVariable @NotBlank String userId,
+            @RequestBody @Valid DeleteRecordRequest request) {
+        return apexService.deleteRecord(userId, request.getId());
     }
 
     /**

@@ -79,7 +79,7 @@ public class ApexServiceImpl implements ApexService {
             offset = 0;
         }
 
-        // 查询用户每日记录
+        // 查询用户每日记录，按ID倒序排列
         List<ApexUserDailyRecord> records = apexUserDailyRecordMapper.selectByUserIdWithLimit(userId, limit, offset);
 
         return BaseRes.success(records);
@@ -100,21 +100,13 @@ public class ApexServiceImpl implements ApexService {
 
         LocalDate today = LocalDate.now();
 
-        // 查询今天的记录
-        ApexUserDailyRecord todayRecord = apexUserDailyRecordMapper.selectByUserIdAndDate(userId, today);
 
-        if (todayRecord == null) {
-            // 如果今天没有记录，则创建新记录
-            todayRecord = new ApexUserDailyRecord();
-            todayRecord.setUserId(userId);
-            todayRecord.setRecordDate(today);
-            todayRecord.setCount(count);
-            apexUserDailyRecordMapper.insert(todayRecord);
-        } else {
-            // 如果今天已有记录，则更新记录
-            todayRecord.setCount(todayRecord.getCount() + count);
-            apexUserDailyRecordMapper.updateById(todayRecord);
-        }
+        ApexUserDailyRecord todayRecord = new ApexUserDailyRecord();
+        todayRecord.setUserId(userId);
+        todayRecord.setRecordDate(today);
+        todayRecord.setCount(count);
+        apexUserDailyRecordMapper.insert(todayRecord);
+
 
         // 重新统计总开启数量
         QueryWrapper<ApexUserDailyRecord> recordQuery = new QueryWrapper<>();
@@ -122,21 +114,79 @@ public class ApexServiceImpl implements ApexService {
         List<ApexUserDailyRecord> records = apexUserDailyRecordMapper.selectList(recordQuery);
 
         int totalOpened = 0;
+        int todayCount = 0;
         if (records != null) {
             for (ApexUserDailyRecord record : records) {
+                if (record.getRecordDate().equals(today)) {
+                    todayCount += record.getCount();
+                }
                 totalOpened += record.getCount();
             }
         }
 
         Map<String, Object> result = new HashMap<>();
         result.put("totalOpened", totalOpened);
-        result.put("todayCount", todayRecord.getCount());
+        result.put("todayCount", todayCount);
 
         Map<String, Object> responseData = new HashMap<>();
         responseData.put("message", "Successfully added " + count + " boxes for today");
         responseData.put("data", result);
 
         return BaseRes.success(responseData);
+    }
+
+
+    @Override
+    @Transactional
+    public BaseRes deleteRecord(String userId, Integer id) {
+        // 检查用户是否存在
+        if (!doesUserExist(userId)) {
+            return BaseRes.failure("用户不存在");
+        }
+
+        // 检查ID参数是否有效
+        if (id == null) {
+            return BaseRes.failure("记录ID不能为空");
+        }
+
+        // 检查记录是否存在且属于该用户
+        ApexUserDailyRecord record = apexUserDailyRecordMapper.selectById(id);
+        if (record == null) {
+            return BaseRes.failure("记录不存在");
+        }
+
+        // 验证该记录是否属于指定用户
+        if (!userId.equals(record.getUserId())) {
+            return BaseRes.failure("无权限删除该记录");
+        }
+
+        // 执行删除操作
+        int deletedRows = apexUserDailyRecordMapper.deleteById(id);
+        if (deletedRows > 0) {
+            // 重新统计总开启数量
+            QueryWrapper<ApexUserDailyRecord> recordQuery = new QueryWrapper<>();
+            recordQuery.eq("user_id", userId);
+            List<ApexUserDailyRecord> records = apexUserDailyRecordMapper.selectList(recordQuery);
+
+            int totalOpened = 0;
+            if (records != null) {
+                for (ApexUserDailyRecord r : records) {
+                    totalOpened += r.getCount();
+                }
+            }
+
+            Map<String, Object> result = new HashMap<>();
+            result.put("totalOpened", totalOpened);
+            result.put("deletedId", id);
+
+            Map<String, Object> responseData = new HashMap<>();
+            responseData.put("message", "记录删除成功");
+            responseData.put("data", result);
+
+            return BaseRes.success(responseData);
+        } else {
+            return BaseRes.failure("删除失败");
+        }
     }
 
     @Override
@@ -155,22 +205,12 @@ public class ApexServiceImpl implements ApexService {
             return BaseRes.failure("数量无效");
         }
 
-        // 查询指定日期的记录
-        ApexUserDailyRecord record = apexUserDailyRecordMapper.selectByUserIdAndDate(userId, date);
 
-        if (record == null) {
-            // 如果记录不存在，则创建新记录
-            record = new ApexUserDailyRecord();
-            record.setUserId(userId);
-            record.setRecordDate(date);
-            record.setCount(count);
-            apexUserDailyRecordMapper.insert(record);
-        } else {
-            // 如果记录已存在，则更新记录
-            record.setCount(count);
-            apexUserDailyRecordMapper.updateById(record);
-        }
-
+        ApexUserDailyRecord record = new ApexUserDailyRecord();
+        record.setUserId(userId);
+        record.setRecordDate(date);
+        record.setCount(count);
+        apexUserDailyRecordMapper.insert(record);
         // 重新统计总开启数量
         QueryWrapper<ApexUserDailyRecord> recordQuery = new QueryWrapper<>();
         recordQuery.eq("user_id", userId);
@@ -205,17 +245,24 @@ public class ApexServiceImpl implements ApexService {
             return BaseRes.failure("日期格式无效");
         }
 
-        // 查询指定日期的记录
-        ApexUserDailyRecord record = apexUserDailyRecordMapper.selectByUserIdAndDate(userId, date);
+        // 查询指定日期的记录，按ID倒序排列
+        List<ApexUserDailyRecord> records = apexUserDailyRecordMapper.selectByUserIdAndDate(userId, date);
 
-        if (record == null) {
-            // 如果记录不存在，返回空数据
-            return BaseRes.success(null);
+        int totalOpened = 0;
+        if (records != null) {
+            for (ApexUserDailyRecord r : records) {
+                totalOpened += r.getCount();
+            }
         }
 
         Map<String, Object> result = new HashMap<>();
-        result.put("date", record.getRecordDate());
-        result.put("count", record.getCount());
+        // 使用第一条记录（最新的）作为日期信息
+        if (records != null && !records.isEmpty()) {
+            result.put("date", records.get(0).getRecordDate());
+            result.put("latestRecord", records.get(0)); // 添加最新的记录信息
+        }
+        result.put("count", totalOpened);
+        result.put("recordCount", records != null ? records.size() : 0); // 添加记录总数
 
         return BaseRes.success(result);
     }
