@@ -6,6 +6,7 @@ import com.tiankong44.tool.apex.dto.UserCreateRequest;
 import com.tiankong44.tool.apex.service.ApexService;
 import com.tiankong44.tool.base.entity.BaseRes;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +19,7 @@ import java.time.LocalDate;
  * Apex用户统计接口控制器
  */
 @RestController
-@RequestMapping("/apex")
+@RequestMapping("/api")
 @Validated
 public class ApexController {
     @Autowired
@@ -79,7 +80,7 @@ public class ApexController {
     @GetMapping("/users/{userId}/daily-records/{date}")
     public BaseRes getDailyRecordByDate(
             @PathVariable @NotBlank String userId,
-            @PathVariable LocalDate date) {
+            @PathVariable @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date) {
         return apexService.getDailyRecordByDate(userId, date);
     }
 
