@@ -115,13 +115,17 @@
             <artifactId>okhttp</artifactId>
             <version>4.9.1</version>
         </dependency>
-        <!-- Spring Security -->
-        <!--        <dependency>-->
-        <!--            <groupId>org.springframework.boot</groupId>-->
-        <!--            <artifactId>spring-boot-starter-security</artifactId>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
     </dependencies>
-
+    <repositories>
+        <repository>
+            <id>aliyun</id>
+            <url>https://maven.aliyun.com/repository/central</url>
+        </repository>
+    </repositories>
     <build>
         <finalName>lotto</finalName>
         <plugins>

@@ -1,0 +1,56 @@
+2025-06-26 00:02:13.042|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-26 00:02:13.058|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-26 00:02:17.922|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-26 00:02:17.924|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 33016 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-26 00:02:17.925|9001]|[]|The following 1 profile is active: "out"
+2025-06-26 00:02:18.725|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-26 00:02:18.726|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-26 00:02:18.749|9001]|[]|Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2025-06-26 00:02:19.365|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-26 00:02:19.373|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-26 00:02:19.374|9001]|[]|Starting service [Tomcat]
+2025-06-26 00:02:19.374|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-26 00:02:19.453|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-26 00:02:19.453|9001]|[]|Root WebApplicationContext: initialization completed in 1492 ms
+2025-06-26 00:02:21.628|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-26 00:02:21.667|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-26 00:02:21.682|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-26 00:02:21.709|9001]|[]|Started ToolApplication in 4.189 seconds (JVM running for 5.014)
+2025-06-26 00:02:21.934|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-26 00:02:21.934|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-26 00:02:21.936|9001]|[]|Completed initialization in 2 ms
+2025-06-26 00:02:21.976|9001]|[365846]|请求地址: /tabs/connect-websocket
+2025-06-26 00:02:21.977|9001]|[365846]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-26 00:02:22.202|9001]|[]|HikariPool-1 - Starting...
+2025-06-26 00:02:22.215|9001]|[365846]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-26 00:02:22.215|9001]|[365846]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:238ms
+2025-06-26 00:02:22.496|9001]|[]|HikariPool-1 - Start completed.
+2025-06-26 00:05:51.438|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-26 00:05:51.456|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-26 00:05:56.824|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 32544 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-26 00:05:56.824|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-26 00:05:56.827|9001]|[]|The following 1 profile is active: "out"
+2025-06-26 00:05:57.605|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-26 00:05:57.608|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-26 00:05:57.631|9001]|[]|Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2025-06-26 00:05:58.249|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-26 00:05:58.258|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-26 00:05:58.258|9001]|[]|Starting service [Tomcat]
+2025-06-26 00:05:58.258|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-26 00:05:58.336|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-26 00:05:58.337|9001]|[]|Root WebApplicationContext: initialization completed in 1469 ms
+2025-06-26 00:06:00.221|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-26 00:06:00.250|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-26 00:06:00.262|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-26 00:06:00.279|9001]|[]|Started ToolApplication in 3.897 seconds (JVM running for 4.701)
+2025-06-26 00:06:00.712|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-26 00:06:00.713|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-26 00:06:00.714|9001]|[]|Completed initialization in 1 ms
+2025-06-26 00:06:00.714|9001]|[]|HikariPool-1 - Starting...
+2025-06-26 00:06:01.210|9001]|[]|HikariPool-1 - Start completed.
+2025-06-26 00:06:05.581|9001]|[260920]|请求地址: /tabs/connect-websocket
+2025-06-26 00:06:05.581|9001]|[260920]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-26 00:06:05.664|9001]|[260920]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-26 00:06:05.664|9001]|[260920]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:83ms
+2025-06-26 00:06:56.457|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-26 00:06:56.474|9001]|[]|HikariPool-1 - Shutdown completed.

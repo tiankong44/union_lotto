@@ -12,9 +12,9 @@ spring:
       connection-timeout: 30000
 
   redis:
-    password: root
-    host: localhost
-    port: 6379
+    cluster:
+      nodes: 192.168.2.103:7001
+    password: zh34864486
   config:
     activate:
       on-profile: out
