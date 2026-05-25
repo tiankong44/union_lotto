@@ -1,7 +1,7 @@
 spring:
   datasource:
-    url: jdbc:mysql://192.168.2.103:6001/union_lotto?characterEncoding=utf8&verifyServerCertificate=false&useSSL=true&serverTimezone=Asia/Shanghai
-    username: root
+    url: jdbc:mysql://8.137.158.83:6001/union_lotto?characterEncoding=utf8&verifyServerCertificate=false&useSSL=true&serverTimezone=Asia/Shanghai
+    username: tiankong
     password: zh34864486
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
@@ -11,8 +11,12 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
   redis:
-    cluster:
-      nodes: 192.168.2.103:7001
+    host: 8.137.158.83
+    # 端口，默认为6379
+    port: 7001
+    # 数据库索引
+    database: 0
+    # 密码
     password: zh34864486
   config:
     activate:

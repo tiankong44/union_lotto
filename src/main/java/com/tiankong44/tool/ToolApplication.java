@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
+@MapperScan("com.tiankong44.tool.apex.mapper")
 public class ToolApplication {
 
     public static void main(String[] args) {
