@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { Activity, ArrowDownRight, ArrowUpRight, BarChart3, Info, Minus, Scale, TrendingUp, Waves } from 'lucide-vue-next'
 import { usePregnancyStore } from '../stores/pregnancy'
 import type { HealthRecord, RecordTimelineItem, WeightTrendPoint } from '../types/pregnancy'
@@ -14,6 +14,7 @@ const periodOptions: { value: ReportPeriodDays; label: string }[] = [
   { value: 30, label: '30 天' },
   { value: 90, label: '90 天' },
 ]
+const movementChartScroll = ref<HTMLElement | null>(null)
 
 function pad(value: number): string {
   return String(value).padStart(2, '0')
@@ -105,6 +106,20 @@ const movementDays = computed(() => {
   return result
 })
 
+async function scrollMovementChartToLatest(): Promise<void> {
+  await nextTick()
+  const chartScroll = movementChartScroll.value
+  if (chartScroll) chartScroll.scrollLeft = chartScroll.scrollWidth
+}
+
+onMounted(() => {
+  void scrollMovementChartToLatest()
+})
+
+watch(movementDays, () => {
+  void scrollMovementChartToLatest()
+}, { flush: 'post' })
+
 const maxCount = computed(() => Math.max(1, ...movementDays.value.map((day) => day.count)))
 const averageCount = computed(() => movementRecords.value.length ? Math.round(movementRecords.value.reduce((sum, item) => sum + item.movementCount, 0) / movementRecords.value.length) : 0)
 const latestCount = computed(() => movementRecords.value[0]?.movementCount ?? 0)
@@ -177,7 +192,7 @@ const timelineItems = computed<RecordTimelineItem[]>(() => {
           <span class="legend-item"><i class="legend-swatch repeated"></i>多次会话</span>
           <span class="legend-item"><i class="legend-swatch empty"></i>无记录</span>
         </div>
-        <div v-if="movementRecords.length" class="chart-scroll"><div class="chart-area report-chart-area" :style="{ minWidth: `${Math.max(560, movementDays.length * 30)}px` }" aria-label="选择时间范围内的胎动记录分布">
+        <div v-if="movementRecords.length" ref="movementChartScroll" class="chart-scroll"><div class="chart-area report-chart-area" :style="{ minWidth: `${Math.max(560, movementDays.length * 30)}px` }" aria-label="选择时间范围内的胎动记录分布">
           <div v-for="day in movementDays" :key="day.date" :class="['chart-column', { 'has-records': day.count > 0, 'multiple-sessions': day.sessions > 1, 'empty-day': day.count === 0 }]" :title="`${day.label}：${day.count} 次胎动，${day.sessions} 次会话`" :aria-label="`${day.label}：${day.count} 次胎动，${day.sessions} 次会话`"><span class="chart-value">{{ day.count }}</span><div class="bar-track"><span class="bar-fill" :style="{ height: barHeight(day.count) }"></span></div><span class="chart-label">{{ day.label }}</span></div>
         </div></div>
         <div v-else class="empty-report chart-empty"><BarChart3 :size="24" /><strong>当前范围还没有胎动记录</strong><span>完成一条记录后，这里会按日期显示胎动总数。</span></div>

@@ -7,6 +7,9 @@ import { usePregnancyStore } from '../stores/pregnancy'
 const store = usePregnancyStore()
 
 const todayMovementTotal = computed(() => store.todayMovements.reduce((total, session) => total + session.movementCount, 0))
+const todayTasks = computed(() => store.pendingTasks
+  .filter((task) => isSameLocalDate(task.plannedAt))
+  .sort((a, b) => a.plannedAt.localeCompare(b.plannedAt)))
 const weekNumber = computed(() => {
   if (!store.profile?.lmpDate) return null
   const start = new Date(`${store.profile.lmpDate}T00:00:00`)
@@ -24,6 +27,15 @@ function formatShortDate(value?: string): string {
 
 function formatTime(value: string): string {
   return new Intl.DateTimeFormat('zh-CN', { hour: '2-digit', minute: '2-digit' }).format(new Date(value))
+}
+
+function isSameLocalDate(value: string): boolean {
+  const date = new Date(value)
+  const today = new Date()
+  if (Number.isNaN(date.getTime())) return false
+  return date.getFullYear() === today.getFullYear()
+    && date.getMonth() === today.getMonth()
+    && date.getDate() === today.getDate()
 }
 </script>
 
@@ -57,11 +69,11 @@ function formatTime(value: string): string {
         <strong>{{ weekNumber ? `第 ${weekNumber} 周` : '--' }}</strong>
         <div class="metric-foot-row"><span class="metric-foot">预产期 {{ dueText }}</span><RouterLink class="metric-edit-link" to="/pregnancy" :title="store.profile ? '修改基础资料' : '完善基础资料'"><Pencil :size="13" /><span>{{ store.profile ? '修改基础资料' : '完善基础资料' }}</span></RouterLink></div>
       </article>
-      <article class="metric-card">
+      <RouterLink class="metric-card metric-card-link" to="/tasks">
         <div class="metric-label"><span class="metric-dot yellow"></span> 待办事项</div>
-        <strong>{{ store.pendingTasks.length }}</strong>
-        <span class="metric-foot">{{ store.pendingTasks.length ? '还有事项要处理' : '今天很轻盈' }}</span>
-      </article>
+        <strong>{{ todayTasks.length }}</strong>
+        <span class="metric-foot">{{ todayTasks.length ? '今天还有事项要处理' : '今天很轻盈' }}</span>
+      </RouterLink>
     </section>
 
     <section class="dashboard-grid">
@@ -94,12 +106,12 @@ function formatTime(value: string): string {
           </div>
           <CalendarClock :size="20" class="heading-icon" />
         </div>
-        <div v-if="store.pendingTasks.length" class="timeline-list">
-          <div v-for="task in store.pendingTasks.slice(0, 3)" :key="task.clientRecordId" class="timeline-row">
+        <div v-if="todayTasks.length" class="timeline-list">
+          <RouterLink v-for="task in todayTasks" :key="task.clientRecordId" class="timeline-row" to="/tasks">
             <span class="timeline-time">{{ formatTime(task.plannedAt) }}</span>
             <span class="timeline-line"></span>
             <span class="timeline-title">{{ task.title }}</span>
-          </div>
+          </RouterLink>
         </div>
         <div v-else class="empty-block">
           <ClipboardCheck :size="22" />
