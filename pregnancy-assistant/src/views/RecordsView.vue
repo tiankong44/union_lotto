@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { Activity, AlertCircle, ArrowUpRight, CalendarDays, CheckCircle2, FileText, HeartPulse, ListFilter, Pencil, Save, Waves, X } from 'lucide-vue-next'
+import { Activity, AlertCircle, ArrowUpRight, CalendarDays, CheckCircle2, FileText, HeartPulse, Pencil, Save, Waves, X } from 'lucide-vue-next'
 import { usePregnancyStore } from '../stores/pregnancy'
 import type { RecordNoteType } from '../types/pregnancy'
 
@@ -85,12 +85,15 @@ async function saveNote(recordType: RecordNoteType, clientRecordId: string): Pro
 
     <section class="panel archive-panel">
       <div class="archive-toolbar">
-        <div class="tab-list" role="tablist" aria-label="记录分类">
-          <button v-for="tab in tabs" :key="tab.key" :class="['tab-button', { active: activeTab === tab.key }]" type="button" @click="activeTab = tab.key">
-            <component :is="tab.icon" :size="16" /> {{ tab.label }}
-          </button>
+        <div class="archive-toolbar-main">
+          <span class="archive-toolbar-label">记录类型</span>
+          <div class="tab-list" role="tablist" aria-label="记录分类">
+            <button v-for="tab in tabs" :key="tab.key" :class="['tab-button', { active: activeTab === tab.key }]" type="button" @click="activeTab = tab.key">
+              <component :is="tab.icon" :size="16" /> {{ tab.label }}
+            </button>
+          </div>
         </div>
-        <button class="icon-button" type="button" title="筛选记录"><ListFilter :size="17" /></button>
+        <span class="archive-toolbar-summary">当前 {{ activeCount }} 条</span>
       </div>
 
       <div v-if="activeTab === 'movement'" class="record-list">

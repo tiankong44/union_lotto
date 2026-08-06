@@ -9,7 +9,14 @@ const store = usePregnancyStore()
 
 type HealthFormType = HealthRecordType
 
-const healthForm = reactive({
+interface HealthFormState {
+  recordType: HealthFormType
+  value: string | number
+  recordedAt: string
+  note: string
+}
+
+const healthForm = reactive<HealthFormState>({
   recordType: 'weight' as HealthFormType,
   value: '',
   recordedAt: toLocalInputValue(),
@@ -47,9 +54,10 @@ function makeRecordId(): string {
 }
 
 function validateForm(): string | null {
-  if (!healthForm.value.trim()) return `${valueLabel.value}不能为空`
+  const normalizedValue = String(healthForm.value ?? '').trim()
+  if (!normalizedValue) return `${valueLabel.value}不能为空`
   if (healthForm.recordType === 'weight') {
-    const numericValue = Number(healthForm.value.trim())
+    const numericValue = Number(normalizedValue)
     if (!Number.isFinite(numericValue) || numericValue < 0) return '体重请输入不小于 0 的数字'
   }
   if (!toIsoDate(healthForm.recordedAt)) return '请选择有效的记录时间'
@@ -71,6 +79,7 @@ async function saveHealthRecord(): Promise<void> {
   }
   const recordedAt = toIsoDate(healthForm.recordedAt)
   if (!recordedAt) return
+  const normalizedValue = String(healthForm.value ?? '').trim()
 
   saving.value = true
   saveMessage.value = ''
@@ -78,7 +87,7 @@ async function saveHealthRecord(): Promise<void> {
     await store.addHealthRecord({
       clientRecordId: makeRecordId(),
       recordType: healthForm.recordType,
-      valueJson: JSON.stringify({ value: healthForm.value.trim() }),
+      valueJson: JSON.stringify({ value: normalizedValue }),
       unit: healthUnit.value || undefined,
       recordedAt,
       note: healthForm.note.trim() || undefined,
