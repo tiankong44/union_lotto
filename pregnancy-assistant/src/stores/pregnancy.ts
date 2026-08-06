@@ -31,11 +31,11 @@ export const usePregnancyStore = defineStore('pregnancy', () => {
 
   async function persist(): Promise<void> {
     await saveSnapshot({
-      profile: profile.value as unknown as Record<string, unknown> | null,
-      movementSessions: movementSessions.value as unknown as Record<string, unknown>[],
-      contractions: contractions.value as unknown as Record<string, unknown>[],
-      healthRecords: healthRecords.value as unknown as Record<string, unknown>[],
-      tasks: tasks.value as unknown as Record<string, unknown>[],
+      profile: profile.value ? ({ ...profile.value } as unknown as Record<string, unknown>) : null,
+      movementSessions: movementSessions.value.map((session) => ({ ...session })) as unknown as Record<string, unknown>[],
+      contractions: contractions.value.map((session) => ({ ...session })) as unknown as Record<string, unknown>[],
+      healthRecords: healthRecords.value.map((record) => ({ ...record })) as unknown as Record<string, unknown>[],
+      tasks: tasks.value.map((task) => ({ ...task })) as unknown as Record<string, unknown>[],
       lastSyncedAt: lastSyncedAt.value,
     })
   }
