@@ -32,7 +32,11 @@ const viewComponents: Record<WorkspaceView, Component> = {
 const activeComponent = computed(() => viewComponents[activeView.value])
 
 function navigateTo(view: WorkspaceView): void {
+  if (activeView.value === view) return
+
   activeView.value = view
+  // 切换工作区视图后回到页面顶部，避免沿用上一页的滚动位置。
+  window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
 }
 
 provide(WORKSPACE_NAVIGATE_KEY, navigateTo)
