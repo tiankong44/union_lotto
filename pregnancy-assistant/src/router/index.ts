@@ -11,8 +11,9 @@ import SettingsView from '../views/SettingsView.vue'
 const router = createRouter({
   history: createWebHistory(),
   routes: [
-    { path: '/', component: DashboardView },
-    { path: '/movement', component: MovementView },
+    { path: '/', component: MovementView },
+    { path: '/overview', component: DashboardView },
+    { path: '/movement', redirect: '/' },
     { path: '/contractions', component: ContractionView },
     { path: '/records', component: RecordsView },
     { path: '/insights', component: InsightsView },

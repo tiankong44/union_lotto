@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
-import { ArrowUpRight, Check, Clock3, Pause, Play, RotateCcw, Sparkles, TimerReset, Undo2 } from 'lucide-vue-next'
+import { AlertCircle, ArrowUpRight, Check, Clock3, Pause, Play, RotateCcw, Sparkles, TimerReset, Undo2 } from 'lucide-vue-next'
 import { usePregnancyStore } from '../stores/pregnancy'
 
 const store = usePregnancyStore()
@@ -11,14 +11,36 @@ const strength = ref(3)
 const note = ref('')
 const selectedMode = ref<'free' | 'target'>('target')
 const elapsedNow = ref(Date.now())
+const isSaving = ref(false)
+const saveMessage = ref('')
+const saveMessageTone = ref<'success' | 'error'>('success')
 let timer: number | undefined
 
 const elapsedSeconds = computed(() => startedAt.value ? Math.max(0, Math.floor((elapsedNow.value - startedAt.value) / 1000)) : 0)
 const elapsedText = computed(() => `${String(Math.floor(elapsedSeconds.value / 60)).padStart(2, '0')}:${String(elapsedSeconds.value % 60).padStart(2, '0')}`)
 const recentSessions = computed(() => store.movementSessions.slice(0, 5))
+const targetReached = computed(() => selectedMode.value === 'target' && count.value >= 10)
+const todayLabel = computed(() => new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric', weekday: 'long' }).format(new Date()))
+const weekLabel = computed(() => {
+  if (!store.profile?.lmpDate) return '未设置孕周'
+  const start = new Date(`${store.profile.lmpDate}T00:00:00`)
+  if (Number.isNaN(start.getTime())) return '未设置孕周'
+  const days = Math.max(0, Math.floor((Date.now() - start.getTime()) / 86400000))
+  return `第 ${Math.floor(days / 7) + 1} 周`
+})
+const localStatusLabel = computed(() => {
+  if (store.syncStatus === 'syncing') return '同步中'
+  if (store.syncStatus === 'synced') return '已同步'
+  if (store.syncStatus === 'offline') return '离线保存'
+  if (store.syncStatus === 'error') return '待重试'
+  return '本机优先'
+})
 
 function startSession(): void {
-  if (!startedAt.value) startedAt.value = Date.now()
+  if (!startedAt.value) {
+    startedAt.value = Date.now()
+    saveMessage.value = ''
+  }
   isRunning.value = true
   timer = window.setInterval(() => { elapsedNow.value = Date.now() }, 1000)
 }
@@ -40,21 +62,32 @@ function undoMovement(): void {
 }
 
 async function finishSession(): Promise<void> {
-  if (!startedAt.value || count.value === 0) return
+  if (isSaving.value || !startedAt.value || count.value === 0) return
   const end = new Date()
   const start = new Date(startedAt.value)
   pauseSession()
-  await store.addMovementSession({
-    clientRecordId: makeRecordId('movement'),
-    sessionMode: selectedMode.value,
-    startedAt: start.toISOString(),
-    endedAt: end.toISOString(),
-    movementCount: count.value,
-    targetCount: selectedMode.value === 'target' ? 10 : undefined,
-    averageStrength: strength.value,
-    note: note.value.trim() || undefined,
-  })
-  resetSession()
+  isSaving.value = true
+  saveMessage.value = ''
+  try {
+    await store.addMovementSession({
+      clientRecordId: makeRecordId('movement'),
+      sessionMode: selectedMode.value,
+      startedAt: start.toISOString(),
+      endedAt: end.toISOString(),
+      movementCount: count.value,
+      targetCount: selectedMode.value === 'target' ? 10 : undefined,
+      averageStrength: strength.value,
+      note: note.value.trim() || undefined,
+    })
+    resetSession()
+    saveMessageTone.value = 'success'
+    saveMessage.value = '已保存到本机，联网后同步。'
+  } catch {
+    saveMessageTone.value = 'error'
+    saveMessage.value = '本次记录保存失败，当前内容已保留，请重试。'
+  } finally {
+    isSaving.value = false
+  }
 }
 
 function resetSession(): void {
@@ -63,6 +96,7 @@ function resetSession(): void {
   count.value = 0
   note.value = ''
   elapsedNow.value = Date.now()
+  saveMessage.value = ''
 }
 
 function makeRecordId(prefix: string): string {
@@ -80,15 +114,18 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="view-stack movement-page">
-    <section class="page-intro compact-intro">
-      <div>
-        <p class="eyebrow">MOVEMENT SESSION</p>
+    <section class="movement-header">
+      <div class="movement-heading">
+        <p class="eyebrow">FOCUS · MOVEMENT</p>
         <h1>记录胎动</h1>
-        <p>保持舒适，按感受到的每一次轻动点按记录。</p>
+        <div class="movement-meta"><span>{{ todayLabel }}</span><span class="meta-divider"></span><span>{{ weekLabel }}</span></div>
       </div>
-      <div class="mode-switch" role="tablist" aria-label="记录模式">
-        <button :class="{ active: selectedMode === 'target' }" type="button" @click="selectedMode = 'target'">目标计时</button>
-        <button :class="{ active: selectedMode === 'free' }" type="button" @click="selectedMode = 'free'">自由记录</button>
+      <div class="movement-header-tools">
+        <span class="local-status"><span :class="['status-dot', { muted: store.syncStatus === 'offline' || store.syncStatus === 'error' }]" />{{ localStatusLabel }}</span>
+        <div class="mode-switch" role="tablist" aria-label="记录模式">
+          <button :class="{ active: selectedMode === 'target' }" type="button" :disabled="Boolean(startedAt) || isSaving" @click="selectedMode = 'target'">目标计时</button>
+          <button :class="{ active: selectedMode === 'free' }" type="button" :disabled="Boolean(startedAt) || isSaving" @click="selectedMode = 'free'">自由记录</button>
+        </div>
       </div>
     </section>
 
@@ -103,30 +140,43 @@ onBeforeUnmount(() => {
           <strong>{{ count }}</strong>
           <span class="counter-unit">次胎动</span>
         </div>
-        <button class="movement-tap" type="button" aria-label="记录一次胎动" @click="addMovement">
+        <div class="target-hint" :class="{ reached: targetReached }" role="status">
+          <Check v-if="targetReached" :size="15" />
+          <span>{{ targetReached ? '已达到目标，可以继续记录或手动保存。' : selectedMode === 'target' ? '目标为 10 次，不代表医疗判断。' : '自由记录，不设次数目标。' }}</span>
+        </div>
+        <button class="movement-tap" type="button" aria-label="记录一次胎动" :disabled="isSaving" @click="addMovement">
           <span><Sparkles :size="27" /></span>
           <strong>点按记录</strong>
           <small>{{ isRunning ? '每次感受到胎动时点按' : '点击后开始计时' }}</small>
         </button>
         <div class="timer-row">
           <div class="timer-display"><Clock3 :size="17" /> {{ elapsedText }}</div>
-          <button class="ghost-button" type="button" @click="isRunning ? pauseSession() : startSession()">
+          <button class="ghost-button" type="button" :disabled="isSaving" @click="isRunning ? pauseSession() : startSession()">
             <Pause v-if="isRunning" :size="16" />
             <Play v-else :size="16" />
             {{ isRunning ? '暂停' : '继续' }}
           </button>
-          <button class="icon-button" type="button" title="撤销最近一次点按" :disabled="count === 0" @click="undoMovement"><Undo2 :size="17" /></button>
+          <button class="icon-button" type="button" title="撤销最近一次点按" :disabled="count === 0 || isSaving" @click="undoMovement"><Undo2 :size="17" /></button>
         </div>
         <div class="strength-field">
           <div class="field-label"><span>主观强度</span><span>{{ strength }}/5</span></div>
-          <input v-model.number="strength" type="range" min="1" max="5" step="1" aria-label="胎动主观强度" />
+          <input v-model.number="strength" type="range" min="1" max="5" step="1" aria-label="胎动主观强度" :disabled="isSaving" />
           <div class="range-labels"><span>轻柔</span><span>明显</span></div>
         </div>
-        <textarea v-model="note" class="note-input" rows="2" placeholder="给这次记录留一句备注（可选）"></textarea>
+        <textarea v-model="note" class="note-input" rows="2" placeholder="给这次记录留一句备注（可选）" :disabled="isSaving"></textarea>
         <div class="console-actions">
-          <button class="primary-button" type="button" :disabled="count === 0" @click="finishSession"><Check :size="18" /> 完成并保存</button>
-          <button class="text-button" type="button" :disabled="!startedAt && count === 0" @click="resetSession"><RotateCcw :size="15" /> 重新开始</button>
+          <button class="primary-button" type="button" :disabled="count === 0 || isSaving" @click="finishSession">
+            <span v-if="isSaving" class="button-loader" aria-hidden="true"></span>
+            <Check v-else :size="18" />
+            {{ isSaving ? '保存中…' : '完成并保存' }}
+          </button>
+          <button class="text-button" type="button" :disabled="(!startedAt && count === 0) || isSaving" @click="resetSession"><RotateCcw :size="15" /> 重新开始</button>
         </div>
+        <p v-if="saveMessage" :class="['save-feedback', saveMessageTone]" role="status">
+          <Check v-if="saveMessageTone === 'success'" :size="15" />
+          <AlertCircle v-else :size="15" />
+          {{ saveMessage }}
+        </p>
       </article>
 
       <aside class="movement-aside">

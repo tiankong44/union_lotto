@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ArrowUpRight, CalendarClock, ChevronRight, CirclePlus, ClipboardCheck, HeartPulse, Sparkles } from 'lucide-vue-next'
+import { ArrowUpRight, CalendarClock, ChevronRight, CirclePlus, ClipboardCheck, HeartPulse } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
 import { usePregnancyStore } from '../stores/pregnancy'
 
@@ -35,18 +35,13 @@ function formatTime(value: string): string {
         <h1>把每一次感受，留在今天。</h1>
         <p class="hero-copy">记录自己的节奏，回看自己的变化。数据只属于你，也只为更好地和产科沟通。</p>
       </div>
-      <div class="hero-orbit" aria-hidden="true">
-        <div class="orbit-ring ring-one"></div>
-        <div class="orbit-ring ring-two"></div>
-        <div class="orbit-core"><Sparkles :size="22" /></div>
-      </div>
     </section>
 
     <section v-if="!store.profile" class="onboarding-strip">
       <div class="strip-icon"><HeartPulse :size="20" /></div>
       <div>
         <strong>先建立一份孕期档案</strong>
-        <p>设置预产期后，首页会显示孕周、阶段和你的记录节奏。</p>
+        <p>设置预产期后，总览会显示孕周、阶段和你的记录节奏。</p>
       </div>
       <RouterLink class="text-action" to="/pregnancy">去设置 <ArrowUpRight :size="16" /></RouterLink>
     </section>
@@ -79,7 +74,7 @@ function formatTime(value: string): string {
           <span class="panel-index">01</span>
         </div>
         <p class="panel-copy">坐下来，给自己一段安静的时间。每一次点按都会形成你的个人记录。</p>
-        <RouterLink class="primary-button" to="/movement">
+        <RouterLink class="primary-button" to="/">
           <CirclePlus :size="18" /> 开始记录
         </RouterLink>
         <div v-if="latestMovement" class="last-session">
