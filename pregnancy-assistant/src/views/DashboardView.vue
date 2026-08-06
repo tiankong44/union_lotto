@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { ArrowUpRight, CalendarClock, ChevronRight, CirclePlus, ClipboardCheck, HeartPulse } from 'lucide-vue-next'
+import { ArrowUpRight, CalendarClock, ChevronRight, CirclePlus, ClipboardCheck, HeartPulse, Pencil } from 'lucide-vue-next'
 import { RouterLink } from 'vue-router'
 import { usePregnancyStore } from '../stores/pregnancy'
 
@@ -55,7 +55,7 @@ function formatTime(value: string): string {
       <article class="metric-card">
         <div class="metric-label"><span class="metric-dot blue"></span> 当前孕周</div>
         <strong>{{ weekNumber ? `第 ${weekNumber} 周` : '--' }}</strong>
-        <span class="metric-foot">预产期 {{ dueText }}</span>
+        <div class="metric-foot-row"><span class="metric-foot">预产期 {{ dueText }}</span><RouterLink class="metric-edit-link" to="/pregnancy" :title="store.profile ? '修改基础资料' : '完善基础资料'"><Pencil :size="13" /><span>{{ store.profile ? '修改基础资料' : '完善基础资料' }}</span></RouterLink></div>
       </article>
       <article class="metric-card">
         <div class="metric-label"><span class="metric-dot yellow"></span> 待办事项</div>
