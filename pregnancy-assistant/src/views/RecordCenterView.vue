@@ -139,7 +139,7 @@ async function saveHealthRecord(): Promise<void> {
           </div>
           <div class="field-grid two-columns">
             <label class="field"><span>{{ valueLabel }}</span><input v-model="healthForm.value" :type="healthForm.recordType === 'weight' ? 'number' : 'text'" :min="healthForm.recordType === 'weight' ? 0 : undefined" :step="healthForm.recordType === 'weight' ? 0.1 : undefined" :placeholder="valuePlaceholder" required /></label>
-            <label class="field"><span>记录时间</span><input v-model="healthForm.recordedAt" type="datetime-local" required /></label>
+            <label class="field date-field"><span>记录时间</span><input v-model="healthForm.recordedAt" type="datetime-local" required /></label>
           </div>
           <label v-if="healthUnit" class="field"><span>单位</span><input :value="healthUnit" type="text" readonly /></label>
           <label class="field"><span>补充备注</span><textarea v-model="healthForm.note" rows="3" placeholder="可选"></textarea></label>
