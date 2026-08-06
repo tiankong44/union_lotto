@@ -2,6 +2,7 @@
 import { reactive, ref, watch } from 'vue'
 import { ArrowUpRight, BookOpen, Check, HeartPulse, Save, Stethoscope } from 'lucide-vue-next'
 import DateField from '../components/DateField.vue'
+import WorkspaceLink from '../components/WorkspaceLink.vue'
 import { usePregnancyStore } from '../stores/pregnancy'
 
 const store = usePregnancyStore()
@@ -59,7 +60,7 @@ async function saveProfile(): Promise<void> {
 
     <section class="panel quick-tool-band">
       <div><p class="eyebrow">HEALTH RECORDS</p><h2>需要记录体重或身体感受？</h2><p>记录中心支持体重、血压、症状和可修改的记录时间。</p></div>
-      <RouterLink class="secondary-button" to="/record-center"><BookOpen :size="16" /> 打开记录中心 <ArrowUpRight :size="15" /></RouterLink>
+      <WorkspaceLink class="secondary-button" view="record-center"><BookOpen :size="16" /> 打开记录中心 <ArrowUpRight :size="15" /></WorkspaceLink>
     </section>
   </div>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { AlertCircle, ArrowUpRight, Check, Clock3, Pause, Play, RotateCcw, Sparkles, TimerReset, Undo2 } from 'lucide-vue-next'
+import WorkspaceLink from '../components/WorkspaceLink.vue'
 import { usePregnancyStore } from '../stores/pregnancy'
 import type { FetalMovementSessionPayload } from '../types/pregnancy'
 
@@ -206,7 +207,7 @@ onBeforeUnmount(() => {
         <div :class="['strength-summary', `strength-level-${strength}`]"><span>当前选择</span><strong>{{ strength }} / 5</strong></div>
         </article>
         <article class="panel aside-card history-mini">
-          <div class="panel-heading small-heading"><div><p class="eyebrow">RECENT</p><h2>最近几次</h2></div><RouterLink class="icon-link" to="/records" title="查看全部记录"><ArrowUpRight :size="17" /></RouterLink></div>
+          <div class="panel-heading small-heading"><div><p class="eyebrow">RECENT</p><h2>最近几次</h2></div><WorkspaceLink class="icon-link" view="records" title="查看全部记录"><ArrowUpRight :size="17" /></WorkspaceLink></div>
           <div v-if="recentSessions.length" class="mini-list">
             <div v-for="session in recentSessions" :key="session.clientRecordId" class="mini-row"><span>{{ formatDate(session.startedAt) }}</span><strong>{{ session.movementCount }} 次</strong></div>
           </div>

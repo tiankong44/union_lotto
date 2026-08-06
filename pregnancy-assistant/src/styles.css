@@ -38,6 +38,8 @@ button, a { -webkit-tap-highlight-color: transparent; }
 
 button { cursor: pointer; }
 
+.workspace-link { border: 0; padding: 0; background: transparent; color: inherit; font: inherit; text-align: left; }
+
 button:disabled { cursor: not-allowed; opacity: 0.45; }
 
 a { color: inherit; text-decoration: none; }
@@ -62,7 +64,7 @@ a { color: inherit; text-decoration: none; }
 
 .nav-item:hover { color: var(--ink); background: var(--surface-soft); }
 
-.nav-item.router-link-active { border-left-color: var(--coral); color: var(--ink); background: var(--surface); font-weight: 650; }
+.nav-item.active { border-left-color: var(--coral); color: var(--ink); background: var(--surface); font-weight: 650; }
 
 .nav-item-muted { margin-top: 8px; }
 
@@ -860,5 +862,5 @@ input:focus, textarea:focus, select:focus { border-color: var(--coral); box-shad
   .setting-panel .setting-state, .setting-panel .secondary-button { grid-column: 2; justify-self: start; margin-top: 2px; }
   .bottom-nav { position: fixed; right: 0; bottom: 0; left: 0; z-index: 20; display: grid; grid-template-columns: repeat(5, 1fr); padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(13px); }
   .bottom-nav-item { display: flex; min-height: 45px; flex-direction: column; align-items: center; justify-content: center; gap: 4px; color: var(--muted); font-size: 9px; }
-  .bottom-nav-item.router-link-active { color: var(--coral); font-weight: 700; }
+  .bottom-nav-item.active { color: var(--coral); font-weight: 700; }
 }

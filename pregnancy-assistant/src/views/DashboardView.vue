@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { ArrowUpRight, CalendarClock, ChevronRight, CirclePlus, ClipboardCheck, HeartPulse, Pencil } from 'lucide-vue-next'
-import { RouterLink } from 'vue-router'
+import WorkspaceLink from '../components/WorkspaceLink.vue'
 import { usePregnancyStore } from '../stores/pregnancy'
 
 const store = usePregnancyStore()
@@ -55,7 +55,7 @@ function isSameLocalDate(value: string): boolean {
         <strong>先建立一份孕期档案</strong>
         <p>设置预产期后，总览会显示孕周、阶段和你的记录节奏。</p>
       </div>
-      <RouterLink class="text-action" to="/pregnancy">去设置 <ArrowUpRight :size="16" /></RouterLink>
+      <WorkspaceLink class="text-action" view="pregnancy">去设置 <ArrowUpRight :size="16" /></WorkspaceLink>
     </section>
 
     <section class="metric-grid">
@@ -67,13 +67,13 @@ function isSameLocalDate(value: string): boolean {
       <article class="metric-card">
         <div class="metric-label"><span class="metric-dot blue"></span> 当前孕周</div>
         <strong>{{ weekNumber ? `第 ${weekNumber} 周` : '--' }}</strong>
-        <div class="metric-foot-row"><span class="metric-foot">预产期 {{ dueText }}</span><RouterLink class="metric-edit-link" to="/pregnancy" :title="store.profile ? '修改基础资料' : '完善基础资料'"><Pencil :size="13" /><span>{{ store.profile ? '修改基础资料' : '完善基础资料' }}</span></RouterLink></div>
+        <div class="metric-foot-row"><span class="metric-foot">预产期 {{ dueText }}</span><WorkspaceLink class="metric-edit-link" view="pregnancy" :title="store.profile ? '修改基础资料' : '完善基础资料'"><Pencil :size="13" /><span>{{ store.profile ? '修改基础资料' : '完善基础资料' }}</span></WorkspaceLink></div>
       </article>
-      <RouterLink class="metric-card metric-card-link" to="/tasks">
+      <WorkspaceLink class="metric-card metric-card-link" view="tasks">
         <div class="metric-label"><span class="metric-dot yellow"></span> 待办事项</div>
         <strong>{{ store.pendingTasks.length }}</strong>
         <span class="metric-foot">{{ store.pendingTasks.length ? '还有事项要处理' : '今天很轻盈' }}</span>
-      </RouterLink>
+      </WorkspaceLink>
     </section>
 
     <section class="dashboard-grid">
@@ -86,15 +86,15 @@ function isSameLocalDate(value: string): boolean {
           <span class="panel-index">01</span>
         </div>
         <p class="panel-copy">坐下来，给自己一段安静的时间。每一次点按都会形成你的个人记录。</p>
-        <RouterLink class="primary-button" to="/">
+        <WorkspaceLink class="primary-button" view="movement">
           <CirclePlus :size="18" /> 开始记录
-        </RouterLink>
+        </WorkspaceLink>
         <div v-if="latestMovement" class="last-session">
           <div>
             <span>上一次记录</span>
             <strong>{{ latestMovement.movementCount }} 次胎动 · {{ formatTime(latestMovement.startedAt) }}</strong>
           </div>
-          <RouterLink to="/records" class="icon-link" title="查看记录"><ChevronRight :size="18" /></RouterLink>
+          <WorkspaceLink view="records" class="icon-link" title="查看记录"><ChevronRight :size="18" /></WorkspaceLink>
         </div>
       </article>
 
@@ -107,16 +107,16 @@ function isSameLocalDate(value: string): boolean {
           <CalendarClock :size="20" class="heading-icon" />
         </div>
         <div v-if="todayTasks.length" class="timeline-list">
-          <RouterLink v-for="task in todayTasks" :key="task.clientRecordId" class="timeline-row" to="/tasks">
+          <WorkspaceLink v-for="task in todayTasks" :key="task.clientRecordId" class="timeline-row" view="tasks">
             <span class="timeline-time">{{ formatTime(task.plannedAt) }}</span>
             <span class="timeline-line"></span>
             <span class="timeline-title">{{ task.title }}</span>
-          </RouterLink>
+          </WorkspaceLink>
         </div>
         <div v-else class="empty-block">
           <ClipboardCheck :size="22" />
           <span>今天还没有安排</span>
-          <RouterLink to="/tasks" class="text-action">添加一项 <ArrowUpRight :size="15" /></RouterLink>
+          <WorkspaceLink view="tasks" class="text-action">添加一项 <ArrowUpRight :size="15" /></WorkspaceLink>
         </div>
       </article>
     </section>

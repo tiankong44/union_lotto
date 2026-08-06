@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref } from 'vue'
 import { ArrowUpRight, Clock3, RotateCcw, Waves } from 'lucide-vue-next'
+import WorkspaceLink from '../components/WorkspaceLink.vue'
 import { usePregnancyStore } from '../stores/pregnancy'
 import type { ContractionSessionPayload } from '../types/pregnancy'
 
@@ -110,7 +111,7 @@ onBeforeUnmount(() => { if (timer) window.clearInterval(timer) })
         <div class="console-actions"><button class="text-button" type="button" :disabled="!startedAt || isSaving" @click="reset"><RotateCcw :size="15" /> 重新开始</button></div>
         <p v-if="saveMessage" :class="['save-hint', { error: saveMessageTone === 'error' }]" role="status">{{ saveMessage }}</p>
       </article>
-      <aside class="movement-aside"><article class="panel aside-card"><div class="panel-heading small-heading"><div><p class="eyebrow">RECENT</p><h2>最近宫缩</h2></div><RouterLink class="icon-link" to="/records" title="查看全部记录"><ArrowUpRight :size="17" /></RouterLink></div><div v-if="store.contractions.length" class="mini-list"><div v-for="record in store.contractions.slice(0, 5)" :key="record.clientRecordId" class="mini-row"><span>{{ formatDate(record.startedAt) }}</span><strong>{{ record.durationSeconds }} 秒</strong></div></div><div v-else class="empty-inline">完成第一次记录后，会显示在这里。</div></article><article class="panel aside-card"><p class="eyebrow">CARE NOTE</p><p class="panel-copy">计时结果只用于个人记录和就医沟通，不判断是否临产。如有担忧，请直接联系医疗机构。</p></article></aside>
+      <aside class="movement-aside"><article class="panel aside-card"><div class="panel-heading small-heading"><div><p class="eyebrow">RECENT</p><h2>最近宫缩</h2></div><WorkspaceLink class="icon-link" view="records" title="查看全部记录"><ArrowUpRight :size="17" /></WorkspaceLink></div><div v-if="store.contractions.length" class="mini-list"><div v-for="record in store.contractions.slice(0, 5)" :key="record.clientRecordId" class="mini-row"><span>{{ formatDate(record.startedAt) }}</span><strong>{{ record.durationSeconds }} 秒</strong></div></div><div v-else class="empty-inline">完成第一次记录后，会显示在这里。</div></article><article class="panel aside-card"><p class="eyebrow">CARE NOTE</p><p class="panel-copy">计时结果只用于个人记录和就医沟通，不判断是否临产。如有担忧，请直接联系医疗机构。</p></article></aside>
     </section>
   </div>
 </template>

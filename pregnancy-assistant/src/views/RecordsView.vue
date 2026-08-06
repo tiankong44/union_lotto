@@ -2,6 +2,7 @@
 import { computed, reactive, ref } from 'vue'
 import { Activity, AlertCircle, ArrowUpRight, BarChart3, CalendarDays, CheckCircle2, FileText, HeartPulse, Pencil, Save, Trash2, Waves, X } from 'lucide-vue-next'
 import RecordChartPanel from '../components/RecordChartPanel.vue'
+import WorkspaceLink from '../components/WorkspaceLink.vue'
 import { usePregnancyStore } from '../stores/pregnancy'
 import type { HealthRecord, RecordChartType, RecordNoteType } from '../types/pregnancy'
 
@@ -138,7 +139,7 @@ async function deleteRecord(recordType: RecordNoteType, clientRecordId: string):
         <h1>所有记录</h1>
         <p>按类型回看每一个被认真记下的瞬间。</p>
       </div>
-      <div class="archive-actions"><div class="archive-count"><strong>{{ activeCount }}</strong><span>条记录</span></div><RouterLink class="secondary-button" to="/record-center"><ArrowUpRight :size="15" /> 去记录中心</RouterLink></div>
+      <div class="archive-actions"><div class="archive-count"><strong>{{ activeCount }}</strong><span>条记录</span></div><WorkspaceLink class="secondary-button" view="record-center"><ArrowUpRight :size="15" /> 去记录中心</WorkspaceLink></div>
     </section>
 
     <section class="panel archive-panel">

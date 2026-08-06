@@ -2,6 +2,7 @@
 import { computed, reactive, ref } from 'vue'
 import { ArrowUpRight, BookOpen, CalendarClock, Check, FileText, HeartPulse, Plus, Scale, Waves } from 'lucide-vue-next'
 import DateField from '../components/DateField.vue'
+import WorkspaceLink from '../components/WorkspaceLink.vue'
 import { usePregnancyStore } from '../stores/pregnancy'
 import type { HealthRecordType } from '../types/pregnancy'
 
@@ -142,16 +143,16 @@ async function saveHealthRecord(): Promise<void> {
           <FileText :size="20" class="heading-icon" />
         </div>
         <div class="record-action-list">
-          <RouterLink class="record-action blue-action" to="/contractions">
+          <WorkspaceLink class="record-action blue-action" view="contractions">
             <span class="record-action-icon"><Waves :size="19" /></span>
             <span><strong>记录宫缩</strong><small>开始、结束、持续时间和间隔</small></span>
             <ArrowUpRight :size="17" />
-          </RouterLink>
-          <RouterLink class="record-action coral-action" to="/records">
+          </WorkspaceLink>
+          <WorkspaceLink class="record-action coral-action" view="records">
             <span class="record-action-icon"><CalendarClock :size="19" /></span>
             <span><strong>查看历史</strong><small>按类型回看已保存的记录</small></span>
             <ArrowUpRight :size="17" />
-          </RouterLink>
+          </WorkspaceLink>
         </div>
         <p class="panel-copy">记录只用于个人回看和就医沟通，不替代医疗判断。</p>
       </article>
