@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Activity, CalendarDays, CheckCircle2, Clock3, FileText, HeartPulse, ListFilter, Waves } from 'lucide-vue-next'
+import { Activity, ArrowUpRight, CalendarDays, CheckCircle2, Clock3, FileText, HeartPulse, ListFilter, Waves } from 'lucide-vue-next'
 import { usePregnancyStore } from '../stores/pregnancy'
 
 const store = usePregnancyStore()
@@ -37,7 +37,7 @@ function healthLabel(type: string): string {
         <h1>所有记录</h1>
         <p>按类型回看每一个被认真记下的瞬间。</p>
       </div>
-      <div class="archive-count"><strong>{{ activeCount }}</strong><span>条记录</span></div>
+      <div class="archive-actions"><div class="archive-count"><strong>{{ activeCount }}</strong><span>条记录</span></div><RouterLink class="secondary-button" to="/record-center"><ArrowUpRight :size="15" /> 去记录中心</RouterLink></div>
     </section>
 
     <section class="panel archive-panel">

@@ -32,14 +32,31 @@ export interface ContractionSession {
   note?: string
 }
 
+export type HealthRecordType = 'weight' | 'blood-pressure' | 'symptom'
+
 export interface HealthRecord {
   id?: number
   clientRecordId: string
-  recordType: 'weight' | 'blood-pressure' | 'symptom'
+  recordType: HealthRecordType
   valueJson: string
   unit?: string
   recordedAt: string
   note?: string
+}
+
+export interface RecordTimelineItem {
+  id: string
+  recordType: 'movement' | 'contraction' | HealthRecordType
+  label: string
+  recordedAt: string
+  detail: string
+  note?: string
+}
+
+export interface WeightTrendPoint {
+  dateKey: string
+  label: string
+  value: number
 }
 
 export interface AntenatalTask {

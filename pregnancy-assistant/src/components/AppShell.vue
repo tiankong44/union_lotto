@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { Activity, BarChart3, CalendarDays, ClipboardList, HeartPulse, Home, RefreshCw, Settings, Waves } from 'lucide-vue-next'
+import { Activity, BarChart3, BookOpen, CalendarDays, ClipboardList, HeartPulse, Home, RefreshCw, Settings, Waves } from 'lucide-vue-next'
 import { usePregnancyStore } from '../stores/pregnancy'
 
 const store = usePregnancyStore()
@@ -8,6 +8,8 @@ const online = ref(typeof navigator === 'undefined' ? true : navigator.onLine)
 
 const navItems = [
   { to: '/', label: '记录胎动', icon: Activity },
+  { to: '/record-center', label: '记录中心', icon: BookOpen },
+  { to: '/contractions', label: '宫缩', icon: Waves },
   { to: '/overview', label: '总览', icon: Home },
   { to: '/records', label: '历史记录', icon: CalendarDays },
   { to: '/insights', label: '分析', icon: BarChart3 },
@@ -18,7 +20,7 @@ const navItems = [
 const mobileNavItems = [
   { to: '/', label: '胎动', icon: Activity },
   { to: '/overview', label: '总览', icon: Home },
-  { to: '/records', label: '历史', icon: CalendarDays },
+  { to: '/record-center', label: '记录', icon: BookOpen },
   { to: '/insights', label: '分析', icon: BarChart3 },
   { to: '/tasks', label: '待办', icon: ClipboardList },
 ]

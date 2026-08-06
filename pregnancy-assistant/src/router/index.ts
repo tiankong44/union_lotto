@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import DashboardView from '../views/DashboardView.vue'
 import MovementView from '../views/MovementView.vue'
 import ContractionView from '../views/ContractionView.vue'
+import RecordCenterView from '../views/RecordCenterView.vue'
 import RecordsView from '../views/RecordsView.vue'
 import InsightsView from '../views/InsightsView.vue'
 import PregnancyView from '../views/PregnancyView.vue'
@@ -15,6 +16,7 @@ const router = createRouter({
     { path: '/overview', component: DashboardView },
     { path: '/movement', redirect: '/' },
     { path: '/contractions', component: ContractionView },
+    { path: '/record-center', component: RecordCenterView },
     { path: '/records', component: RecordsView },
     { path: '/insights', component: InsightsView },
     { path: '/pregnancy', component: PregnancyView },
