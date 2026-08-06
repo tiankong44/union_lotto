@@ -86,11 +86,11 @@ a { color: inherit; text-decoration: none; }
 
 .sync-button .spin { animation: spin 1s linear infinite; }
 
-.page-toolbar { display: flex; justify-content: flex-end; margin-bottom: 18px; }
+.page-toolbar { display: flex; justify-content: flex-end; margin-top: 18px; }
 
 .sync-alert { max-width: 1240px; margin: 16px auto -2px; padding: 10px 44px; color: #9a5546; font-size: 12px; }
 
-.page-content { max-width: 1240px; margin: 0 auto; padding: 44px 44px 72px; }
+.page-content { max-width: 1240px; margin: 0 auto; padding: 24px 44px 72px; }
 
 .view-stack { display: grid; gap: 20px; }
 
@@ -780,11 +780,11 @@ input:focus, textarea:focus, select:focus { border-color: var(--coral); box-shad
 @media (max-width: 720px) {
   .app-frame { display: block; }
   .side-rail { display: none; }
-  .page-toolbar { margin-bottom: 14px; }
+  .page-toolbar { margin-top: 14px; }
   .sync-button { min-height: 32px; padding: 0 9px; }
   .sync-button span { display: none; }
   .sync-alert { margin: 12px 0 -3px; padding: 0 18px; }
-  .page-content { padding: 28px 16px 90px; }
+  .page-content { padding: 16px 16px 90px; }
   .hero-band { min-height: 116px; padding: 22px 20px; align-items: center; }
   .hero-band h1 { font-size: 30px; }
   .hero-copy { font-size: 11px; }
