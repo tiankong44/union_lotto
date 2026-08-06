@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed } from 'vue'
 import { Activity, BarChart3, BookOpen, CalendarDays, ClipboardList, HeartPulse, Home, RefreshCw, Settings, Waves } from 'lucide-vue-next'
 import { usePregnancyStore } from '../stores/pregnancy'
 
 const store = usePregnancyStore()
-const online = ref(typeof navigator === 'undefined' ? true : navigator.onLine)
 
 const navItems = [
   { to: '/', label: '记录胎动', icon: Activity },
@@ -29,22 +28,7 @@ const syncLabel = computed(() => {
   if (store.cloudStatus === 'loading') return '加载云端'
   if (store.cloudStatus === 'saving') return '保存中'
   if (store.cloudStatus === 'error') return '重试加载'
-  if (!online.value) return '云端离线'
-  return '云端已连接'
-})
-
-function updateOnlineState(): void {
-  online.value = navigator.onLine
-}
-
-onMounted(() => {
-  window.addEventListener('online', updateOnlineState)
-  window.addEventListener('offline', updateOnlineState)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('online', updateOnlineState)
-  window.removeEventListener('offline', updateOnlineState)
+  return '刷新云端'
 })
 </script>
 
@@ -76,22 +60,17 @@ onBeforeUnmount(() => {
     </aside>
 
     <main class="main-column">
-      <header class="topbar">
-        <div class="topbar-context">
-          <span class="eyebrow">PREGNANCY LOG / 2026</span>
-          <span class="online-state"><span :class="['status-dot', { muted: !online }]" /> {{ online ? '在线' : '离线' }}</span>
-        </div>
-        <button class="sync-button" type="button" :disabled="store.cloudStatus === 'loading' || store.cloudStatus === 'saving'" title="刷新云端数据" @click="store.refreshCloudData">
-          <RefreshCw :size="16" :class="{ spin: store.cloudStatus === 'loading' || store.cloudStatus === 'saving' }" />
-          <span>{{ syncLabel }}</span>
-        </button>
-      </header>
-
       <div v-if="store.errorMessage" class="sync-alert" role="status">
         {{ store.errorMessage }}
       </div>
 
       <section class="page-content">
+        <div class="page-toolbar">
+          <button class="sync-button" type="button" :disabled="store.cloudStatus === 'loading' || store.cloudStatus === 'saving'" title="刷新云端数据" @click="store.refreshCloudData">
+            <RefreshCw :size="16" :class="{ spin: store.cloudStatus === 'loading' || store.cloudStatus === 'saving' }" />
+            <span>{{ syncLabel }}</span>
+          </button>
+        </div>
         <RouterView />
       </section>
 
