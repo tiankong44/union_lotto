@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { reactive, ref, watch } from 'vue'
 import { ArrowUpRight, BookOpen, Check, HeartPulse, Save, Stethoscope } from 'lucide-vue-next'
+import DateField from '../components/DateField.vue'
 import { usePregnancyStore } from '../stores/pregnancy'
 
 const store = usePregnancyStore()
@@ -43,8 +44,8 @@ async function saveProfile(): Promise<void> {
         <div class="panel-heading"><div><p class="eyebrow">ABOUT THIS JOURNEY</p><h2>孕期基础信息</h2></div><Stethoscope :size="20" class="heading-icon" /></div>
         <form class="form-stack" @submit.prevent="saveProfile">
           <div class="field-grid two-columns">
-            <label class="field date-field"><span>末次月经日期</span><input v-model="profileForm.lmpDate" type="date" /></label>
-            <label class="field date-field"><span>预产期</span><input v-model="profileForm.dueDate" type="date" /></label>
+            <label class="field date-field"><span>末次月经日期</span><DateField v-model="profileForm.lmpDate" /></label>
+            <label class="field date-field"><span>预产期</span><DateField v-model="profileForm.dueDate" /></label>
           </div>
           <div class="field-grid two-columns">
             <label class="field"><span>胎儿数量</span><input v-model.number="profileForm.babyCount" type="number" min="1" max="4" /></label>

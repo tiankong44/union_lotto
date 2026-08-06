@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import { BellRing, CalendarPlus, Check, Circle, Clock3, Plus } from 'lucide-vue-next'
+import DateField from '../components/DateField.vue'
 import { usePregnancyStore } from '../stores/pregnancy'
 import type { AntenatalTask } from '../types/pregnancy'
 
@@ -59,7 +60,7 @@ function formatDate(value: string): string {
         <div class="panel-heading"><div><p class="eyebrow">ADD A PLAN</p><h2>安排一件事</h2></div><CalendarPlus :size="20" class="heading-icon" /></div>
         <form class="form-stack" @submit.prevent="addTask">
           <label class="field"><span>事项名称</span><input v-model="form.title" type="text" placeholder="例如：预约下次产检" /></label>
-          <div class="field-grid two-columns"><label class="field date-field"><span>计划时间</span><input v-model="form.plannedAt" type="datetime-local" /></label><label class="field"><span>类型</span><select v-model="form.taskType"><option value="checkup">产检</option><option value="todo">待办</option><option value="custom">自定义</option></select></label></div>
+          <div class="field-grid two-columns"><label class="field date-field"><span>计划时间</span><DateField v-model="form.plannedAt" mode="datetime" /></label><label class="field"><span>类型</span><select v-model="form.taskType"><option value="checkup">产检</option><option value="todo">待办</option><option value="custom">自定义</option></select></label></div>
           <label class="field"><span>备注</span><textarea v-model="form.note" rows="3" placeholder="带上要问医生的问题"></textarea></label>
           <button class="primary-button full-button" type="submit" :disabled="!form.title.trim() || !form.plannedAt || saving"><Plus :size="18" /> 加入时间线</button>
           <p v-if="saveMessage" class="save-hint" role="status">{{ saveMessage }}</p>

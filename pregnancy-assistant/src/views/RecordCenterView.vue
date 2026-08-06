@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
 import { ArrowUpRight, BookOpen, CalendarClock, Check, FileText, HeartPulse, Plus, Scale, Waves } from 'lucide-vue-next'
+import DateField from '../components/DateField.vue'
 import { usePregnancyStore } from '../stores/pregnancy'
 import type { HealthRecordType } from '../types/pregnancy'
 
@@ -139,7 +140,7 @@ async function saveHealthRecord(): Promise<void> {
           </div>
           <div class="field-grid two-columns">
             <label class="field"><span>{{ valueLabel }}</span><input v-model="healthForm.value" :type="healthForm.recordType === 'weight' ? 'number' : 'text'" :min="healthForm.recordType === 'weight' ? 0 : undefined" :step="healthForm.recordType === 'weight' ? 0.1 : undefined" :placeholder="valuePlaceholder" required /></label>
-            <label class="field date-field"><span>记录时间</span><input v-model="healthForm.recordedAt" type="datetime-local" required /></label>
+            <label class="field date-field"><span>记录时间</span><DateField v-model="healthForm.recordedAt" mode="datetime" required /></label>
           </div>
           <label v-if="healthUnit" class="field"><span>单位</span><input :value="healthUnit" type="text" readonly /></label>
           <label class="field"><span>补充备注</span><textarea v-model="healthForm.note" rows="3" placeholder="可选"></textarea></label>
