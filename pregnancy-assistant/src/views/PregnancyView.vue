@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { reactive, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { ArrowUpRight, Check, HeartPulse, Plus, Save, Scale, Stethoscope, Waves } from 'lucide-vue-next'
 import { usePregnancyStore } from '../stores/pregnancy'
 
@@ -7,6 +7,8 @@ const store = usePregnancyStore()
 const profileForm = reactive({ lmpDate: '', dueDate: '', babyCount: 1, nickname: '', note: '' })
 const healthForm = reactive({ recordType: 'weight' as 'weight' | 'blood-pressure' | 'symptom', value: '', unit: 'kg', note: '' })
 const savedMessage = reactive({ profile: '', health: '' })
+const savingProfile = ref(false)
+const savingHealth = ref(false)
 
 watch(() => store.profile, (profile) => {
   if (!profile) return
@@ -22,25 +24,39 @@ watch(() => healthForm.recordType, (type) => {
 })
 
 async function saveProfile(): Promise<void> {
-  await store.saveProfile({ ...profileForm })
-  savedMessage.profile = '档案已保存在本机'
-  window.setTimeout(() => { savedMessage.profile = '' }, 2400)
+  savingProfile.value = true
+  try {
+    await store.saveProfile({ ...profileForm })
+    savedMessage.profile = '档案已保存到云端 MySQL'
+    window.setTimeout(() => { savedMessage.profile = '' }, 2400)
+  } catch {
+    savedMessage.profile = '档案保存失败，请重试'
+  } finally {
+    savingProfile.value = false
+  }
 }
 
 async function saveHealth(): Promise<void> {
   if (!healthForm.value.trim()) return
-  await store.addHealthRecord({
-    clientRecordId: `health-${Date.now()}`,
-    recordType: healthForm.recordType,
-    valueJson: JSON.stringify({ value: healthForm.value.trim() }),
-    unit: healthForm.unit || undefined,
-    recordedAt: new Date().toISOString(),
-    note: healthForm.note.trim() || undefined,
-  })
-  healthForm.value = ''
-  healthForm.note = ''
-  savedMessage.health = '健康记录已保存'
-  window.setTimeout(() => { savedMessage.health = '' }, 2400)
+  savingHealth.value = true
+  try {
+    await store.addHealthRecord({
+      clientRecordId: `health-${Date.now()}`,
+      recordType: healthForm.recordType,
+      valueJson: JSON.stringify({ value: healthForm.value.trim() }),
+      unit: healthForm.unit || undefined,
+      recordedAt: new Date().toISOString(),
+      note: healthForm.note.trim() || undefined,
+    })
+    healthForm.value = ''
+    healthForm.note = ''
+    savedMessage.health = '健康记录已保存到云端'
+    window.setTimeout(() => { savedMessage.health = '' }, 2400)
+  } catch {
+    savedMessage.health = '健康记录保存失败，请重试'
+  } finally {
+    savingHealth.value = false
+  }
 }
 </script>
 
@@ -64,7 +80,7 @@ async function saveHealth(): Promise<void> {
             <label class="field"><span>给这段旅程的称呼</span><input v-model="profileForm.nickname" type="text" maxlength="64" placeholder="例如：小星星" /></label>
           </div>
           <label class="field"><span>档案备注</span><textarea v-model="profileForm.note" rows="3" maxlength="500" placeholder="给自己留一点说明"></textarea></label>
-          <div class="form-footer"><span class="save-hint"><Check v-if="savedMessage.profile" :size="15" />{{ savedMessage.profile || '修改只会保存到本机，并进入同步队列' }}</span><button class="primary-button" type="submit"><Save :size="17" /> 保存档案</button></div>
+          <div class="form-footer"><span class="save-hint"><Check v-if="savedMessage.profile" :size="15" />{{ savedMessage.profile || '修改会直接保存到云端 MySQL' }}</span><button class="primary-button" type="submit" :disabled="savingProfile"><Save :size="17" /> 保存档案</button></div>
         </form>
       </article>
 
@@ -79,7 +95,7 @@ async function saveHealth(): Promise<void> {
           <label class="field"><span>{{ healthForm.recordType === 'symptom' ? '描述一下今天的感受' : '记录数值' }}</span><input v-model="healthForm.value" type="text" :placeholder="healthForm.recordType === 'blood-pressure' ? '例如 118/76' : healthForm.recordType === 'weight' ? '例如 62.4' : '例如 腰部酸胀'" /></label>
           <label v-if="healthForm.recordType !== 'symptom'" class="field"><span>单位</span><input v-model="healthForm.unit" type="text" /></label>
           <label class="field"><span>补充备注</span><textarea v-model="healthForm.note" rows="3" placeholder="可选"></textarea></label>
-          <div class="form-footer"><span class="save-hint"><Check v-if="savedMessage.health" :size="15" />{{ savedMessage.health || '记录仅用于自我回看和就医沟通' }}</span><button class="primary-button" type="submit" :disabled="!healthForm.value.trim()"><Plus :size="17" /> 添加记录</button></div>
+          <div class="form-footer"><span class="save-hint"><Check v-if="savedMessage.health" :size="15" />{{ savedMessage.health || '记录仅用于自我回看和就医沟通' }}</span><button class="primary-button" type="submit" :disabled="!healthForm.value.trim() || savingHealth"><Plus :size="17" /> 添加记录</button></div>
         </form>
       </article>
     </section>

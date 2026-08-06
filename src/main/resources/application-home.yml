@@ -27,7 +27,6 @@ spring:
     multipart:
       enabled: true
       max-file-size: 10MB
-      location: E:\upload
-      max-request-size: 50MB
+      file-size-threshold: 11MB
+      max-request-size: 10MB
       resolve-lazily: false
-images-url-prefix: http://xy.tiankong44.vip:9200/images/

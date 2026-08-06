@@ -44,9 +44,6 @@ public class FetalMovementSession {
     @TableField("note")
     private String note;
 
-    @TableField("record_status")
-    private String recordStatus;
-
     @TableField("created_at")
     private LocalDateTime createdAt;
 

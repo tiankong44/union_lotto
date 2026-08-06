@@ -6,7 +6,6 @@ import com.tiankong44.tool.pregnancy.dto.ContractionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.FetalMovementSessionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.HealthRecordSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.ProfileSaveRequest;
-import com.tiankong44.tool.pregnancy.dto.SyncBatchRequest;
 import com.tiankong44.tool.pregnancy.service.PregnancyService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
@@ -156,7 +155,7 @@ public class PregnancyController {
      */
     @PostMapping("/tasks")
     public BaseRes saveTask(@RequestBody @Valid AntenatalTaskSaveRequest request) {
-        // 调用待办保存服务，使用客户端编号保障重复同步幂等。
+        // 调用待办保存服务，使用客户端编号保障重复提交幂等。
         return pregnancyService.saveTask(request);
     }
 
@@ -171,15 +170,4 @@ public class PregnancyController {
         return pregnancyService.getSummary();
     }
 
-    /**
-     * 接收本地优先同步批次。
-     *
-     * @param request 同步批次
-     * @return 同步结果
-     */
-    @PostMapping("/sync")
-    public BaseRes sync(@RequestBody @Valid SyncBatchRequest request) {
-        // 调用同步服务保存客户端载荷，失败重试不会生成重复同步记录。
-        return pregnancyService.sync(request);
-    }
 }

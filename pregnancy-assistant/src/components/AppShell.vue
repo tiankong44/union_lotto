@@ -24,11 +24,11 @@ const mobileNavItems = [
 ]
 
 const syncLabel = computed(() => {
-  if (store.syncStatus === 'syncing') return '同步中'
-  if (store.syncStatus === 'synced') return '已同步'
-  if (store.syncStatus === 'error') return '重试同步'
-  if (!online.value) return '离线记录'
-  return '待同步'
+  if (store.cloudStatus === 'loading') return '加载云端'
+  if (store.cloudStatus === 'saving') return '保存中'
+  if (store.cloudStatus === 'error') return '重试加载'
+  if (!online.value) return '云端离线'
+  return '云端已连接'
 })
 
 function updateOnlineState(): void {
@@ -65,7 +65,7 @@ onBeforeUnmount(() => {
       </nav>
 
       <div class="rail-footer">
-        <div class="privacy-note"><span class="status-dot"></span> 本机优先保存</div>
+        <div class="privacy-note"><span class="status-dot"></span> 云端 MySQL 保存</div>
         <RouterLink class="nav-item nav-item-muted" to="/settings">
           <Settings :size="18" />
           <span>设置</span>
@@ -79,8 +79,8 @@ onBeforeUnmount(() => {
           <span class="eyebrow">PREGNANCY LOG / 2026</span>
           <span class="online-state"><span :class="['status-dot', { muted: !online }]" /> {{ online ? '在线' : '离线' }}</span>
         </div>
-        <button class="sync-button" type="button" :disabled="store.syncStatus === 'syncing'" title="同步本机记录" @click="store.syncNow">
-          <RefreshCw :size="16" :class="{ spin: store.syncStatus === 'syncing' }" />
+        <button class="sync-button" type="button" :disabled="store.cloudStatus === 'loading' || store.cloudStatus === 'saving'" title="刷新云端数据" @click="store.refreshCloudData">
+          <RefreshCw :size="16" :class="{ spin: store.cloudStatus === 'loading' || store.cloudStatus === 'saving' }" />
           <span>{{ syncLabel }}</span>
         </button>
       </header>

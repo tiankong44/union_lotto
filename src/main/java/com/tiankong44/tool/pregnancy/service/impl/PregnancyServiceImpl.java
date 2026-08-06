@@ -1,29 +1,22 @@
 package com.tiankong44.tool.pregnancy.service.impl;
 
-import cn.hutool.crypto.digest.DigestUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tiankong44.tool.base.entity.BaseRes;
 import com.tiankong44.tool.pregnancy.dto.AntenatalTaskSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.ContractionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.FetalMovementSessionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.HealthRecordSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.ProfileSaveRequest;
-import com.tiankong44.tool.pregnancy.dto.SyncBatchItem;
-import com.tiankong44.tool.pregnancy.dto.SyncBatchRequest;
 import com.tiankong44.tool.pregnancy.entity.AntenatalTask;
 import com.tiankong44.tool.pregnancy.entity.ContractionSession;
 import com.tiankong44.tool.pregnancy.entity.FetalMovementSession;
 import com.tiankong44.tool.pregnancy.entity.PregnancyHealthRecord;
 import com.tiankong44.tool.pregnancy.entity.PregnancyProfile;
-import com.tiankong44.tool.pregnancy.entity.PregnancySyncRecord;
 import com.tiankong44.tool.pregnancy.mapper.AntenatalTaskMapper;
 import com.tiankong44.tool.pregnancy.mapper.ContractionSessionMapper;
 import com.tiankong44.tool.pregnancy.mapper.FetalMovementSessionMapper;
 import com.tiankong44.tool.pregnancy.mapper.PregnancyHealthRecordMapper;
 import com.tiankong44.tool.pregnancy.mapper.PregnancyProfileMapper;
-import com.tiankong44.tool.pregnancy.mapper.PregnancySyncRecordMapper;
 import com.tiankong44.tool.pregnancy.service.PregnancyService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +25,6 @@ import javax.annotation.Resource;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,12 +52,6 @@ public class PregnancyServiceImpl implements PregnancyService {
     @Resource
     private AntenatalTaskMapper antenatalTaskMapper;
 
-    @Resource
-    private PregnancySyncRecordMapper pregnancySyncRecordMapper;
-
-    @Resource
-    private ObjectMapper objectMapper;
-
     /**
      * 查询单用户的孕期档案。
      *
@@ -89,6 +75,9 @@ public class PregnancyServiceImpl implements PregnancyService {
     public BaseRes saveProfile(ProfileSaveRequest request) {
         if (request == null) {
             return BaseRes.failure("档案内容不能为空");
+        }
+        if (request.getBabyCount() != null && (request.getBabyCount() < 1 || request.getBabyCount() > 4)) {
+            return BaseRes.failure("胎儿数量必须在1到4之间");
         }
         QueryWrapper<PregnancyProfile> query = new QueryWrapper<>();
         // 读取单用户档案，决定执行新增还是更新。
@@ -126,6 +115,10 @@ public class PregnancyServiceImpl implements PregnancyService {
         if (request == null) {
             return BaseRes.failure("胎动会话参数不能为空");
         }
+        if (isBlank(request.getClientRecordId()) || request.getStartedAt() == null || request.getEndedAt() == null
+                || request.getMovementCount() == null || request.getMovementCount() < 0) {
+            return BaseRes.failure("胎动会话参数不完整");
+        }
         if (request.getEndedAt().isBefore(request.getStartedAt())) {
             return BaseRes.failure("结束时间不能早于开始时间");
         }
@@ -145,7 +138,6 @@ public class PregnancyServiceImpl implements PregnancyService {
         session.setTargetCount(request.getTargetCount());
         session.setAverageStrength(request.getAverageStrength());
         session.setNote(request.getNote());
-        session.setRecordStatus("SYNCED");
         setCreatedAndUpdated(session);
         // 保存已结束的胎动会话。
         fetalMovementSessionMapper.insert(session);
@@ -180,12 +172,16 @@ public class PregnancyServiceImpl implements PregnancyService {
         if (request == null) {
             return BaseRes.failure("宫缩记录参数不能为空");
         }
+        if (isBlank(request.getClientRecordId()) || request.getStartedAt() == null || request.getEndedAt() == null
+                || request.getDurationSeconds() == null || request.getDurationSeconds() < 0) {
+            return BaseRes.failure("宫缩记录参数不完整");
+        }
         if (request.getEndedAt().isBefore(request.getStartedAt())) {
             return BaseRes.failure("结束时间不能早于开始时间");
         }
         QueryWrapper<ContractionSession> query = new QueryWrapper<>();
         query.eq("client_record_id", request.getClientRecordId());
-        // 先查询客户端编号，避免同步重试重复写入宫缩记录。
+        // 先查询客户端编号，避免重复提交写入宫缩记录。
         ContractionSession existing = contractionSessionMapper.selectOne(query);
         if (existing != null) {
             return BaseRes.success(existing);
@@ -198,7 +194,6 @@ public class PregnancyServiceImpl implements PregnancyService {
         record.setIntervalSeconds(request.getIntervalSeconds());
         record.setIntensity(request.getIntensity());
         record.setNote(request.getNote());
-        record.setRecordStatus("SYNCED");
         setCreatedAndUpdated(record);
         // 保存已结束的宫缩计时结果。
         contractionSessionMapper.insert(record);
@@ -233,6 +228,10 @@ public class PregnancyServiceImpl implements PregnancyService {
         if (request == null) {
             return BaseRes.failure("健康记录参数不能为空");
         }
+        if (isBlank(request.getClientRecordId()) || isBlank(request.getRecordType()) || isBlank(request.getValueJson())
+                || request.getRecordedAt() == null) {
+            return BaseRes.failure("健康记录参数不完整");
+        }
         QueryWrapper<PregnancyHealthRecord> query = new QueryWrapper<>();
         query.eq("client_record_id", request.getClientRecordId());
         // 先查询客户端编号，避免重复提交形成重复健康记录。
@@ -247,7 +246,6 @@ public class PregnancyServiceImpl implements PregnancyService {
         record.setUnit(request.getUnit());
         record.setRecordedAt(request.getRecordedAt());
         record.setNote(request.getNote());
-        record.setRecordStatus("SYNCED");
         setCreatedAndUpdated(record);
         // 保存用户主动录入的健康记录，不做医疗结论推断。
         pregnancyHealthRecordMapper.insert(record);
@@ -283,9 +281,12 @@ public class PregnancyServiceImpl implements PregnancyService {
         if (request == null) {
             return BaseRes.failure("待办参数不能为空");
         }
+        if (isBlank(request.getClientRecordId()) || isBlank(request.getTitle()) || request.getPlannedAt() == null) {
+            return BaseRes.failure("待办参数不完整");
+        }
         QueryWrapper<AntenatalTask> query = new QueryWrapper<>();
         query.eq("client_record_id", request.getClientRecordId());
-        // 先查询客户端编号，确保重复同步只保留一条待办。
+        // 先查询客户端编号，确保重复提交只保留一条待办。
         AntenatalTask existing = antenatalTaskMapper.selectOne(query);
         if (existing != null) {
             existing.setTitle(request.getTitle());
@@ -295,7 +296,7 @@ public class PregnancyServiceImpl implements PregnancyService {
             existing.setNote(request.getNote());
             existing.setCompletedAt("DONE".equals(existing.getStatus()) ? LocalDateTime.now() : null);
             existing.setUpdatedAt(LocalDateTime.now());
-            // 更新已有待办，保证本地完成状态同步到服务端。
+            // 更新已有待办，保证完成状态直接写入云端。
             antenatalTaskMapper.updateById(existing);
             return BaseRes.success(existing);
         }
@@ -364,112 +365,6 @@ public class PregnancyServiceImpl implements PregnancyService {
         result.put("pendingTaskCount", pendingTasks.size());
         result.put("trendMessage", buildTrendMessage(movements));
         return BaseRes.success(result);
-    }
-
-    /**
-     * 保存本地优先同步批次，按客户端记录编号幂等。
-     *
-     * @param request 同步批次
-     * @return 同步结果列表
-     */
-    @Override
-    @Transactional
-    public BaseRes sync(SyncBatchRequest request) {
-        if (request == null || request.getItems() == null) {
-            return BaseRes.failure("同步参数不能为空");
-        }
-        List<Map<String, Object>> results = new ArrayList<>();
-        for (SyncBatchItem item : request.getItems()) {
-            QueryWrapper<PregnancySyncRecord> query = new QueryWrapper<>();
-            query.eq("entity_type", item.getEntityType())
-                    .eq("client_record_id", item.getClientRecordId());
-            // 读取客户端记录，重复上传时更新载荷而不是重复新增。
-            PregnancySyncRecord syncRecord = pregnancySyncRecordMapper.selectOne(query);
-            LocalDateTime now = LocalDateTime.now();
-            if (syncRecord == null) {
-                syncRecord = new PregnancySyncRecord();
-                syncRecord.setEntityType(item.getEntityType());
-                syncRecord.setClientRecordId(item.getClientRecordId());
-                syncRecord.setCreatedAt(now);
-            }
-            syncRecord.setPayload(item.getPayload());
-            syncRecord.setPayloadHash(DigestUtil.md5Hex(item.getPayload()));
-            syncRecord.setSyncStatus("SYNCED");
-            syncRecord.setLastError(null);
-            syncRecord.setUpdatedAt(now);
-            if (syncRecord.getId() == null) {
-                // 首次上传时创建同步记录。
-                pregnancySyncRecordMapper.insert(syncRecord);
-            } else {
-                // 重复上传时覆盖同一客户端记录的最新载荷。
-                pregnancySyncRecordMapper.updateById(syncRecord);
-            }
-            Map<String, Object> itemResult = new HashMap<>();
-            itemResult.put("entityType", item.getEntityType());
-            itemResult.put("clientRecordId", item.getClientRecordId());
-            try {
-                // 将本地载荷落入对应业务表，保证服务端查询与同步结果一致。
-                BaseRes materializedResult = materializeSyncItem(item);
-                if (materializedResult.getCode() != 0) {
-                    throw new IllegalStateException(materializedResult.getMessage());
-                }
-                itemResult.put("status", "SYNCED");
-            } catch (Exception exception) {
-                syncRecord.setSyncStatus("FAILED");
-                syncRecord.setLastError(exception.getMessage());
-                syncRecord.setUpdatedAt(LocalDateTime.now());
-                // 记录落库失败原因，保留原始载荷供后续重试和排查。
-                pregnancySyncRecordMapper.updateById(syncRecord);
-                itemResult.put("status", "FAILED");
-                itemResult.put("error", "业务记录落库失败");
-            }
-            results.add(itemResult);
-        }
-        return BaseRes.success(results);
-    }
-
-    /**
-     * 按同步实体类型把本地载荷写入业务表。
-     *
-     * @param item 同步记录
-     * @return 业务保存结果
-     * @throws Exception 载荷解析或业务保存失败时抛出
-     */
-    private BaseRes materializeSyncItem(SyncBatchItem item) throws Exception {
-        switch (item.getEntityType()) {
-            case "profile":
-                // 解析孕期档案载荷并更新单用户档案。
-                return saveProfile(readPayload(item.getPayload(), ProfileSaveRequest.class));
-            case "fetal-movement-session":
-                // 解析胎动会话载荷并按客户端编号保存。
-                return saveFetalMovement(readPayload(item.getPayload(), FetalMovementSessionSaveRequest.class));
-            case "contraction-session":
-                // 解析宫缩载荷并按客户端编号保存。
-                return saveContraction(readPayload(item.getPayload(), ContractionSaveRequest.class));
-            case "health-record":
-                // 解析健康记录载荷并按客户端编号保存。
-                return saveHealthRecord(readPayload(item.getPayload(), HealthRecordSaveRequest.class));
-            case "antenatal-task":
-                // 解析待办载荷并同步当前状态。
-                return saveTask(readPayload(item.getPayload(), AntenatalTaskSaveRequest.class));
-            default:
-                return BaseRes.failure("不支持的同步实体类型");
-        }
-    }
-
-    /**
-     * 使用忽略未知字段的配置解析本地载荷，兼容前端状态字段。
-     *
-     * @param payload JSON 载荷
-     * @param targetType 目标 DTO 类型
-     * @param <T> DTO 类型
-     * @return 解析后的 DTO
-     * @throws Exception JSON 格式无效时抛出
-     */
-    private <T> T readPayload(String payload, Class<T> targetType) throws Exception {
-        return objectMapper.readerFor(targetType)
-                .without(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .readValue(payload);
     }
 
     /**

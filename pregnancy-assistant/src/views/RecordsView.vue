@@ -54,7 +54,7 @@ function healthLabel(type: string): string {
         <div v-for="session in store.movementSessions" :key="session.clientRecordId" class="record-row">
           <div class="record-symbol coral-symbol"><Activity :size="18" /></div>
           <div class="record-main"><strong>{{ session.movementCount }} 次胎动</strong><span>{{ formatDate(session.startedAt) }} · {{ session.sessionMode === 'target' ? '目标计时' : '自由记录' }}</span></div>
-          <div class="record-detail"><strong>{{ Math.max(0, Math.floor((new Date(session.endedAt).getTime() - new Date(session.startedAt).getTime()) / 60000)) }} 分钟</strong><span>{{ session.recordStatus === 'SYNCED' ? '已同步' : '本地' }}</span></div>
+          <div class="record-detail"><strong>{{ Math.max(0, Math.floor((new Date(session.endedAt).getTime() - new Date(session.startedAt).getTime()) / 60000)) }} 分钟</strong><span>云端记录</span></div>
         </div>
       </div>
 

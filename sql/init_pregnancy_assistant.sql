@@ -25,7 +25,6 @@ CREATE TABLE IF NOT EXISTS fetal_movement_session (
     target_count INT UNSIGNED NULL COMMENT '目标次数，仅用于记录模式',
     average_strength TINYINT UNSIGNED NULL COMMENT '用户主观平均强度',
     note VARCHAR(500) NULL COMMENT '会话备注',
-    record_status VARCHAR(16) NOT NULL DEFAULT 'SYNCED' COMMENT '记录状态',
     created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
     updated_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
     PRIMARY KEY (id),
@@ -55,7 +54,6 @@ CREATE TABLE IF NOT EXISTS contraction_session (
     interval_seconds INT UNSIGNED NULL COMMENT '与上一条间隔秒数',
     intensity TINYINT UNSIGNED NULL COMMENT '用户主观强度',
     note VARCHAR(500) NULL COMMENT '记录备注',
-    record_status VARCHAR(16) NOT NULL DEFAULT 'SYNCED' COMMENT '记录状态',
     created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
     updated_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
     PRIMARY KEY (id),
@@ -71,7 +69,6 @@ CREATE TABLE IF NOT EXISTS pregnancy_health_record (
     unit VARCHAR(16) NULL COMMENT '单位',
     recorded_at DATETIME(3) NOT NULL COMMENT '记录时间',
     note VARCHAR(500) NULL COMMENT '记录备注',
-    record_status VARCHAR(16) NOT NULL DEFAULT 'SYNCED' COMMENT '记录状态',
     created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
     updated_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
     PRIMARY KEY (id),
@@ -108,17 +105,16 @@ CREATE TABLE IF NOT EXISTS reminder_setting (
     KEY idx_reminder_enabled (enabled, remind_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='提醒设置';
 
-CREATE TABLE IF NOT EXISTS pregnancy_sync_record (
+CREATE TABLE IF NOT EXISTS cloud_file (
     id BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
-    entity_type VARCHAR(32) NOT NULL COMMENT '业务实体类型',
-    client_record_id VARCHAR(64) NOT NULL COMMENT '客户端幂等记录编号',
-    payload MEDIUMTEXT NOT NULL COMMENT '客户端原始载荷',
-    payload_hash CHAR(32) NOT NULL COMMENT '载荷 MD5',
-    sync_status VARCHAR(16) NOT NULL DEFAULT 'SYNCED' COMMENT '同步状态',
-    last_error VARCHAR(500) NULL COMMENT '最近一次同步错误',
+    file_key VARCHAR(64) NOT NULL COMMENT '随机文件编号',
+    original_name VARCHAR(255) NULL COMMENT '原始文件名',
+    content_type VARCHAR(128) NOT NULL COMMENT '文件媒体类型',
+    file_size BIGINT UNSIGNED NOT NULL COMMENT '文件字节数',
+    file_md5 CHAR(32) NOT NULL COMMENT '文件 MD5',
+    file_content MEDIUMBLOB NOT NULL COMMENT '文件二进制内容',
     created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) COMMENT '创建时间',
-    updated_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '更新时间',
     PRIMARY KEY (id),
-    UNIQUE KEY uk_sync_entity_client (entity_type, client_record_id),
-    KEY idx_sync_status (sync_status, updated_at)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='孕期本地优先同步记录';
+    UNIQUE KEY uk_cloud_file_key (file_key),
+    KEY idx_cloud_file_md5 (file_md5)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='云端文件';

@@ -1,25 +1,49 @@
 <script setup lang="ts">
-import { computed, reactive } from 'vue'
+import { computed, reactive, ref } from 'vue'
 import { BellRing, CalendarPlus, Check, Circle, Clock3, Plus } from 'lucide-vue-next'
 import { usePregnancyStore } from '../stores/pregnancy'
+import type { AntenatalTask } from '../types/pregnancy'
 
 const store = usePregnancyStore()
 const form = reactive({ title: '', plannedAt: '', taskType: 'checkup' as 'checkup' | 'todo' | 'custom', note: '' })
 const upcomingTasks = computed(() => [...store.tasks].sort((a, b) => a.plannedAt.localeCompare(b.plannedAt)))
+const saving = ref(false)
+const saveMessage = ref('')
 
-function addTask(): void {
+async function addTask(): Promise<void> {
   if (!form.title.trim() || !form.plannedAt) return
-  store.addTask({
-    clientRecordId: `task-${Date.now()}`,
-    title: form.title.trim(),
-    taskType: form.taskType,
-    plannedAt: new Date(form.plannedAt).toISOString(),
-    status: 'TODO',
-    note: form.note.trim() || undefined,
-  })
-  form.title = ''
-  form.plannedAt = ''
-  form.note = ''
+  saving.value = true
+  saveMessage.value = ''
+  try {
+    await store.addTask({
+      clientRecordId: `task-${Date.now()}`,
+      title: form.title.trim(),
+      taskType: form.taskType,
+      plannedAt: new Date(form.plannedAt).toISOString(),
+      status: 'TODO',
+      note: form.note.trim() || undefined,
+    })
+    form.title = ''
+    form.plannedAt = ''
+    form.note = ''
+    saveMessage.value = '已保存到云端 MySQL'
+  } catch {
+    saveMessage.value = '保存失败，当前内容已保留，请重试'
+  } finally {
+    saving.value = false
+  }
+}
+
+async function toggleTask(task: AntenatalTask): Promise<void> {
+  saving.value = true
+  saveMessage.value = ''
+  try {
+    await store.toggleTask(task)
+  } catch {
+    saveMessage.value = '状态更新失败，请重试'
+  } finally {
+    saving.value = false
+  }
 }
 
 function formatDate(value: string): string {
@@ -37,13 +61,14 @@ function formatDate(value: string): string {
           <label class="field"><span>事项名称</span><input v-model="form.title" type="text" placeholder="例如：预约下次产检" /></label>
           <div class="field-grid two-columns"><label class="field"><span>计划时间</span><input v-model="form.plannedAt" type="datetime-local" /></label><label class="field"><span>类型</span><select v-model="form.taskType"><option value="checkup">产检</option><option value="todo">待办</option><option value="custom">自定义</option></select></label></div>
           <label class="field"><span>备注</span><textarea v-model="form.note" rows="3" placeholder="带上要问医生的问题"></textarea></label>
-          <button class="primary-button full-button" type="submit" :disabled="!form.title.trim() || !form.plannedAt"><Plus :size="18" /> 加入时间线</button>
+          <button class="primary-button full-button" type="submit" :disabled="!form.title.trim() || !form.plannedAt || saving"><Plus :size="18" /> 加入时间线</button>
+          <p v-if="saveMessage" class="save-hint" role="status">{{ saveMessage }}</p>
         </form>
       </article>
       <article class="panel task-list-panel">
         <div class="panel-heading"><div><p class="eyebrow">UP NEXT</p><h2>接下来的安排</h2></div><span class="panel-index">{{ store.pendingTasks.length }}</span></div>
         <div v-if="upcomingTasks.length" class="task-list">
-          <button v-for="task in upcomingTasks" :key="task.clientRecordId" :class="['task-item', { done: task.status === 'DONE' }]" type="button" @click="store.toggleTask(task)">
+          <button v-for="task in upcomingTasks" :key="task.clientRecordId" :class="['task-item', { done: task.status === 'DONE' }]" type="button" :disabled="saving" @click="toggleTask(task)">
             <span class="task-check"><Check v-if="task.status === 'DONE'" :size="14" /><Circle v-else :size="17" /></span>
             <span class="task-content"><strong>{{ task.title }}</strong><span><Clock3 :size="13" /> {{ formatDate(task.plannedAt) }}</span></span>
             <span class="task-type">{{ task.taskType === 'checkup' ? '产检' : '待办' }}</span>

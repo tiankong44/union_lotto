@@ -1,93 +1,95 @@
 package com.tiankong44.tool.common.service.Impl;
 
-import cn.hutool.core.date.DateTime;
-import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.digest.DigestUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.tiankong44.tool.base.entity.BaseRes;
-import com.tiankong44.tool.common.entity.Image;
+import com.tiankong44.tool.common.dto.CloudFileUploadResponse;
+import com.tiankong44.tool.common.entity.CloudFile;
+import com.tiankong44.tool.common.mapper.CloudFileMapper;
 import com.tiankong44.tool.common.service.CommonService;
-import com.tiankong44.tool.util.RedisUtil;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
- * @Description :
+ * 公共文件服务，负责将新上传图片保存到云端 MySQL。
+ *
  * @Author zhanghao_SMEICS
- * @Date 2022/11/2  16:35
- **/
+ * @Date 2026-08-06
+ */
 @Service
-
 public class CommonServiceImpl implements CommonService {
+    // 图片内容上限与 multipart 配置保持一致，避免大文件占用过多服务内存。
+    private static final long MAX_IMAGE_SIZE = 10 * 1024 * 1024L;
 
     @Resource
-    RedisUtil redisUtil;
+    private CloudFileMapper cloudFileMapper;
 
-
-    @Value("${images-url-prefix}")
-    String imagesUrlPrefix;
-    @Value("${spring.servlet.multipart.location}")
-    String uploadPath;
-    private static String defaultImage = "https://cn.bing.com/th?id=OHR.BridgeofSighs_ZH-CN5414607871_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp";  // 图片地址前缀
-
-    private static List<Image> images = new ArrayList<>();
-
-
-
+    /**
+     * 上传图片并保存二进制内容及元数据。
+     *
+     * @param uploadFile 图片文件，必须非空、类型为 image/* 且不超过10MB
+     * @return 文件访问信息；参数非法或读取、写入失败时返回失败响应
+     */
     @Override
-    public BaseRes uploadIcon(MultipartFile uploadFile) {
-
-        if (uploadFile != null) {
-            //整个文件名，名称+后缀
-            String fileAllName = uploadFile.getOriginalFilename();
-            if (!StrUtil.isEmpty(fileAllName)) {
-                String suffix = fileAllName.substring(fileAllName.lastIndexOf("."));
-                String fileName = StrUtil.uuid().replaceAll("-", "") + suffix;
-                long fileSize = uploadFile.getSize();
-                if (fileSize > 1024 * 1024 * 10) {
-                    return BaseRes.failure("图片大小在50M以内!");
-                }
-                DateTime date = new DateTime();
-                int year = date.year();
-                int month = date.month()+1;
-
-                try {
-                    String yearPath = uploadPath + "/" + year;
-                    File yearFile = new File(yearPath);
-                    if (!yearFile.exists()) {
-                        yearFile.mkdir();
-                    }
-                    String yearMonth = yearPath + "/" + month;
-                    File yearMonthPath = new File(yearMonth);
-                    if (!yearMonthPath.exists()) {
-                        yearMonthPath.mkdir();
-                    }
-                    String fileAll = yearMonth + "/" + fileName;
-                    System.out.println("地址============" + fileAll);
-                    // 创建输出流
-                    FileOutputStream fos = new FileOutputStream(fileAll);
-                    fos.write(uploadFile.getBytes());
-                    fos.flush();
-                    fos.close();
-                    String relativePath = imagesUrlPrefix + year + "/" + month + "/" + fileName;
-                    return BaseRes.success(relativePath);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return BaseRes.failure("上传文件异常");
-
-                }
-            } else {
-                return BaseRes.failure("上传文件失败");
-            }
+    public BaseRes<CloudFileUploadResponse> uploadIcon(MultipartFile uploadFile) {
+        if (uploadFile == null || uploadFile.isEmpty()) {
+            return BaseRes.failure("上传图片不能为空");
+        }
+        if (uploadFile.getSize() > MAX_IMAGE_SIZE) {
+            return BaseRes.failure("图片大小不能超过10MB");
+        }
+        String contentType = uploadFile.getContentType();
+        if (contentType == null || !contentType.toLowerCase().startsWith("image/")) {
+            return BaseRes.failure("只允许上传图片文件");
         }
 
-        return BaseRes.success();
+        try {
+            // 先在内存中读取上传内容，避免业务文件写入服务器本地目录。
+            byte[] content = uploadFile.getBytes();
+            String fileKey = UUID.randomUUID().toString().replace("-", "");
+            CloudFile cloudFile = new CloudFile();
+            cloudFile.setFileKey(fileKey);
+            cloudFile.setOriginalName(uploadFile.getOriginalFilename());
+            cloudFile.setContentType(contentType);
+            cloudFile.setFileSize((long) content.length);
+            cloudFile.setFileMd5(DigestUtil.md5Hex(content));
+            cloudFile.setFileContent(content);
+            cloudFile.setCreatedAt(LocalDateTime.now());
+            // 调用云端文件 Mapper，将元数据和二进制内容一次写入 MySQL。
+            cloudFileMapper.insert(cloudFile);
+
+            CloudFileUploadResponse response = new CloudFileUploadResponse();
+            response.setFileKey(fileKey);
+            response.setOriginalName(cloudFile.getOriginalName());
+            response.setContentType(contentType);
+            response.setFileSize(cloudFile.getFileSize());
+            response.setFileMd5(cloudFile.getFileMd5());
+            response.setDownloadUrl("/tabs/common/files/" + fileKey);
+            return BaseRes.success(response);
+        } catch (IOException exception) {
+            return BaseRes.failure("读取上传图片失败");
+        } catch (RuntimeException exception) {
+            return BaseRes.failure("保存上传图片失败");
+        }
     }
 
-
+    /**
+     * 根据文件编号查询图片内容。
+     *
+     * @param fileKey 文件编号，空值直接视为不存在
+     * @return 文件实体，不存在时返回空值
+     */
+    @Override
+    public CloudFile getFile(String fileKey) {
+        if (fileKey == null || fileKey.trim().isEmpty()) {
+            return null;
+        }
+        // 按随机文件编号查询，避免使用原始文件名构造本地路径。
+        return cloudFileMapper.selectOne(new QueryWrapper<CloudFile>().eq("file_key", fileKey));
+    }
 }

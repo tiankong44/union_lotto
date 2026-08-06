@@ -1,15 +1,28 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { enqueueSync, clearSyncQueue, listSyncQueue, loadSnapshot, saveSnapshot } from '../services/localDb'
-import { syncRecords } from '../services/api'
+import {
+  getProfile,
+  listContractions,
+  listFetalMovements,
+  listHealthRecords,
+  listTasks,
+  saveContraction as saveContractionRequest,
+  saveFetalMovement as saveFetalMovementRequest,
+  saveHealthRecord as saveHealthRecordRequest,
+  saveProfile as saveProfileRequest,
+  saveTask as saveTaskRequest,
+} from '../services/api'
 import type {
   AntenatalTask,
+  CloudStatus,
   ContractionSession,
+  ContractionSessionPayload,
   FetalMovementSession,
+  FetalMovementSessionPayload,
   HealthRecord,
+  HealthRecordPayload,
   PregnancyProfile,
-  SyncQueueItem,
-  SyncStatus,
+  PregnancyProfilePayload,
 } from '../types/pregnancy'
 
 export const usePregnancyStore = defineStore('pregnancy', () => {
@@ -18,8 +31,8 @@ export const usePregnancyStore = defineStore('pregnancy', () => {
   const contractions = ref<ContractionSession[]>([])
   const healthRecords = ref<HealthRecord[]>([])
   const tasks = ref<AntenatalTask[]>([])
-  const syncStatus = ref<SyncStatus>('idle')
-  const lastSyncedAt = ref<string | null>(null)
+  const cloudStatus = ref<CloudStatus>('idle')
+  const lastLoadedAt = ref<string | null>(null)
   const errorMessage = ref('')
   const hydrated = ref(false)
 
@@ -29,111 +42,110 @@ export const usePregnancyStore = defineStore('pregnancy', () => {
     return movementSessions.value.filter((session) => new Date(session.startedAt).toDateString() === today)
   })
 
-  async function persist(): Promise<void> {
-    await saveSnapshot({
-      profile: profile.value ? ({ ...profile.value } as unknown as Record<string, unknown>) : null,
-      movementSessions: movementSessions.value.map((session) => ({ ...session })) as unknown as Record<string, unknown>[],
-      contractions: contractions.value.map((session) => ({ ...session })) as unknown as Record<string, unknown>[],
-      healthRecords: healthRecords.value.map((record) => ({ ...record })) as unknown as Record<string, unknown>[],
-      tasks: tasks.value.map((task) => ({ ...task })) as unknown as Record<string, unknown>[],
-      lastSyncedAt: lastSyncedAt.value,
-    })
+  function getError(error: unknown, fallback: string): Error {
+    return error instanceof Error ? error : new Error(fallback)
   }
 
-  async function hydrate(): Promise<void> {
-    if (hydrated.value) return
-    const snapshot = await loadSnapshot()
-    if (snapshot) {
-      profile.value = snapshot.profile as PregnancyProfile | null
-      movementSessions.value = snapshot.movementSessions as unknown as FetalMovementSession[]
-      contractions.value = snapshot.contractions as unknown as ContractionSession[]
-      healthRecords.value = snapshot.healthRecords as unknown as HealthRecord[]
-      tasks.value = snapshot.tasks as unknown as AntenatalTask[]
-      lastSyncedAt.value = snapshot.lastSyncedAt
+  function isOnline(): boolean {
+    return typeof navigator === 'undefined' || navigator.onLine
+  }
+
+  async function saveToCloud<T>(request: () => Promise<T>): Promise<T> {
+    if (!isOnline()) {
+      const error = new Error('当前没有网络，无法保存到云端。')
+      cloudStatus.value = 'error'
+      errorMessage.value = error.message
+      throw error
     }
-    hydrated.value = true
-    syncStatus.value = navigator.onLine ? 'idle' : 'offline'
-  }
-
-  async function queue(entityType: string, clientRecordId: string, payload: unknown): Promise<void> {
-    const item: SyncQueueItem = {
-      entityType,
-      clientRecordId,
-      payload: JSON.stringify(payload),
-      createdAt: new Date().toISOString(),
+    cloudStatus.value = 'saving'
+    errorMessage.value = ''
+    try {
+      const result = await request()
+      cloudStatus.value = 'idle'
+      return result
+    } catch (error) {
+      const cloudError = getError(error, '云端保存失败，请稍后重试。')
+      cloudStatus.value = 'error'
+      errorMessage.value = cloudError.message
+      throw cloudError
     }
-    await enqueueSync(item)
   }
 
-  async function saveProfile(nextProfile: Omit<PregnancyProfile, 'id' | 'createdAt' | 'updatedAt'>): Promise<void> {
-    profile.value = { ...nextProfile }
-    await persist()
-    await queue('profile', 'profile-singleton', profile.value)
-    syncStatus.value = navigator.onLine ? 'idle' : 'offline'
+  async function hydrate(force = false): Promise<void> {
+    if (hydrated.value && !force) return
+    if (!isOnline()) {
+      cloudStatus.value = 'error'
+      errorMessage.value = '当前没有网络，无法加载云端记录。'
+      return
+    }
+    cloudStatus.value = 'loading'
+    errorMessage.value = ''
+    try {
+      const [nextProfile, nextMovements, nextContractions, nextHealthRecords, nextTasks] = await Promise.all([
+        getProfile(),
+        listFetalMovements(),
+        listContractions(),
+        listHealthRecords(),
+        listTasks(),
+      ])
+      profile.value = nextProfile
+      movementSessions.value = nextMovements
+      contractions.value = nextContractions
+      healthRecords.value = nextHealthRecords
+      tasks.value = nextTasks
+      hydrated.value = true
+      lastLoadedAt.value = new Date().toISOString()
+      cloudStatus.value = 'idle'
+    } catch (error) {
+      const cloudError = getError(error, '云端加载失败，请稍后重试。')
+      cloudStatus.value = 'error'
+      errorMessage.value = cloudError.message
+    }
   }
 
-  async function addMovementSession(session: Omit<FetalMovementSession, 'recordStatus'>): Promise<void> {
-    movementSessions.value.unshift({ ...session, recordStatus: 'LOCAL' })
-    await persist()
-    await queue('fetal-movement-session', session.clientRecordId, session)
-    syncStatus.value = navigator.onLine ? 'idle' : 'offline'
+  async function saveProfile(nextProfile: PregnancyProfilePayload): Promise<void> {
+    const savedProfile = await saveToCloud(() => saveProfileRequest(nextProfile))
+    profile.value = savedProfile
   }
 
-  async function addContraction(session: Omit<ContractionSession, 'recordStatus'>): Promise<void> {
-    contractions.value.unshift({ ...session, recordStatus: 'LOCAL' })
-    await persist()
-    await queue('contraction-session', session.clientRecordId, session)
-    syncStatus.value = navigator.onLine ? 'idle' : 'offline'
+  async function addMovementSession(session: FetalMovementSessionPayload): Promise<void> {
+    const savedSession = await saveToCloud(() => saveFetalMovementRequest(session))
+    movementSessions.value.unshift(savedSession)
   }
 
-  async function addHealthRecord(record: Omit<HealthRecord, 'recordStatus'>): Promise<void> {
-    healthRecords.value.unshift({ ...record, recordStatus: 'LOCAL' })
-    await persist()
-    await queue('health-record', record.clientRecordId, record)
-    syncStatus.value = navigator.onLine ? 'idle' : 'offline'
+  async function addContraction(session: ContractionSessionPayload): Promise<void> {
+    const savedSession = await saveToCloud(() => saveContractionRequest(session))
+    contractions.value.unshift(savedSession)
+  }
+
+  async function addHealthRecord(record: HealthRecordPayload): Promise<void> {
+    const savedRecord = await saveToCloud(() => saveHealthRecordRequest(record))
+    healthRecords.value.unshift(savedRecord)
   }
 
   async function addTask(task: AntenatalTask): Promise<void> {
-    tasks.value.push(task)
-    await persist()
-    await queue('antenatal-task', task.clientRecordId, task)
-    syncStatus.value = navigator.onLine ? 'idle' : 'offline'
+    const savedTask = await saveToCloud(() => saveTaskRequest(task))
+    const existingIndex = tasks.value.findIndex((item) => item.clientRecordId === savedTask.clientRecordId)
+    if (existingIndex === -1) {
+      tasks.value.push(savedTask)
+      return
+    }
+    tasks.value[existingIndex] = savedTask
   }
 
   async function toggleTask(task: AntenatalTask): Promise<void> {
-    task.status = task.status === 'TODO' ? 'DONE' : 'TODO'
-    task.completedAt = task.status === 'DONE' ? new Date().toISOString() : undefined
-    await persist()
-    await queue('antenatal-task', task.clientRecordId, task)
+    const nextTask: AntenatalTask = {
+      ...task,
+      status: task.status === 'TODO' ? 'DONE' : 'TODO',
+      completedAt: task.status === 'TODO' ? new Date().toISOString() : undefined,
+    }
+    const savedTask = await saveToCloud(() => saveTaskRequest(nextTask))
+    const existingIndex = tasks.value.findIndex((item) => item.clientRecordId === savedTask.clientRecordId)
+    if (existingIndex !== -1) tasks.value[existingIndex] = savedTask
   }
 
-  async function syncNow(): Promise<void> {
-    if (!navigator.onLine) {
-      syncStatus.value = 'offline'
-      errorMessage.value = '当前没有网络，记录已保存在本机。'
-      return
-    }
-    const queueItems = await listSyncQueue()
-    if (!queueItems.length) {
-      syncStatus.value = 'synced'
-      errorMessage.value = ''
-      return
-    }
-    syncStatus.value = 'syncing'
-    errorMessage.value = ''
-    try {
-      await syncRecords(queueItems)
-      await clearSyncQueue(queueItems.map((item) => item.id).filter((id): id is number => typeof id === 'number'))
-      movementSessions.value = movementSessions.value.map((item) => ({ ...item, recordStatus: 'SYNCED' }))
-      contractions.value = contractions.value.map((item) => ({ ...item, recordStatus: 'SYNCED' }))
-      healthRecords.value = healthRecords.value.map((item) => ({ ...item, recordStatus: 'SYNCED' }))
-      lastSyncedAt.value = new Date().toISOString()
-      syncStatus.value = 'synced'
-      await persist()
-    } catch (error) {
-      syncStatus.value = 'error'
-      errorMessage.value = error instanceof Error ? error.message : '同步失败，稍后可重试。'
-    }
+  async function refreshCloudData(): Promise<void> {
+    await hydrate(true)
   }
 
   return {
@@ -144,17 +156,17 @@ export const usePregnancyStore = defineStore('pregnancy', () => {
     tasks,
     pendingTasks,
     todayMovements,
-    syncStatus,
-    lastSyncedAt,
+    cloudStatus,
+    lastLoadedAt,
     errorMessage,
     hydrated,
     hydrate,
+    refreshCloudData,
     saveProfile,
     addMovementSession,
     addContraction,
     addHealthRecord,
     addTask,
     toggleTask,
-    syncNow,
   }
 })

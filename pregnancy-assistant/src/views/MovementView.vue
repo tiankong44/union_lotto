@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { AlertCircle, ArrowUpRight, Check, Clock3, Pause, Play, RotateCcw, Sparkles, TimerReset, Undo2 } from 'lucide-vue-next'
 import { usePregnancyStore } from '../stores/pregnancy'
 
 const store = usePregnancyStore()
+const online = ref(typeof navigator === 'undefined' ? true : navigator.onLine)
 const isRunning = ref(false)
 const startedAt = ref<number | null>(null)
 const count = ref(0)
@@ -28,12 +29,12 @@ const weekLabel = computed(() => {
   const days = Math.max(0, Math.floor((Date.now() - start.getTime()) / 86400000))
   return `第 ${Math.floor(days / 7) + 1} 周`
 })
-const localStatusLabel = computed(() => {
-  if (store.syncStatus === 'syncing') return '同步中'
-  if (store.syncStatus === 'synced') return '已同步'
-  if (store.syncStatus === 'offline') return '离线保存'
-  if (store.syncStatus === 'error') return '待重试'
-  return '本机优先'
+const cloudStatusLabel = computed(() => {
+  if (store.cloudStatus === 'loading') return '加载中'
+  if (store.cloudStatus === 'saving') return '保存中'
+  if (store.cloudStatus === 'error') return '保存失败'
+  if (!online.value) return '等待联网'
+  return '云端可用'
 })
 
 function startSession(): void {
@@ -81,7 +82,7 @@ async function finishSession(): Promise<void> {
     })
     resetSession()
     saveMessageTone.value = 'success'
-    saveMessage.value = '已保存到本机，联网后同步。'
+    saveMessage.value = '已保存到云端 MySQL。'
   } catch {
     saveMessageTone.value = 'error'
     saveMessage.value = '本次记录保存失败，当前内容已保留，请重试。'
@@ -107,8 +108,19 @@ function formatDate(value: string): string {
   return new Intl.DateTimeFormat('zh-CN', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(value))
 }
 
+function updateOnlineState(): void {
+  online.value = navigator.onLine
+}
+
+onMounted(() => {
+  window.addEventListener('online', updateOnlineState)
+  window.addEventListener('offline', updateOnlineState)
+})
+
 onBeforeUnmount(() => {
   if (timer) window.clearInterval(timer)
+  window.removeEventListener('online', updateOnlineState)
+  window.removeEventListener('offline', updateOnlineState)
 })
 </script>
 
@@ -121,7 +133,7 @@ onBeforeUnmount(() => {
         <div class="movement-meta"><span>{{ todayLabel }}</span><span class="meta-divider"></span><span>{{ weekLabel }}</span></div>
       </div>
       <div class="movement-header-tools">
-        <span class="local-status"><span :class="['status-dot', { muted: store.syncStatus === 'offline' || store.syncStatus === 'error' }]" />{{ localStatusLabel }}</span>
+        <span class="local-status"><span :class="['status-dot', { muted: store.cloudStatus === 'error' || !online } ]" />{{ cloudStatusLabel }}</span>
         <div class="mode-switch" role="tablist" aria-label="记录模式">
           <button :class="{ active: selectedMode === 'target' }" type="button" :disabled="Boolean(startedAt) || isSaving" @click="selectedMode = 'target'">目标计时</button>
           <button :class="{ active: selectedMode === 'free' }" type="button" :disabled="Boolean(startedAt) || isSaving" @click="selectedMode = 'free'">自由记录</button>

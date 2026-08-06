@@ -19,7 +19,6 @@ export interface FetalMovementSession {
   targetCount?: number
   averageStrength?: number
   note?: string
-  recordStatus: 'LOCAL' | 'SYNCED'
 }
 
 export interface ContractionSession {
@@ -31,7 +30,6 @@ export interface ContractionSession {
   intervalSeconds?: number
   intensity?: number
   note?: string
-  recordStatus: 'LOCAL' | 'SYNCED'
 }
 
 export interface HealthRecord {
@@ -42,7 +40,6 @@ export interface HealthRecord {
   unit?: string
   recordedAt: string
   note?: string
-  recordStatus: 'LOCAL' | 'SYNCED'
 }
 
 export interface AntenatalTask {
@@ -56,12 +53,8 @@ export interface AntenatalTask {
   completedAt?: string
 }
 
-export interface SyncQueueItem {
-  id?: number
-  entityType: string
-  clientRecordId: string
-  payload: string
-  createdAt: string
-}
-
-export type SyncStatus = 'idle' | 'syncing' | 'synced' | 'offline' | 'error'
+export type PregnancyProfilePayload = Omit<PregnancyProfile, 'id' | 'createdAt' | 'updatedAt'>
+export type FetalMovementSessionPayload = Omit<FetalMovementSession, 'id'>
+export type ContractionSessionPayload = Omit<ContractionSession, 'id'>
+export type HealthRecordPayload = Omit<HealthRecord, 'id'>
+export type CloudStatus = 'idle' | 'loading' | 'saving' | 'error'

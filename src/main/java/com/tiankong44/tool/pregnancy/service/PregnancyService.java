@@ -6,7 +6,6 @@ import com.tiankong44.tool.pregnancy.dto.ContractionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.FetalMovementSessionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.HealthRecordSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.ProfileSaveRequest;
-import com.tiankong44.tool.pregnancy.dto.SyncBatchRequest;
 
 import java.time.LocalDate;
 
@@ -105,11 +104,4 @@ public interface PregnancyService {
      */
     BaseRes getSummary();
 
-    /**
-     * 保存本地优先同步批次，并按客户端编号幂等处理。
-     *
-     * @param request 同步批次
-     * @return 每条记录的同步结果
-     */
-    BaseRes sync(SyncBatchRequest request);
 }

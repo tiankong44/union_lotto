@@ -9,6 +9,8 @@ const startedAt = ref<number | null>(null)
 const elapsedNow = ref(Date.now())
 const intensity = ref(3)
 const note = ref('')
+const saveMessage = ref('')
+const saveMessageTone = ref<'success' | 'error'>('success')
 let timer: number | undefined
 
 const elapsedSeconds = computed(() => startedAt.value ? Math.max(0, Math.floor((elapsedNow.value - startedAt.value) / 1000)) : 0)
@@ -33,16 +35,24 @@ async function finish(): Promise<void> {
   const startTime = new Date(startedAt.value)
   const previousEnd = latestContraction.value ? new Date(latestContraction.value.endedAt).getTime() : null
   pause()
-  await store.addContraction({
-    clientRecordId: `contraction-${Date.now()}`,
-    startedAt: startTime.toISOString(),
-    endedAt: end.toISOString(),
-    durationSeconds: Math.max(0, Math.floor((end.getTime() - startTime.getTime()) / 1000)),
-    intervalSeconds: previousEnd ? Math.max(0, Math.floor((startTime.getTime() - previousEnd) / 1000)) : undefined,
-    intensity: intensity.value,
-    note: note.value.trim() || undefined,
-  })
-  reset()
+  saveMessage.value = ''
+  try {
+    await store.addContraction({
+      clientRecordId: `contraction-${Date.now()}`,
+      startedAt: startTime.toISOString(),
+      endedAt: end.toISOString(),
+      durationSeconds: Math.max(0, Math.floor((end.getTime() - startTime.getTime()) / 1000)),
+      intervalSeconds: previousEnd ? Math.max(0, Math.floor((startTime.getTime() - previousEnd) / 1000)) : undefined,
+      intensity: intensity.value,
+      note: note.value.trim() || undefined,
+    })
+    reset()
+    saveMessageTone.value = 'success'
+    saveMessage.value = '已保存到云端 MySQL。'
+  } catch {
+    saveMessageTone.value = 'error'
+    saveMessage.value = '保存失败，当前计时内容已保留，请重试。'
+  }
 }
 
 function reset(): void {
@@ -70,7 +80,8 @@ onBeforeUnmount(() => { if (timer) window.clearInterval(timer) })
         <div class="timer-row"><div class="timer-display"><Clock3 :size="17" /> {{ elapsedText }}</div><button class="ghost-button" type="button" :disabled="!startedAt" @click="running ? pause() : start()"><Pause v-if="running" :size="16" /><Play v-else :size="16" />{{ running ? '暂停' : '继续' }}</button></div>
         <div class="strength-field"><div class="field-label"><span>主观强度</span><span>{{ intensity }}/5</span></div><input v-model.number="intensity" type="range" min="1" max="5" step="1" aria-label="宫缩主观强度" /><div class="range-labels"><span>轻</span><span>强</span></div></div>
         <textarea v-model="note" class="note-input" rows="2" placeholder="给这次记录留一句备注（可选）"></textarea>
-        <div class="console-actions"><button class="primary-button" type="button" :disabled="!startedAt || running" @click="finish"><Check :size="18" /> 完成并保存</button><button class="text-button" type="button" :disabled="!startedAt" @click="reset"><RotateCcw :size="15" /> 重新开始</button></div>
+        <div class="console-actions"><button class="primary-button" type="button" :disabled="!startedAt || running || store.cloudStatus === 'saving'" @click="finish"><Check :size="18" /> 完成并保存</button><button class="text-button" type="button" :disabled="!startedAt || store.cloudStatus === 'saving'" @click="reset"><RotateCcw :size="15" /> 重新开始</button></div>
+        <p v-if="saveMessage" :class="['save-hint', { error: saveMessageTone === 'error' }]" role="status">{{ saveMessage }}</p>
       </article>
       <aside class="movement-aside"><article class="panel aside-card"><div class="panel-heading small-heading"><div><p class="eyebrow">RECENT</p><h2>最近宫缩</h2></div><RouterLink class="icon-link" to="/records" title="查看全部记录"><ArrowUpRight :size="17" /></RouterLink></div><div v-if="store.contractions.length" class="mini-list"><div v-for="record in store.contractions.slice(0, 5)" :key="record.clientRecordId" class="mini-row"><span>{{ formatDate(record.startedAt) }}</span><strong>{{ record.durationSeconds }} 秒</strong></div></div><div v-else class="empty-inline">完成第一次记录后，会显示在这里。</div></article><article class="panel aside-card"><p class="eyebrow">CARE NOTE</p><p class="panel-copy">计时结果只用于个人记录和就医沟通，不判断是否临产。如有担忧，请直接联系医疗机构。</p></article></aside>
     </section>
