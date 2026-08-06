@@ -34,6 +34,13 @@ const timeConfig = computed(() => ({
   is24: true,
 }))
 
+const floatingConfig = {
+  offset: 8,
+  placement: 'bottom-start' as const,
+  flip: { padding: 12 },
+  shift: { padding: 12 },
+}
+
 function parseLocalDate(value: string, mode: DateFieldMode): Date | null {
   const pattern = mode === 'datetime'
     ? /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/
@@ -80,6 +87,8 @@ function handleUpdate(value: unknown): void {
     :placeholder="placeholder"
     :clearable="clearable"
     :disabled="disabled"
+    :teleport="true"
+    :floating="floatingConfig"
     :auto-apply="true"
     :locale="zhCN"
     :week-start="1"
