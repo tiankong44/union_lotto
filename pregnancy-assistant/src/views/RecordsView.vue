@@ -1,10 +1,15 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { Activity, AlertCircle, ArrowUpRight, BarChart3, CalendarDays, CheckCircle2, FileText, HeartPulse, Pencil, Save, Trash2, Waves, X } from 'lucide-vue-next'
+import { Activity, AlertCircle, AlertTriangle, ArrowUpRight, BarChart3, CalendarDays, CheckCircle2, FileText, HeartPulse, Pencil, Save, Trash2, Waves, X } from 'lucide-vue-next'
 import RecordChartPanel from '../components/RecordChartPanel.vue'
 import WorkspaceLink from '../components/WorkspaceLink.vue'
 import { usePregnancyStore } from '../stores/pregnancy'
 import type { HealthRecord, RecordChartType, RecordNoteType } from '../types/pregnancy'
+
+interface PendingDelete {
+  recordType: RecordNoteType
+  clientRecordId: string
+}
 
 const store = usePregnancyStore()
 const activeTab = ref<RecordChartType>('movement')
@@ -12,6 +17,7 @@ const showChart = ref(false)
 const editingNoteKey = ref<string | null>(null)
 const savingNoteKey = ref<string | null>(null)
 const deletingRecordKey = ref<string | null>(null)
+const pendingDelete = ref<PendingDelete | null>(null)
 const noteDrafts = reactive<Record<string, string>>({})
 const noteErrors = reactive<Record<string, string>>({})
 const deleteErrors = reactive<Record<string, string>>({})
@@ -31,6 +37,8 @@ const activeCount = computed(() => {
 })
 
 const activeTabLabel = computed(() => tabs.find((tab) => tab.key === activeTab.value)?.label ?? '记录')
+
+const pendingDeleteLabel = computed(() => tabs.find((tab) => tab.key === pendingDelete.value?.recordType)?.label ?? '这条')
 
 function selectTab(tab: RecordChartType): void {
   activeTab.value = tab
@@ -114,17 +122,32 @@ async function saveNote(recordType: RecordNoteType, clientRecordId: string): Pro
   }
 }
 
-async function deleteRecord(recordType: RecordNoteType, clientRecordId: string): Promise<void> {
+function openDeleteDialog(recordType: RecordNoteType, clientRecordId: string): void {
   const key = noteKey(recordType, clientRecordId)
   if (deletingRecordKey.value) return
-  if (!window.confirm('确定删除这条记录吗？删除后无法恢复。')) return
+  delete deleteErrors[key]
+  pendingDelete.value = { recordType, clientRecordId }
+}
+
+function closeDeleteDialog(): void {
+  if (deletingRecordKey.value) return
+  pendingDelete.value = null
+}
+
+async function confirmDelete(): Promise<void> {
+  const target = pendingDelete.value
+  if (!target || deletingRecordKey.value) return
+  const { recordType, clientRecordId } = target
+  const key = noteKey(recordType, clientRecordId)
   deletingRecordKey.value = key
   delete deleteErrors[key]
   try {
     await store.deleteRecord({ recordType, clientRecordId })
     cancelNoteEdit(recordType, clientRecordId)
+    pendingDelete.value = null
   } catch (error) {
     deleteErrors[key] = error instanceof Error ? error.message : '删除失败，请重试'
+    pendingDelete.value = null
   } finally {
     deletingRecordKey.value = null
   }
@@ -163,7 +186,7 @@ async function deleteRecord(recordType: RecordNoteType, clientRecordId: string):
           <div class="record-symbol coral-symbol"><Activity :size="18" /></div>
           <div class="record-main"><strong>{{ session.movementCount }} 次胎动</strong><span>{{ formatDate(session.startedAt) }} · {{ session.sessionMode === 'target' ? '目标计时' : '自由记录' }}</span></div>
           <div class="record-detail"><strong>{{ Math.max(0, Math.floor((new Date(session.endedAt).getTime() - new Date(session.startedAt).getTime()) / 60000)) }} 分钟</strong><span>{{ session.note || '无备注' }}</span></div>
-          <span class="record-row-actions"><button class="icon-button record-note-action" type="button" :title="session.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="beginNoteEdit('movement', session.clientRecordId, session.note)"><Pencil :size="15" /></button><button class="icon-button record-delete-action" type="button" title="删除记录" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="deleteRecord('movement', session.clientRecordId)"><Trash2 :size="15" /></button></span>
+          <span class="record-row-actions"><button class="icon-button record-note-action" type="button" :title="session.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="beginNoteEdit('movement', session.clientRecordId, session.note)"><Pencil :size="15" /></button><button class="icon-button record-delete-action" type="button" title="删除记录" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="openDeleteDialog('movement', session.clientRecordId)"><Trash2 :size="15" /></button></span>
           <div v-if="isEditingNote('movement', session.clientRecordId)" class="record-note-editor">
             <textarea v-model="noteDrafts[noteKey('movement', session.clientRecordId)]" rows="2" maxlength="500" placeholder="补充这次胎动记录的备注"></textarea>
             <div class="record-note-editor-footer"><span v-if="noteErrors[noteKey('movement', session.clientRecordId)]" class="record-note-error"><AlertCircle :size="14" />{{ noteErrors[noteKey('movement', session.clientRecordId)] }}</span><span v-else></span><span class="record-note-editor-actions"><button class="text-button" type="button" :disabled="savingNoteKey === noteKey('movement', session.clientRecordId)" @click="cancelNoteEdit('movement', session.clientRecordId)"><X :size="14" /> 取消</button><button class="secondary-button" type="button" :disabled="savingNoteKey === noteKey('movement', session.clientRecordId)" @click="saveNote('movement', session.clientRecordId)"><Save :size="14" /> {{ savingNoteKey === noteKey('movement', session.clientRecordId) ? '保存中' : '保存备注' }}</button></span></div>
@@ -177,7 +200,7 @@ async function deleteRecord(recordType: RecordNoteType, clientRecordId: string):
           <div class="record-symbol blue-symbol"><Waves :size="18" /></div>
           <div class="record-main"><strong>宫缩记录</strong><span>{{ formatDate(session.startedAt) }} · 持续 {{ formatDurationSeconds(session.durationSeconds) }}</span></div>
           <div class="record-detail"><strong>间隔 {{ formatDurationSeconds(session.intervalSeconds) }}</strong><span>{{ session.note || '无备注' }}</span></div>
-          <span class="record-row-actions"><button class="icon-button record-note-action" type="button" :title="session.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="beginNoteEdit('contraction', session.clientRecordId, session.note)"><Pencil :size="15" /></button><button class="icon-button record-delete-action" type="button" title="删除记录" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="deleteRecord('contraction', session.clientRecordId)"><Trash2 :size="15" /></button></span>
+          <span class="record-row-actions"><button class="icon-button record-note-action" type="button" :title="session.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="beginNoteEdit('contraction', session.clientRecordId, session.note)"><Pencil :size="15" /></button><button class="icon-button record-delete-action" type="button" title="删除记录" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="openDeleteDialog('contraction', session.clientRecordId)"><Trash2 :size="15" /></button></span>
           <div v-if="isEditingNote('contraction', session.clientRecordId)" class="record-note-editor">
             <textarea v-model="noteDrafts[noteKey('contraction', session.clientRecordId)]" rows="2" maxlength="500" placeholder="补充这次宫缩记录的备注"></textarea>
             <div class="record-note-editor-footer"><span v-if="noteErrors[noteKey('contraction', session.clientRecordId)]" class="record-note-error"><AlertCircle :size="14" />{{ noteErrors[noteKey('contraction', session.clientRecordId)] }}</span><span v-else></span><span class="record-note-editor-actions"><button class="text-button" type="button" :disabled="savingNoteKey === noteKey('contraction', session.clientRecordId)" @click="cancelNoteEdit('contraction', session.clientRecordId)"><X :size="14" /> 取消</button><button class="secondary-button" type="button" :disabled="savingNoteKey === noteKey('contraction', session.clientRecordId)" @click="saveNote('contraction', session.clientRecordId)"><Save :size="14" /> {{ savingNoteKey === noteKey('contraction', session.clientRecordId) ? '保存中' : '保存备注' }}</button></span></div>
@@ -191,7 +214,7 @@ async function deleteRecord(recordType: RecordNoteType, clientRecordId: string):
           <div class="record-symbol yellow-symbol"><HeartPulse :size="18" /></div>
           <div class="record-main"><strong>{{ healthLabel(record.recordType) }}</strong><span>{{ formatDate(record.recordedAt) }}</span></div>
           <div class="record-detail"><strong>{{ healthValue(record) }}</strong><span>{{ record.note || '无备注' }} · {{ record.unit || '记录' }}</span></div>
-          <span class="record-row-actions"><button class="icon-button record-note-action" type="button" :title="record.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="beginNoteEdit('health', record.clientRecordId, record.note)"><Pencil :size="15" /></button><button class="icon-button record-delete-action" type="button" title="删除记录" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="deleteRecord('health', record.clientRecordId)"><Trash2 :size="15" /></button></span>
+          <span class="record-row-actions"><button class="icon-button record-note-action" type="button" :title="record.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="beginNoteEdit('health', record.clientRecordId, record.note)"><Pencil :size="15" /></button><button class="icon-button record-delete-action" type="button" title="删除记录" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="openDeleteDialog('health', record.clientRecordId)"><Trash2 :size="15" /></button></span>
           <div v-if="isEditingNote('health', record.clientRecordId)" class="record-note-editor">
             <textarea v-model="noteDrafts[noteKey('health', record.clientRecordId)]" rows="2" maxlength="500" placeholder="补充这条健康记录的备注"></textarea>
             <div class="record-note-editor-footer"><span v-if="noteErrors[noteKey('health', record.clientRecordId)]" class="record-note-error"><AlertCircle :size="14" />{{ noteErrors[noteKey('health', record.clientRecordId)] }}</span><span v-else></span><span class="record-note-editor-actions"><button class="text-button" type="button" :disabled="savingNoteKey === noteKey('health', record.clientRecordId)" @click="cancelNoteEdit('health', record.clientRecordId)"><X :size="14" /> 取消</button><button class="secondary-button" type="button" :disabled="savingNoteKey === noteKey('health', record.clientRecordId)" @click="saveNote('health', record.clientRecordId)"><Save :size="14" /> {{ savingNoteKey === noteKey('health', record.clientRecordId) ? '保存中' : '保存备注' }}</button></span></div>
@@ -205,7 +228,7 @@ async function deleteRecord(recordType: RecordNoteType, clientRecordId: string):
           <div class="record-symbol green-symbol"><CalendarDays :size="18" /></div>
           <div class="record-main"><strong :class="{ struck: task.status === 'DONE' }">{{ task.title }}</strong><span>{{ formatDate(task.plannedAt) }} · {{ task.taskType === 'checkup' ? '产检' : '个人待办' }}</span></div>
           <div class="record-detail"><strong>{{ task.status === 'DONE' ? '已完成' : '待处理' }}</strong><span>{{ task.note || '无备注' }}</span></div>
-          <span class="record-row-actions"><button class="icon-button record-note-action" type="button" :title="task.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="beginNoteEdit('task', task.clientRecordId, task.note)"><Pencil :size="15" /></button><button class="icon-button record-delete-action" type="button" title="删除记录" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="deleteRecord('task', task.clientRecordId)"><Trash2 :size="15" /></button></span>
+          <span class="record-row-actions"><button class="icon-button record-note-action" type="button" :title="task.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="beginNoteEdit('task', task.clientRecordId, task.note)"><Pencil :size="15" /></button><button class="icon-button record-delete-action" type="button" title="删除记录" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="openDeleteDialog('task', task.clientRecordId)"><Trash2 :size="15" /></button></span>
           <div v-if="isEditingNote('task', task.clientRecordId)" class="record-note-editor">
             <textarea v-model="noteDrafts[noteKey('task', task.clientRecordId)]" rows="2" maxlength="500" placeholder="补充这条待办的备注"></textarea>
             <div class="record-note-editor-footer"><span v-if="noteErrors[noteKey('task', task.clientRecordId)]" class="record-note-error"><AlertCircle :size="14" />{{ noteErrors[noteKey('task', task.clientRecordId)] }}</span><span v-else></span><span class="record-note-editor-actions"><button class="text-button" type="button" :disabled="savingNoteKey === noteKey('task', task.clientRecordId)" @click="cancelNoteEdit('task', task.clientRecordId)"><X :size="14" /> 取消</button><button class="secondary-button" type="button" :disabled="savingNoteKey === noteKey('task', task.clientRecordId)" @click="saveNote('task', task.clientRecordId)"><Save :size="14" /> {{ savingNoteKey === noteKey('task', task.clientRecordId) ? '保存中' : '保存备注' }}</button></span></div>
@@ -216,5 +239,19 @@ async function deleteRecord(recordType: RecordNoteType, clientRecordId: string):
 
       <div v-if="activeCount === 0" class="empty-state"><FileText :size="28" /><strong>还没有这类记录</strong><span>从记录页开始，给自己留下一点可回看的时间。</span></div>
     </section>
+
+    <div v-if="pendingDelete" class="delete-dialog-backdrop" role="presentation" @click.self="closeDeleteDialog">
+      <section class="delete-dialog" role="dialog" aria-modal="true" aria-labelledby="delete-dialog-title" aria-describedby="delete-dialog-description">
+        <button class="delete-dialog-close icon-button" type="button" title="关闭确认框" aria-label="关闭确认框" :disabled="Boolean(deletingRecordKey)" @click="closeDeleteDialog"><X :size="18" /></button>
+        <div class="delete-dialog-icon" aria-hidden="true"><AlertTriangle :size="22" /></div>
+        <p class="eyebrow">DELETE RECORD</p>
+        <h2 id="delete-dialog-title">删除{{ pendingDeleteLabel }}记录？</h2>
+        <p id="delete-dialog-description">删除后无法恢复，确认要移除这条历史记录吗？</p>
+        <div class="delete-dialog-actions">
+          <button class="secondary-button" type="button" :disabled="Boolean(deletingRecordKey)" @click="closeDeleteDialog">取消</button>
+          <button class="primary-button delete-dialog-confirm" type="button" :disabled="Boolean(deletingRecordKey)" @click="confirmDelete"><span v-if="deletingRecordKey" class="button-loader" aria-hidden="true"></span>{{ deletingRecordKey ? '删除中' : '确认删除' }}</button>
+        </div>
+      </section>
+    </div>
   </div>
 </template>
