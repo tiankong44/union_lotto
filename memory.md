@@ -5,7 +5,7 @@
 
 ## 技术现状
 - 后端：Spring Boot 2.7.4、Java 8、MyBatis-Plus、MySQL、Redis，服务上下文为 `/tabs`。
-- 前端：当前仓库没有前端目录，计划新增 `frontend/`，采用 Vite + Vue + TypeScript。
+- 前端：目录为 `pregnancy-assistant/`，采用 Vite + Vue + TypeScript。
 - 现有相关模块：`apex` 仅支持按天累加数量，不直接复用为孕期记录模型。
 - 当前已知未提交改动：`src/main/java/com/tiankong44/tool/workday/generator/ScheduleGenerator.java`，执行时必须保留。
 
@@ -29,7 +29,8 @@
 - 真实业务负责人、验收人和上线环境：待补充。
 
 ## 实现与验证结论
-- 2026-08-06：完成 `frontend/` Vite + Vue + TypeScript 前端，包含胎动、宫缩、历史、统计趋势、孕期档案、健康记录、产检待办、导出和本地 IndexedDB 同步队列。
+- 2026-08-06：完成 `pregnancy-assistant/` Vite + Vue + TypeScript 前端，包含胎动、宫缩、历史、统计趋势、孕期档案、健康记录、产检待办、导出和本地 IndexedDB 同步队列。
+- 2026-08-06：将前端目录从 `frontend/` 重命名为 `pregnancy-assistant/`，NPM 包名和页面品牌名保持不变。
 - 2026-08-06：完成单用户孕期后端接口、实体、Mapper、Service、Controller 和 `sql/init_pregnancy_assistant.sql`；同步接口会把载荷落入对应业务表，并按客户端记录编号幂等。
 - 2026-08-06：前端 `npm run build` 通过；后端使用 `E:\JAVA\jdk8` 执行 `mvn clean compile` 通过。
 - 2026-08-06：Java 21 下旧 Lombok 与编译器内部 API 不兼容，后续升级依赖前继续使用 Java 8 构建。

@@ -2,10 +2,10 @@
 
 ## 孕期助手
 
-前端位于 `frontend/`，使用 Vite + Vue + TypeScript。记录先保存到浏览器 IndexedDB，联网后可通过同步按钮上传到后端。
+前端位于 `pregnancy-assistant/`，使用 Vite + Vue + TypeScript。记录先保存到浏览器 IndexedDB，联网后可通过同步按钮上传到后端。
 
 ```powershell
-cd frontend
+cd pregnancy-assistant
 npm install
 npm run dev
 ```
@@ -15,7 +15,7 @@ npm run dev
 前端生产构建：
 
 ```powershell
-cd frontend
+cd pregnancy-assistant
 npm run build
 ```
 
