@@ -85,9 +85,9 @@ public class ScheduleGenerator {
     public static void main(String[] args) {
         ScheduleGenerator scheduleGenerator = new ScheduleGenerator();
 
-        String cycle = "◇\t◆◆\t/\t/";
-        LocalDate startDate = LocalDate.of(2025, 10, 1);
-        LocalDate endDate = LocalDate.of(2025, 12, 31);
+        String cycle = "/\t/\t◇\t◆◆";
+        LocalDate startDate = LocalDate.of(2026, 4, 12);
+        LocalDate endDate = LocalDate.of(2026, 8, 30);
         scheduleGenerator.generateScheduleInserts(cycle, startDate, endDate)
                 .forEach(System.out::println);
     }
