@@ -49,6 +49,11 @@ function healthLabel(type: HealthRecord['recordType']): string {
 function healthValue(record: HealthRecord): string {
   try {
     const parsed: unknown = JSON.parse(record.valueJson)
+    if (record.recordType === 'blood-pressure' && typeof parsed === 'object' && parsed !== null && 'systolic' in parsed && 'diastolic' in parsed) {
+      const systolic = (parsed as { systolic?: unknown }).systolic
+      const diastolic = (parsed as { diastolic?: unknown }).diastolic
+      if ((typeof systolic === 'string' || typeof systolic === 'number') && (typeof diastolic === 'string' || typeof diastolic === 'number')) return `${systolic} / ${diastolic}`
+    }
     if (typeof parsed === 'object' && parsed !== null && 'value' in parsed) {
       const value = (parsed as { value?: unknown }).value
       if (typeof value === 'string' || typeof value === 'number') return String(value)
@@ -108,7 +113,7 @@ const changeText = computed(() => latestCount.value === previousCount.value ? '�
 const changeDirection = computed(() => latestCount.value === previousCount.value ? 'same' : latestCount.value > previousCount.value ? 'up' : 'down')
 
 function barHeight(count: number): string {
-  return `${Math.max(count ? 12 : 4, Math.round((count / maxCount.value) * 100))}%`
+  return count > 0 ? `${Math.max(12, Math.round((count / maxCount.value) * 100))}%` : '0%'
 }
 
 const weightRecords = computed(() => store.healthRecords
@@ -167,10 +172,16 @@ const timelineItems = computed<RecordTimelineItem[]>(() => {
     <section class="insight-grid">
       <article class="panel chart-panel">
         <div class="panel-heading"><div><p class="eyebrow">MOVEMENT DISTRIBUTION</p><h2>胎动记录分布</h2></div><BarChart3 :size="20" class="heading-icon" /></div>
-        <div class="chart-scroll"><div class="chart-area report-chart-area" :style="{ minWidth: `${Math.max(560, movementDays.length * 30)}px` }" aria-label="选择时间范围内的胎动记录分布">
-          <div v-for="day in movementDays" :key="day.date" class="chart-column"><span class="chart-value">{{ day.count || '' }}</span><div class="bar-track"><span class="bar-fill" :style="{ height: barHeight(day.count) }"></span></div><span class="chart-label">{{ day.label }}</span></div>
+        <div class="chart-legend" aria-label="胎动分布图例">
+          <span class="legend-item"><i class="legend-swatch recorded"></i>1 次会话</span>
+          <span class="legend-item"><i class="legend-swatch repeated"></i>多次会话</span>
+          <span class="legend-item"><i class="legend-swatch empty"></i>无记录</span>
+        </div>
+        <div v-if="movementRecords.length" class="chart-scroll"><div class="chart-area report-chart-area" :style="{ minWidth: `${Math.max(560, movementDays.length * 30)}px` }" aria-label="选择时间范围内的胎动记录分布">
+          <div v-for="day in movementDays" :key="day.date" :class="['chart-column', { 'has-records': day.count > 0, 'multiple-sessions': day.sessions > 1, 'empty-day': day.count === 0 }]" :title="`${day.label}：${day.count} 次胎动，${day.sessions} 次会话`" :aria-label="`${day.label}：${day.count} 次胎动，${day.sessions} 次会话`"><span class="chart-value">{{ day.count }}</span><div class="bar-track"><span class="bar-fill" :style="{ height: barHeight(day.count) }"></span></div><span class="chart-label">{{ day.label }}</span></div>
         </div></div>
-        <div class="chart-caption"><Info :size="15" /> 图表只反映已记录的数据量，不代表医学标准或健康结论。</div>
+        <div v-else class="empty-report chart-empty"><BarChart3 :size="24" /><strong>当前范围还没有胎动记录</strong><span>完成一条记录后，这里会按日期显示胎动总数。</span></div>
+        <div class="chart-caption"><Info :size="15" /> 柱高表示当日胎动总数，颜色表示当日会话次数；仅用于个人回看，不代表医学标准或健康结论。</div>
       </article>
 
       <article class="panel insight-summary">

@@ -7,6 +7,7 @@ import com.tiankong44.tool.pregnancy.dto.ContractionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.FetalMovementSessionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.HealthRecordSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.ProfileSaveRequest;
+import com.tiankong44.tool.pregnancy.dto.RecordDeleteRequest;
 import com.tiankong44.tool.pregnancy.dto.RecordNoteUpdateRequest;
 import com.tiankong44.tool.pregnancy.entity.AntenatalTask;
 import com.tiankong44.tool.pregnancy.entity.ContractionSession;
@@ -42,6 +43,8 @@ public class PregnancyServiceImpl implements PregnancyService {
     private static final String RECORD_TYPE_CONTRACTION = "contraction"; // 宫缩记录类型标识。
     private static final String RECORD_TYPE_HEALTH = "health"; // 健康记录类型标识。
     private static final String RECORD_TYPE_TASK = "task"; // 待办记录类型标识。
+    private static final String TASK_STATUS_TODO = "TODO"; // 待处理待办状态标识。
+    private static final String TASK_STATUS_DONE = "DONE"; // 已完成待办状态标识。
 
     @Resource
     private PregnancyProfileMapper pregnancyProfileMapper;
@@ -403,6 +406,74 @@ public class PregnancyServiceImpl implements PregnancyService {
             return BaseRes.success(record);
         }
         return BaseRes.failure("记录类型不支持备注更新");
+    }
+
+    /**
+     * 删除单用户指定的已保存记录，并清理当前数据模型中已知的从属数据。
+     *
+     * @param request 记录类型和客户端记录编号
+     * @return 删除成功结果；参数、目标记录或待办状态不符合规则时返回业务失败
+     */
+    @Override
+    @Transactional
+    public BaseRes deleteRecord(RecordDeleteRequest request) {
+        if (request == null || isBlank(request.getRecordType()) || isBlank(request.getClientRecordId())) {
+            return BaseRes.failure("记录删除参数不完整");
+        }
+        String recordType = request.getRecordType();
+        String clientRecordId = request.getClientRecordId().trim();
+        if (RECORD_TYPE_MOVEMENT.equals(recordType)) {
+            QueryWrapper<FetalMovementSession> query = new QueryWrapper<>();
+            query.eq("client_record_id", clientRecordId);
+            // 按客户端编号查找目标胎动会话，确保删除范围只落在用户指定记录。
+            FetalMovementSession record = fetalMovementSessionMapper.selectOne(query);
+            if (record == null) return BaseRes.failure("未找到对应的胎动记录");
+            // 删除胎动会话主记录，后续从属事件清理与其处于同一事务。
+            int deleted = fetalMovementSessionMapper.deleteById(record.getId());
+            if (deleted != 1) return BaseRes.failure("胎动记录删除失败");
+            // 清理没有数据库外键约束的胎动事件逻辑引用。
+            fetalMovementSessionMapper.deleteEventsBySessionClientRecordId(clientRecordId);
+            return BaseRes.success();
+        }
+        if (RECORD_TYPE_CONTRACTION.equals(recordType)) {
+            QueryWrapper<ContractionSession> query = new QueryWrapper<>();
+            query.eq("client_record_id", clientRecordId);
+            // 按客户端编号查找目标宫缩记录，确保删除范围只落在用户指定记录。
+            ContractionSession record = contractionSessionMapper.selectOne(query);
+            if (record == null) return BaseRes.failure("未找到对应的宫缩记录");
+            // 删除已保存的宫缩记录，统计和时间线会在下次加载时自然更新。
+            int deleted = contractionSessionMapper.deleteById(record.getId());
+            if (deleted != 1) return BaseRes.failure("宫缩记录删除失败");
+            return BaseRes.success();
+        }
+        if (RECORD_TYPE_HEALTH.equals(recordType)) {
+            QueryWrapper<PregnancyHealthRecord> query = new QueryWrapper<>();
+            query.eq("client_record_id", clientRecordId);
+            // 按客户端编号查找目标健康记录，确保删除范围只落在用户指定记录。
+            PregnancyHealthRecord record = pregnancyHealthRecordMapper.selectOne(query);
+            if (record == null) return BaseRes.failure("未找到对应的健康记录");
+            // 删除体重、血压或症状记录，保留其他健康记录不受影响。
+            int deleted = pregnancyHealthRecordMapper.deleteById(record.getId());
+            if (deleted != 1) return BaseRes.failure("健康记录删除失败");
+            return BaseRes.success();
+        }
+        if (RECORD_TYPE_TASK.equals(recordType)) {
+            QueryWrapper<AntenatalTask> query = new QueryWrapper<>();
+            query.eq("client_record_id", clientRecordId);
+            // 按客户端编号查找目标待办，确保删除范围只落在用户指定记录。
+            AntenatalTask record = antenatalTaskMapper.selectOne(query);
+            if (record == null) return BaseRes.failure("未找到对应的待办记录");
+            if (!TASK_STATUS_TODO.equals(record.getStatus()) && !TASK_STATUS_DONE.equals(record.getStatus())) {
+                return BaseRes.failure("待办状态不支持删除");
+            }
+            // 删除待办主记录，提醒设置清理与主记录删除处于同一事务。
+            int deleted = antenatalTaskMapper.deleteById(record.getId());
+            if (deleted != 1) return BaseRes.failure("待办记录删除失败");
+            // 清理没有数据库外键约束的待办提醒逻辑引用。
+            antenatalTaskMapper.deleteReminderSettingsByTaskClientRecordId(clientRecordId);
+            return BaseRes.success();
+        }
+        return BaseRes.failure("记录类型不支持删除");
     }
 
     /**

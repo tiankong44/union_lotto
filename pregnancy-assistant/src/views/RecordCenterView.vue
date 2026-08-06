@@ -12,6 +12,8 @@ type HealthFormType = HealthRecordType
 interface HealthFormState {
   recordType: HealthFormType
   value: string | number
+  systolic: string | number
+  diastolic: string | number
   recordedAt: string
   note: string
 }
@@ -19,6 +21,8 @@ interface HealthFormState {
 const healthForm = reactive<HealthFormState>({
   recordType: 'weight' as HealthFormType,
   value: '',
+  systolic: '',
+  diastolic: '',
   recordedAt: toLocalInputValue(),
   note: '',
 })
@@ -35,7 +39,6 @@ const healthUnit = computed(() => {
 const valueLabel = computed(() => healthForm.recordType === 'symptom' ? '描述一下今天的感受' : '记录数值')
 const valuePlaceholder = computed(() => {
   if (healthForm.recordType === 'weight') return '例如 62.4'
-  if (healthForm.recordType === 'blood-pressure') return '例如 118/76'
   return '例如 腰部酸胀'
 })
 
@@ -49,16 +52,28 @@ function toIsoDate(value: string): string | null {
   return Number.isNaN(date.getTime()) ? null : date.toISOString()
 }
 
+function normalizeInputValue(value: string | number): string {
+  return String(value ?? '').trim()
+}
+
 function makeRecordId(): string {
   return `health-${typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`}`
 }
 
 function validateForm(): string | null {
-  const normalizedValue = String(healthForm.value ?? '').trim()
-  if (!normalizedValue) return `${valueLabel.value}不能为空`
-  if (healthForm.recordType === 'weight') {
-    const numericValue = Number(normalizedValue)
-    if (!Number.isFinite(numericValue) || numericValue < 0) return '体重请输入不小于 0 的数字'
+  if (healthForm.recordType === 'blood-pressure') {
+    const systolic = normalizeInputValue(healthForm.systolic)
+    const diastolic = normalizeInputValue(healthForm.diastolic)
+    if (!systolic || !diastolic) return '高压和低压不能为空'
+    if (!Number.isFinite(Number(systolic)) || Number(systolic) < 0) return '高压请输入不小于 0 的数字'
+    if (!Number.isFinite(Number(diastolic)) || Number(diastolic) < 0) return '低压请输入不小于 0 的数字'
+  } else {
+    const normalizedValue = normalizeInputValue(healthForm.value)
+    if (!normalizedValue) return `${valueLabel.value}不能为空`
+    if (healthForm.recordType === 'weight') {
+      const numericValue = Number(normalizedValue)
+      if (!Number.isFinite(numericValue) || numericValue < 0) return '体重请输入不小于 0 的数字'
+    }
   }
   if (!toIsoDate(healthForm.recordedAt)) return '请选择有效的记录时间'
   return null
@@ -66,6 +81,8 @@ function validateForm(): string | null {
 
 function resetForm(): void {
   healthForm.value = ''
+  healthForm.systolic = ''
+  healthForm.diastolic = ''
   healthForm.recordedAt = toLocalInputValue()
   healthForm.note = ''
 }
@@ -79,7 +96,10 @@ async function saveHealthRecord(): Promise<void> {
   }
   const recordedAt = toIsoDate(healthForm.recordedAt)
   if (!recordedAt) return
-  const normalizedValue = String(healthForm.value ?? '').trim()
+  const normalizedValue = normalizeInputValue(healthForm.value)
+  const valueJson = healthForm.recordType === 'blood-pressure'
+    ? JSON.stringify({ systolic: normalizeInputValue(healthForm.systolic), diastolic: normalizeInputValue(healthForm.diastolic) })
+    : JSON.stringify({ value: normalizedValue })
 
   saving.value = true
   saveMessage.value = ''
@@ -87,7 +107,7 @@ async function saveHealthRecord(): Promise<void> {
     await store.addHealthRecord({
       clientRecordId: makeRecordId(),
       recordType: healthForm.recordType,
-      valueJson: JSON.stringify({ value: normalizedValue }),
+      valueJson,
       unit: healthUnit.value || undefined,
       recordedAt,
       note: healthForm.note.trim() || undefined,
@@ -148,7 +168,11 @@ async function saveHealthRecord(): Promise<void> {
             <button :class="{ active: healthForm.recordType === 'symptom' }" type="button" :aria-pressed="healthForm.recordType === 'symptom'" @click="healthForm.recordType = 'symptom'">症状</button>
           </div>
           <div class="field-grid two-columns">
-            <label class="field"><span>{{ valueLabel }}</span><input v-model="healthForm.value" :type="healthForm.recordType === 'weight' ? 'number' : 'text'" :min="healthForm.recordType === 'weight' ? 0 : undefined" :step="healthForm.recordType === 'weight' ? 0.1 : undefined" :placeholder="valuePlaceholder" required /></label>
+            <template v-if="healthForm.recordType === 'blood-pressure'">
+              <label class="field"><span>高压</span><input v-model="healthForm.systolic" type="number" min="0" step="1" inputmode="numeric" placeholder="例如 118" required /></label>
+              <label class="field"><span>低压</span><input v-model="healthForm.diastolic" type="number" min="0" step="1" inputmode="numeric" placeholder="例如 76" required /></label>
+            </template>
+            <label v-else class="field"><span>{{ valueLabel }}</span><input v-model="healthForm.value" :type="healthForm.recordType === 'weight' ? 'number' : 'text'" :min="healthForm.recordType === 'weight' ? 0 : undefined" :step="healthForm.recordType === 'weight' ? 0.1 : undefined" :placeholder="valuePlaceholder" required /></label>
             <label class="field date-field"><span>记录时间</span><DateField v-model="healthForm.recordedAt" mode="datetime" required /></label>
           </div>
           <label v-if="healthUnit" class="field"><span>单位</span><input :value="healthUnit" type="text" readonly /></label>

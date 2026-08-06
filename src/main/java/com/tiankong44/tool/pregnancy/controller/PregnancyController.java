@@ -6,10 +6,12 @@ import com.tiankong44.tool.pregnancy.dto.ContractionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.FetalMovementSessionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.HealthRecordSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.ProfileSaveRequest;
+import com.tiankong44.tool.pregnancy.dto.RecordDeleteRequest;
 import com.tiankong44.tool.pregnancy.dto.RecordNoteUpdateRequest;
 import com.tiankong44.tool.pregnancy.service.PregnancyService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -170,6 +172,18 @@ public class PregnancyController {
     public BaseRes updateRecordNote(@RequestBody @Valid RecordNoteUpdateRequest request) {
         // 调用记录备注更新服务，统一处理四类记录的补充、修改和清空。
         return pregnancyService.updateRecordNote(request);
+    }
+
+    /**
+     * 删除单条孕期历史记录。
+     *
+     * @param request 记录类型和客户端记录编号
+     * @return 删除结果；记录不存在、类型或状态不支持时返回业务失败
+     */
+    @DeleteMapping("/records")
+    public BaseRes deleteRecord(@RequestBody @Valid RecordDeleteRequest request) {
+        // 调用记录删除服务，按记录类型清理目标记录及其从属数据。
+        return pregnancyService.deleteRecord(request);
     }
 
     /**

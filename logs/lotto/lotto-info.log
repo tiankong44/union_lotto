@@ -701,3 +701,50 @@ Error starting ApplicationContext. To display the conditions report re-run your 
 2026-08-06 13:00:31.616|9001]|[040829]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.saveHealthRecord方法入参：{"clientRecordId":"health-ca141bc0-94c5-4167-b821-fe1daf32d8ba","note":"要不酸胀","recordType":"symptom","recordedAt":"2026-08-06T12:58:00","valueJson":"{\"value\":\"要不酸胀\"}"}
 2026-08-06 13:00:31.795|9001]|[040829]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.saveHealthRecord方法回参：{"code":0,"data":{"createdAt":"2026-08-06T13:00:31.704","note":"要不酸胀","recordType":"symptom","recordedAt":"2026-08-06T12:58:00","id":1,"clientRecordId":"health-ca141bc0-94c5-4167-b821-fe1daf32d8ba","valueJson":"{\"value\":\"要不酸胀\"}","updatedAt":"2026-08-06T13:00:31.704"},"message":"操作成功"}
 2026-08-06 13:00:31.796|9001]|[040829]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.saveHealthRecord接口执行时间:181ms
+2026-08-06 13:05:27.560|9001]|[690716]|请求地址: /tabs/pregnancy/health-records
+2026-08-06 13:05:27.560|9001]|[690716]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.saveHealthRecord方法入参：{"clientRecordId":"health-a09a6e97-85e8-4e89-b889-a66501b0fe7f","recordType":"weight","recordedAt":"2026-08-06T13:05:00","unit":"kg","valueJson":"{\"value\":\"54.9\"}"}
+2026-08-06 13:05:27.880|9001]|[690716]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.saveHealthRecord方法回参：{"code":0,"data":{"createdAt":"2026-08-06T13:05:27.722","unit":"kg","recordType":"weight","recordedAt":"2026-08-06T13:05:00","id":2,"clientRecordId":"health-a09a6e97-85e8-4e89-b889-a66501b0fe7f","valueJson":"{\"value\":\"54.9\"}","updatedAt":"2026-08-06T13:05:27.722"},"message":"操作成功"}
+2026-08-06 13:05:27.880|9001]|[690716]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.saveHealthRecord接口执行时间:319ms
+2026-08-06 13:12:44.256|9001]|[]|HikariPool-1 - Shutdown initiated...
+2026-08-06 13:12:44.258|9001]|[]|HikariPool-1 - Shutdown completed.
+2026-08-06 13:12:50.365|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2026-08-06 13:12:50.367|9001]|[]|Starting ToolApplication using Java 1.8.0_432 on ThinkBook-16P with PID 42528 (E:\myGitRepo\union_lotto\target\classes started by tiankong in E:\myGitRepo\union_lotto)
+2026-08-06 13:12:50.367|9001]|[]|The following 1 profile is active: "prod"
+2026-08-06 13:12:50.889|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2026-08-06 13:12:50.890|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-08-06 13:12:50.908|9001]|[]|Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
+2026-08-06 13:12:51.352|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2026-08-06 13:12:51.357|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2026-08-06 13:12:51.358|9001]|[]|Starting service [Tomcat]
+2026-08-06 13:12:51.358|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2026-08-06 13:12:51.420|9001]|[]|Initializing Spring embedded WebApplicationContext
+2026-08-06 13:12:51.420|9001]|[]|Root WebApplicationContext: initialization completed in 1015 ms
+2026-08-06 13:12:53.821|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2026-08-06 13:12:53.848|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2026-08-06 13:12:53.860|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2026-08-06 13:12:53.881|9001]|[]|Started ToolApplication in 3.803 seconds (JVM running for 4.789)
+2026-08-06 13:12:54.327|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-08-06 13:12:54.328|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2026-08-06 13:12:54.329|9001]|[]|Completed initialization in 1 ms
+2026-08-06 13:12:56.156|9001]|[975308]|请求地址: /tabs/pregnancy/profile
+2026-08-06 13:12:56.156|9001]|[685467]|请求地址: /tabs/pregnancy/fetal-movement/sessions
+2026-08-06 13:12:56.156|9001]|[932405]|请求地址: /tabs/pregnancy/health-records
+2026-08-06 13:12:56.156|9001]|[233969]|请求地址: /tabs/pregnancy/contractions
+2026-08-06 13:12:56.158|9001]|[975308]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.getProfile方法入参：
+2026-08-06 13:12:56.338|9001]|[085487]|请求地址: /tabs/pregnancy/tasks
+2026-08-06 13:12:56.363|9001]|[233969]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.listContractions方法入参：nullnull
+2026-08-06 13:12:56.363|9001]|[932405]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.listHealthRecords方法入参：null
+2026-08-06 13:12:56.363|9001]|[685467]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.listFetalMovements方法入参：nullnull
+2026-08-06 13:12:56.363|9001]|[085487]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.listTasks方法入参：null
+2026-08-06 13:12:56.400|9001]|[085487]|HikariPool-1 - Starting...
+2026-08-06 13:12:56.753|9001]|[085487]|HikariPool-1 - Start completed.
+2026-08-06 13:12:56.865|9001]|[932405]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.listHealthRecords方法回参：{"code":0,"data":[{"createdAt":"2026-08-06T13:05:27","unit":"kg","recordType":"weight","recordedAt":"2026-08-06T13:05:00","id":2,"clientRecordId":"health-a09a6e97-85e8-4e89-b889-a66501b0fe7f","valueJson":"{\"value\":\"54.9\"}","updatedAt":"2026-08-06T13:05:27"},{"createdAt":"2026-08-06T13:00:31","note":"要不酸胀","recordType":"symptom","recordedAt":"2026-08-06T12:58:00","id":1,"clientRecordId":"health-ca141bc0-94c5-4167-b821-fe1daf32d8ba","valueJson":"{\"value\":\"要不酸胀\"}","updatedAt":"2026-08-06T13:00:31"}],"message":"操作成功"}
+2026-08-06 13:12:56.865|9001]|[932405]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.listHealthRecords接口执行时间:709ms
+2026-08-06 13:12:56.869|9001]|[233969]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.listContractions方法回参：{"code":0,"data":[{"intensity":3,"createdAt":"2026-08-06T12:26:33","durationSeconds":9,"endedAt":"2026-08-06T12:26:33","startedAt":"2026-08-06T12:26:24","id":1,"clientRecordId":"contraction-1785990393195","updatedAt":"2026-08-06T12:26:33"}],"message":"操作成功"}
+2026-08-06 13:12:56.870|9001]|[233969]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.listContractions接口执行时间:713ms
+2026-08-06 13:12:56.894|9001]|[685467]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.listFetalMovements方法回参：{"code":0,"data":[{"averageStrength":3,"createdAt":"2026-08-06T12:55:09","movementCount":2,"endedAt":"2026-08-06T12:55:09","startedAt":"2026-08-06T12:55:06","id":4,"clientRecordId":"movement-7cda0581-ebb6-42cb-872c-c34852646714","sessionMode":"free","updatedAt":"2026-08-06T12:55:09"},{"averageStrength":3,"createdAt":"2026-08-06T12:55:03","movementCount":2,"endedAt":"2026-08-06T12:55:03","startedAt":"2026-08-06T12:54:57","id":3,"clientRecordId":"movement-a16b2e15-14e6-4590-b826-a74369cb57aa","sessionMode":"target","targetCount":10,"updatedAt":"2026-08-06T12:55:03"},{"averageStrength":3,"createdAt":"2026-08-06T12:26:55","movementCount":2,"endedAt":"2026-08-06T12:26:54","startedAt":"2026-08-06T12:26:47","id":2,"clientRecordId":"movement-63a72e93-c59b-498b-8871-69e59219cbe0","sessionMode":"target","targetCount":10,"updatedAt":"2026-08-06T12:26:55"},{"averageStrength":2,"createdAt":"2026-08-06T11:27:43","movementCount":1,"endedAt":"2026-08-06T11:27:42","startedAt":"2026-08-06T11:27:27","id":1,"clientRecordId":"movement-04c58cec-70db-4044-b1b8-b0923e7561a4","sessionMode":"target","targetCount":10,"updatedAt":"2026-08-06T11:27:43"}],"message":"操作成功"}
+2026-08-06 13:12:56.894|9001]|[685467]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.listFetalMovements接口执行时间:738ms
+2026-08-06 13:12:56.921|9001]|[085487]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.listTasks方法回参：{"code":0,"data":[{"createdAt":"2026-08-06T12:54:22","completedAt":"2026-08-06T12:54:33","taskType":"checkup","plannedAt":"2026-08-18T12:53:00","id":1,"clientRecordId":"task-1785992062255","title":"产检","status":"TODO","updatedAt":"2026-08-06T12:54:36"}],"message":"操作成功"}
+2026-08-06 13:12:56.921|9001]|[085487]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.listTasks接口执行时间:583ms
+2026-08-06 13:12:56.955|9001]|[975308]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.getProfile方法回参：{"code":0,"data":{"createdAt":"2026-08-06T12:53:23","note":"","lmpDate":"2026-01-10","dueDate":"2026-10-12","nickname":"baby","id":1,"babyCount":1,"updatedAt":"2026-08-06T12:53:23"},"message":"操作成功"}
+2026-08-06 13:12:56.956|9001]|[975308]|class com.tiankong44.tool.pregnancy.controller.PregnancyController.getProfile接口执行时间:799ms

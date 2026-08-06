@@ -61,6 +61,11 @@ export interface RecordNoteUpdatePayload {
   note: string
 }
 
+export interface RecordDeletePayload {
+  recordType: RecordNoteType
+  clientRecordId: string
+}
+
 export interface WeightTrendPoint {
   dateKey: string
   label: string

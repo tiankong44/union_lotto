@@ -11,6 +11,7 @@ import {
   saveHealthRecord as saveHealthRecordRequest,
   saveProfile as saveProfileRequest,
   saveTask as saveTaskRequest,
+  deleteRecord as deleteRecordRequest,
   updateRecordNote as updateRecordNoteRequest,
 } from '../services/api'
 import type {
@@ -24,6 +25,7 @@ import type {
   HealthRecordPayload,
   PregnancyProfile,
   PregnancyProfilePayload,
+  RecordDeletePayload,
   RecordNoteUpdatePayload,
 } from '../types/pregnancy'
 
@@ -168,6 +170,23 @@ export const usePregnancyStore = defineStore('pregnancy', () => {
     if (record) record.note = note
   }
 
+  async function deleteRecord(payload: RecordDeletePayload): Promise<void> {
+    await saveToCloud(() => deleteRecordRequest(payload))
+    if (payload.recordType === 'movement') {
+      movementSessions.value = movementSessions.value.filter((item) => item.clientRecordId !== payload.clientRecordId)
+      return
+    }
+    if (payload.recordType === 'contraction') {
+      contractions.value = contractions.value.filter((item) => item.clientRecordId !== payload.clientRecordId)
+      return
+    }
+    if (payload.recordType === 'health') {
+      healthRecords.value = healthRecords.value.filter((item) => item.clientRecordId !== payload.clientRecordId)
+      return
+    }
+    tasks.value = tasks.value.filter((item) => item.clientRecordId !== payload.clientRecordId)
+  }
+
   async function refreshCloudData(): Promise<void> {
     await hydrate(true)
   }
@@ -193,5 +212,6 @@ export const usePregnancyStore = defineStore('pregnancy', () => {
     addTask,
     toggleTask,
     updateRecordNote,
+    deleteRecord,
   }
 })

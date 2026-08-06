@@ -6,6 +6,7 @@ import com.tiankong44.tool.pregnancy.dto.ContractionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.FetalMovementSessionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.HealthRecordSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.ProfileSaveRequest;
+import com.tiankong44.tool.pregnancy.dto.RecordDeleteRequest;
 import com.tiankong44.tool.pregnancy.dto.RecordNoteUpdateRequest;
 
 import java.time.LocalDate;
@@ -105,6 +106,14 @@ public interface PregnancyService {
      * @return 更新后的记录；记录不存在或类型不支持时返回业务失败
      */
     BaseRes updateRecordNote(RecordNoteUpdateRequest request);
+
+    /**
+     * 删除单用户的一条已保存记录，并清理已知从属数据。
+     *
+     * @param request 记录类型和客户端记录编号
+     * @return 删除成功结果；记录不存在、类型或待办状态不支持时返回业务失败
+     */
+    BaseRes deleteRecord(RecordDeleteRequest request);
 
     /**
      * 汇总记录数量和个人趋势基础指标。

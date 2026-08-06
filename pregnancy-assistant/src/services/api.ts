@@ -8,6 +8,7 @@ import type {
   HealthRecordPayload,
   PregnancyProfile,
   PregnancyProfilePayload,
+  RecordDeletePayload,
   RecordNoteUpdatePayload,
 } from '../types/pregnancy'
 
@@ -109,6 +110,13 @@ export function saveTask(task: AntenatalTask): Promise<AntenatalTask> {
 export function updateRecordNote(payload: RecordNoteUpdatePayload): Promise<FetalMovementSession | ContractionSession | HealthRecord | AntenatalTask> {
   return request('/record-notes', {
     method: 'PUT',
+    body: JSON.stringify(payload),
+  })
+}
+
+export function deleteRecord(payload: RecordDeletePayload): Promise<void> {
+  return request('/records', {
+    method: 'DELETE',
     body: JSON.stringify(payload),
   })
 }
