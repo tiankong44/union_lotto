@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch, type Ref } from 'vue'
 import { Activity, ArrowDownRight, ArrowUpRight, BarChart3, Info, Minus, Scale, TrendingUp, Waves } from 'lucide-vue-next'
 import { usePregnancyStore } from '../stores/pregnancy'
 import type { HealthRecord, RecordTimelineItem, WeightTrendPoint } from '../types/pregnancy'
@@ -15,6 +15,7 @@ const periodOptions: { value: ReportPeriodDays; label: string }[] = [
   { value: 90, label: '90 天' },
 ]
 const movementChartScroll = ref<HTMLElement | null>(null)
+const weightChartScroll = ref<HTMLElement | null>(null)
 
 function pad(value: number): string {
   return String(value).padStart(2, '0')
@@ -106,19 +107,11 @@ const movementDays = computed(() => {
   return result
 })
 
-async function scrollMovementChartToLatest(): Promise<void> {
+async function scrollChartToLatest(chartScroll: Ref<HTMLElement | null>): Promise<void> {
   await nextTick()
-  const chartScroll = movementChartScroll.value
-  if (chartScroll) chartScroll.scrollLeft = chartScroll.scrollWidth
+  const element = chartScroll.value
+  if (element) element.scrollLeft = element.scrollWidth
 }
-
-onMounted(() => {
-  void scrollMovementChartToLatest()
-})
-
-watch(movementDays, () => {
-  void scrollMovementChartToLatest()
-}, { flush: 'post' })
 
 const maxCount = computed(() => Math.max(1, ...movementDays.value.map((day) => day.count)))
 const averageCount = computed(() => movementRecords.value.length ? Math.round(movementRecords.value.reduce((sum, item) => sum + item.movementCount, 0) / movementRecords.value.length) : 0)
@@ -160,6 +153,15 @@ const chartPoints = computed<ChartPoint[]>(() => {
   }))
 })
 const polylinePoints = computed(() => chartPoints.value.map((point) => `${point.x},${point.y}`).join(' '))
+
+function resetChartPositions(): void {
+  void scrollChartToLatest(movementChartScroll)
+  void scrollChartToLatest(weightChartScroll)
+}
+
+onMounted(resetChartPositions)
+
+watch([movementDays, chartPoints], resetChartPositions, { flush: 'post' })
 
 const timelineItems = computed<RecordTimelineItem[]>(() => {
   const items: RecordTimelineItem[] = []
@@ -211,7 +213,7 @@ const timelineItems = computed<RecordTimelineItem[]>(() => {
 
     <section class="panel weight-report-panel">
       <div class="panel-heading"><div><p class="eyebrow">WEIGHT TREND</p><h2>体重变化</h2><p class="report-subtitle">按自然日展示每天最后一次测量，明细保留全部记录。</p></div><Scale :size="20" class="heading-icon" /></div>
-      <div v-if="chartPoints.length" class="weight-chart-scroll">
+      <div v-if="chartPoints.length" ref="weightChartScroll" class="weight-chart-scroll">
         <svg class="weight-chart" :viewBox="`0 0 ${chartWidth} 230`" :width="chartWidth" height="230" role="img" aria-label="体重变化折线图">
           <line x1="24" y1="188" :x2="chartWidth - 24" y2="188" class="weight-axis" />
           <polyline :points="polylinePoints" class="weight-line" fill="none" />

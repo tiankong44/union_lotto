@@ -71,8 +71,8 @@ function isSameLocalDate(value: string): boolean {
       </article>
       <RouterLink class="metric-card metric-card-link" to="/tasks">
         <div class="metric-label"><span class="metric-dot yellow"></span> 待办事项</div>
-        <strong>{{ todayTasks.length }}</strong>
-        <span class="metric-foot">{{ todayTasks.length ? '今天还有事项要处理' : '今天很轻盈' }}</span>
+        <strong>{{ store.pendingTasks.length }}</strong>
+        <span class="metric-foot">{{ store.pendingTasks.length ? '还有事项要处理' : '今天很轻盈' }}</span>
       </RouterLink>
     </section>
 

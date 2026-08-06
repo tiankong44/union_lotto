@@ -2,7 +2,7 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use inline execution in this session. Do not create a worktree or dispatch a subagent.
 
-**Goal:** 让总览只显示本地当天的待处理事项，并让待办摘要与事项条目进入完整待办页面。
+**Goal:** 让总览摘要统计全部未处理事项、当天安排只显示本地当天的待处理事项，并让摘要与事项条目进入完整待办页面。
 
 **Architecture:** 继续复用 Pinia store 的 `pendingTasks`，在 `DashboardView.vue` 内用用户本地日期派生并排序 `todayTasks`；总览入口统一使用现有 `/tasks` 路由。待办页面、接口、数据库和状态流转保持不变。
 
@@ -34,25 +34,25 @@ function isSameLocalDate(value: string): boolean {
 }
 ```
 
-- [ ] **Step 2: 将总览待办摘要改为 `/tasks` 路由链接**
+- [ ] **Step 2: 将总览待办摘要改为全量统计并链接 `/tasks`**
 
-把待办指标的 `article` 改为 `RouterLink`，数量使用 `todayTasks.length`，保留现有指标卡样式并增加可聚焦的链接 class：
+把待办指标的 `article` 改为 `RouterLink`，数量使用 `store.pendingTasks.length`，保留现有指标卡样式并增加可聚焦的链接 class：
 
 ```vue
 <RouterLink class="metric-card metric-card-accent metric-card-link" to="/tasks">
   <div class="metric-label"><span class="metric-dot coral"></span> 待办事项</div>
-  <strong>{{ todayTasks.length }}</strong>
-  <span class="metric-foot">{{ todayTasks.length ? '今天还有事项要处理' : '今天很轻盈' }}</span>
+  <strong>{{ store.pendingTasks.length }}</strong>
+  <span class="metric-foot">{{ store.pendingTasks.length ? '还有事项要处理' : '今天很轻盈' }}</span>
 </RouterLink>
 ```
 
 - [ ] **Step 3: 让当天安排使用同一数据并支持逐条跳转**
 
-将“今天的安排”列表改为遍历 `todayTasks`，每行使用 `RouterLink` 指向 `/tasks`，空态继续保留现有添加入口；这样总览数量、列表和空态使用同一筛选口径。
+将“今天的安排”列表改为遍历 `todayTasks`，每行使用 `RouterLink` 指向 `/tasks`，空态继续保留现有添加入口；摘要继续统计全部未处理事项，列表和空态使用当天筛选口径。
 
 - [ ] **Step 4: 静态检查总览引用**
 
-运行 `rg -n "pendingTasks|todayTasks|to=\"/tasks\"" pregnancy-assistant/src/views/DashboardView.vue`，确认当天区域不再直接使用未筛选的 `pendingTasks`，且摘要和列表均存在 `/tasks` 入口。
+运行 `rg -n "pendingTasks|todayTasks|to=\"/tasks\"" pregnancy-assistant/src/views/DashboardView.vue`，确认当天区域使用 `todayTasks`，摘要使用 `store.pendingTasks.length`，且摘要和列表均存在 `/tasks` 入口。
 
 ### Task 2: 补充路由链接的可用状态样式
 
@@ -113,4 +113,3 @@ function isSameLocalDate(value: string): boolean {
 git add pregnancy-assistant/src/views/DashboardView.vue pregnancy-assistant/src/styles.css
 git commit -m "feat: 串联总览当天待办入口"
 ```
-

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed, reactive, ref } from 'vue'
-import { Activity, AlertCircle, ArrowUpRight, CalendarDays, CheckCircle2, FileText, HeartPulse, Pencil, Save, Trash2, Waves, X } from 'lucide-vue-next'
+import { Activity, AlertCircle, ArrowUpRight, BarChart3, CalendarDays, CheckCircle2, FileText, HeartPulse, Pencil, Save, Trash2, Waves, X } from 'lucide-vue-next'
+import RecordChartPanel from '../components/RecordChartPanel.vue'
 import { usePregnancyStore } from '../stores/pregnancy'
-import type { HealthRecord, RecordNoteType } from '../types/pregnancy'
+import type { HealthRecord, RecordChartType, RecordNoteType } from '../types/pregnancy'
 
 const store = usePregnancyStore()
-const activeTab = ref<'movement' | 'contraction' | 'health' | 'tasks'>('movement')
+const activeTab = ref<RecordChartType>('movement')
+const showChart = ref(false)
 const editingNoteKey = ref<string | null>(null)
 const savingNoteKey = ref<string | null>(null)
 const deletingRecordKey = ref<string | null>(null)
@@ -26,6 +28,17 @@ const activeCount = computed(() => {
   if (activeTab.value === 'health') return store.healthRecords.length
   return store.tasks.length
 })
+
+const activeTabLabel = computed(() => tabs.find((tab) => tab.key === activeTab.value)?.label ?? '记录')
+
+function selectTab(tab: RecordChartType): void {
+  activeTab.value = tab
+  showChart.value = false
+}
+
+function toggleChart(): void {
+  showChart.value = !showChart.value
+}
 
 function formatDate(value: string): string {
   return new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(value))
@@ -120,13 +133,16 @@ async function deleteRecord(recordType: RecordNoteType, clientRecordId: string):
         <div class="archive-toolbar-main">
           <span class="archive-toolbar-label">记录类型</span>
           <div class="tab-list" role="tablist" aria-label="记录分类">
-            <button v-for="tab in tabs" :key="tab.key" :class="['tab-button', { active: activeTab === tab.key }]" type="button" @click="activeTab = tab.key">
+            <button v-for="tab in tabs" :key="tab.key" :class="['tab-button', { active: activeTab === tab.key }]" type="button" @click="selectTab(tab.key)">
               <component :is="tab.icon" :size="16" /> {{ tab.label }}
             </button>
           </div>
+          <button class="icon-button archive-chart-toggle" type="button" :class="{ active: showChart }" :title="showChart ? `收起${activeTabLabel}图表` : `查看${activeTabLabel}图表`" :aria-label="showChart ? `收起${activeTabLabel}图表` : `查看${activeTabLabel}图表`" :aria-expanded="showChart" @click="toggleChart"><BarChart3 :size="17" /></button>
         </div>
         <span class="archive-toolbar-summary">当前 {{ activeCount }} 条</span>
       </div>
+
+      <RecordChartPanel v-if="showChart" :key="activeTab" :record-type="activeTab" :movement-sessions="store.movementSessions" :contractions="store.contractions" :health-records="store.healthRecords" :tasks="store.tasks" />
 
       <div v-if="activeTab === 'movement'" class="record-list">
         <div v-for="session in store.movementSessions" :key="session.clientRecordId" class="record-row">

@@ -55,6 +55,8 @@ export interface RecordTimelineItem {
 
 export type RecordNoteType = 'movement' | 'contraction' | 'health' | 'task'
 
+export type RecordChartType = 'movement' | 'contraction' | 'health' | 'tasks'
+
 export interface RecordNoteUpdatePayload {
   recordType: RecordNoteType
   clientRecordId: string
