@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @Date 2022/11/1  14:37
  **/
 @Configuration
-@MapperScan("com.tiankong44.tool.mapper")
+@MapperScan({"com.tiankong44.tool.mapper", "com.tiankong44.tool.pregnancy.mapper"})
 public class MybatisPlusConfig {
     /**
      * 新的分页插件,一缓和二缓遵循mybatis的规则,需要设置 MybatisConfiguration#useDeprecatedExecutor = false 避免缓存出现问题(该属性会在旧插件移除后一同移除)

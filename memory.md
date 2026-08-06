@@ -32,6 +32,7 @@
 - 2026-08-06：完成 `pregnancy-assistant/` Vite + Vue + TypeScript 前端，包含胎动、宫缩、历史、统计趋势、孕期档案、健康记录、产检待办、导出和本地 IndexedDB 同步队列。
 - 2026-08-06：将前端目录从 `frontend/` 重命名为 `pregnancy-assistant/`，NPM 包名和页面品牌名保持不变。
 - 2026-08-06：完成单用户孕期后端接口、实体、Mapper、Service、Controller 和 `sql/init_pregnancy_assistant.sql`；同步接口会把载荷落入对应业务表，并按客户端记录编号幂等。
+- 2026-08-06：修复 `MybatisPlusConfig` 未扫描 `com.tiankong44.tool.pregnancy.mapper` 导致孕期服务启动时 Mapper 注入失败的问题，JDK8 编译和临时端口启动验证通过。
 - 2026-08-06：前端 `npm run build` 通过；后端使用 `E:\JAVA\jdk8` 执行 `mvn clean compile` 通过。
 - 2026-08-06：Java 21 下旧 Lombok 与编译器内部 API 不兼容，后续升级依赖前继续使用 Java 8 构建。
 - 2026-08-06：按约束未使用浏览器截图或视觉辅助，未执行真实数据库联调；SQL 已完成静态禁止项检查。
