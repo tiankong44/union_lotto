@@ -104,15 +104,15 @@ const syncLabel = computed(() => {
       </div>
 
       <section class="page-content">
+        <KeepAlive>
+          <component :is="activeComponent" />
+        </KeepAlive>
         <div class="page-toolbar">
           <button class="sync-button" type="button" :disabled="store.cloudStatus === 'loading' || store.cloudStatus === 'saving'" title="刷新云端数据" @click="store.refreshCloudData">
             <RefreshCw :size="16" :class="{ spin: store.cloudStatus === 'loading' || store.cloudStatus === 'saving' }" />
             <span>{{ syncLabel }}</span>
           </button>
         </div>
-        <KeepAlive>
-          <component :is="activeComponent" />
-        </KeepAlive>
       </section>
 
       <nav class="bottom-nav" aria-label="移动端主要导航">
