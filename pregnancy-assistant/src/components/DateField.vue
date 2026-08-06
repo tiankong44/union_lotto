@@ -37,8 +37,8 @@ const timeConfig = computed(() => ({
 const floatingConfig = {
   offset: 8,
   placement: 'bottom-start' as const,
-  flip: { padding: 12 },
-  shift: { padding: 12 },
+  flip: false,
+  shift: { mainAxis: false, crossAxis: true, padding: 12 },
 }
 
 function parseLocalDate(value: string, mode: DateFieldMode): Date | null {
