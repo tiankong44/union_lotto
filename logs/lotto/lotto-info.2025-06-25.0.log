@@ -1,0 +1,1768 @@
+2025-06-25 21:57:22.879|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 29424 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 21:57:22.880|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 21:57:22.886|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 21:57:23.357|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 21:57:23.358|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 21:57:23.371|9001]|[]|Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+2025-06-25 21:57:23.809|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 21:57:23.814|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 21:57:23.815|9001]|[]|Starting service [Tomcat]
+2025-06-25 21:57:23.815|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 21:57:23.862|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 21:57:23.862|9001]|[]|Root WebApplicationContext: initialization completed in 957 ms
+2025-06-25 21:57:25.066|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 21:57:25.080|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 21:57:25.088|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 21:57:25.098|9001]|[]|Started ToolApplication in 2.471 seconds (JVM running for 2.974)
+2025-06-25 21:57:25.353|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 21:57:25.353|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 21:57:25.354|9001]|[]|Completed initialization in 1 ms
+2025-06-25 21:57:25.643|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 21:57:25.827|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 21:58:10.031|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 21:58:10.046|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 21:58:13.158|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 21:58:13.159|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 29872 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 21:58:13.160|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 21:58:13.677|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 21:58:13.678|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 21:58:13.693|9001]|[]|Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+2025-06-25 21:58:14.085|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 21:58:14.090|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 21:58:14.090|9001]|[]|Starting service [Tomcat]
+2025-06-25 21:58:14.090|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 21:58:14.139|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 21:58:14.139|9001]|[]|Root WebApplicationContext: initialization completed in 956 ms
+2025-06-25 21:58:15.357|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 21:58:15.373|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 21:58:15.381|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 21:58:15.392|9001]|[]|Started ToolApplication in 2.482 seconds (JVM running for 2.941)
+2025-06-25 21:58:16.025|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 21:58:16.025|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 21:58:16.026|9001]|[]|Completed initialization in 1 ms
+2025-06-25 21:58:16.026|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 21:58:16.209|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 21:58:24.123|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 21:58:24.141|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 21:58:26.508|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 21:58:26.508|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 8316 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 21:58:26.509|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 21:58:26.995|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 21:58:26.996|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 21:58:27.012|9001]|[]|Finished Spring Data repository scanning in 7 ms. Found 0 Redis repository interfaces.
+2025-06-25 21:58:27.401|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 21:58:27.407|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 21:58:27.407|9001]|[]|Starting service [Tomcat]
+2025-06-25 21:58:27.407|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 21:58:27.454|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 21:58:27.454|9001]|[]|Root WebApplicationContext: initialization completed in 921 ms
+2025-06-25 21:58:28.701|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 21:58:28.716|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 21:58:28.723|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 21:58:28.734|9001]|[]|Started ToolApplication in 2.478 seconds (JVM running for 2.939)
+2025-06-25 21:58:29.203|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 21:58:29.203|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 21:58:29.204|9001]|[]|Completed initialization in 1 ms
+2025-06-25 21:58:29.203|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 21:58:29.381|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 21:59:41.428|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 21:59:41.442|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 21:59:54.841|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 21:59:54.841|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 32076 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 21:59:54.843|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 21:59:55.506|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 21:59:55.509|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 21:59:55.538|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 21:59:56.165|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 21:59:56.172|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 21:59:56.173|9001]|[]|Starting service [Tomcat]
+2025-06-25 21:59:56.173|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 21:59:56.243|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 21:59:56.243|9001]|[]|Root WebApplicationContext: initialization completed in 1369 ms
+2025-06-25 21:59:57.625|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 21:59:57.641|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 21:59:57.644|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 21:59:57.655|9001]|[]|Started ToolApplication in 3.11 seconds (JVM running for 3.976)
+2025-06-25 21:59:58.074|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 21:59:58.169|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 21:59:58.169|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 21:59:58.170|9001]|[]|Completed initialization in 1 ms
+2025-06-25 21:59:58.190|9001]|[638643]|请求地址: /tabs/stream
+2025-06-25 21:59:58.190|9001]|[638643]|class com.tiankong44.tool.websocket.StreamController.stream方法入参：
+2025-06-25 21:59:58.224|9001]|[638643]|class com.tiankong44.tool.websocket.StreamController.stream方法回参：{}
+2025-06-25 21:59:58.224|9001]|[638643]|class com.tiankong44.tool.websocket.StreamController.stream接口执行时间:34ms
+2025-06-25 21:59:58.263|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:00:28.658|9001]|[]|发生异常
+
+org.springframework.web.context.request.async.AsyncRequestTimeoutException: null
+	at org.springframework.web.context.request.async.TimeoutDeferredResultProcessingInterceptor.handleTimeout(TimeoutDeferredResultProcessingInterceptor.java:42)
+	at org.springframework.web.context.request.async.DeferredResultInterceptorChain.triggerAfterTimeout(DeferredResultInterceptorChain.java:79)
+	at org.springframework.web.context.request.async.WebAsyncManager.lambda$startDeferredResultProcessing$5(WebAsyncManager.java:438)
+	at java.util.ArrayList.forEach(ArrayList.java:1259)
+	at org.springframework.web.context.request.async.StandardServletAsyncWebRequest.onTimeout(StandardServletAsyncWebRequest.java:151)
+	at org.apache.catalina.core.AsyncListenerWrapper.fireOnTimeout(AsyncListenerWrapper.java:44)
+	at org.apache.catalina.core.AsyncContextImpl.timeout(AsyncContextImpl.java:135)
+	at org.apache.catalina.connector.CoyoteAdapter.asyncDispatch(CoyoteAdapter.java:147)
+	at org.apache.coyote.AbstractProcessor.dispatch(AbstractProcessor.java:241)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:59)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:890)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1789)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:750)
+
+2025-06-25 22:00:28.663|9001]|[]|方法回参:{"code":1}
+2025-06-25 22:00:42.768|9001]|[]|null Unexpected exception during request: java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379)
+	at io.netty.buffer.PooledByteBuf.setBytes(PooledByteBuf.java:258)
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1132)
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:357)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:151)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:750)
+
+2025-06-25 22:00:42.768|9001]|[]|null Unexpected exception during request: java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+
+java.io.IOException: 远程主机强迫关闭了一个现有的连接。
+	at sun.nio.ch.SocketDispatcher.read0(Native Method)
+	at sun.nio.ch.SocketDispatcher.read(SocketDispatcher.java:43)
+	at sun.nio.ch.IOUtil.readIntoNativeBuffer(IOUtil.java:223)
+	at sun.nio.ch.IOUtil.read(IOUtil.java:192)
+	at sun.nio.ch.SocketChannelImpl.read(SocketChannelImpl.java:379)
+	at io.netty.buffer.PooledByteBuf.setBytes(PooledByteBuf.java:258)
+	at io.netty.buffer.AbstractByteBuf.writeBytes(AbstractByteBuf.java:1132)
+	at io.netty.channel.socket.nio.NioSocketChannel.doReadBytes(NioSocketChannel.java:357)
+	at io.netty.channel.nio.AbstractNioByteChannel$NioByteUnsafe.read(AbstractNioByteChannel.java:151)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:788)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724)
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650)
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562)
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997)
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74)
+	at io.netty.util.concurrent.FastThreadLocalRunnable.run(FastThreadLocalRunnable.java:30)
+	at java.lang.Thread.run(Thread.java:750)
+
+2025-06-25 22:00:42.858|9001]|[]|Reconnecting, last destination was /192.168.2.103:7002
+2025-06-25 22:00:42.858|9001]|[]|Reconnecting, last destination was /192.168.2.103:7006
+2025-06-25 22:00:47.379|9001]|[707072]|请求地址: /tabs/stream
+2025-06-25 22:00:47.379|9001]|[707072]|class com.tiankong44.tool.websocket.StreamController.stream方法入参：
+2025-06-25 22:00:47.379|9001]|[707072]|class com.tiankong44.tool.websocket.StreamController.stream方法回参：{}
+2025-06-25 22:00:47.379|9001]|[707072]|class com.tiankong44.tool.websocket.StreamController.stream接口执行时间:0ms
+2025-06-25 22:00:47.761|9001]|[]|Reconnected to 192.168.2.103:7002
+2025-06-25 22:00:47.761|9001]|[]|Reconnected to 192.168.2.103:7006
+2025-06-25 22:01:17.658|9001]|[]|发生异常
+
+org.springframework.web.context.request.async.AsyncRequestTimeoutException: null
+	at org.springframework.web.context.request.async.TimeoutDeferredResultProcessingInterceptor.handleTimeout(TimeoutDeferredResultProcessingInterceptor.java:42)
+	at org.springframework.web.context.request.async.DeferredResultInterceptorChain.triggerAfterTimeout(DeferredResultInterceptorChain.java:79)
+	at org.springframework.web.context.request.async.WebAsyncManager.lambda$startDeferredResultProcessing$5(WebAsyncManager.java:438)
+	at java.util.ArrayList.forEach(ArrayList.java:1259)
+	at org.springframework.web.context.request.async.StandardServletAsyncWebRequest.onTimeout(StandardServletAsyncWebRequest.java:151)
+	at org.apache.catalina.core.AsyncListenerWrapper.fireOnTimeout(AsyncListenerWrapper.java:44)
+	at org.apache.catalina.core.AsyncContextImpl.timeout(AsyncContextImpl.java:135)
+	at org.apache.catalina.connector.CoyoteAdapter.asyncDispatch(CoyoteAdapter.java:147)
+	at org.apache.coyote.AbstractProcessor.dispatch(AbstractProcessor.java:241)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:59)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:890)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1789)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:750)
+
+2025-06-25 22:01:17.659|9001]|[]|方法回参:{"code":1}
+2025-06-25 22:01:24.684|9001]|[322950]|请求地址: /tabs/stream
+2025-06-25 22:01:24.685|9001]|[322950]|class com.tiankong44.tool.websocket.StreamController.stream方法入参：
+2025-06-25 22:01:24.685|9001]|[322950]|class com.tiankong44.tool.websocket.StreamController.stream方法回参：{}
+2025-06-25 22:01:24.685|9001]|[322950]|class com.tiankong44.tool.websocket.StreamController.stream接口执行时间:0ms
+2025-06-25 22:01:55.648|9001]|[]|发生异常
+
+org.springframework.web.context.request.async.AsyncRequestTimeoutException: null
+	at org.springframework.web.context.request.async.TimeoutDeferredResultProcessingInterceptor.handleTimeout(TimeoutDeferredResultProcessingInterceptor.java:42)
+	at org.springframework.web.context.request.async.DeferredResultInterceptorChain.triggerAfterTimeout(DeferredResultInterceptorChain.java:79)
+	at org.springframework.web.context.request.async.WebAsyncManager.lambda$startDeferredResultProcessing$5(WebAsyncManager.java:438)
+	at java.util.ArrayList.forEach(ArrayList.java:1259)
+	at org.springframework.web.context.request.async.StandardServletAsyncWebRequest.onTimeout(StandardServletAsyncWebRequest.java:151)
+	at org.apache.catalina.core.AsyncListenerWrapper.fireOnTimeout(AsyncListenerWrapper.java:44)
+	at org.apache.catalina.core.AsyncContextImpl.timeout(AsyncContextImpl.java:135)
+	at org.apache.catalina.connector.CoyoteAdapter.asyncDispatch(CoyoteAdapter.java:147)
+	at org.apache.coyote.AbstractProcessor.dispatch(AbstractProcessor.java:241)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:59)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:890)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1789)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1191)
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:659)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:750)
+
+2025-06-25 22:01:55.648|9001]|[]|方法回参:{"code":1}
+2025-06-25 22:07:40.929|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:07:40.942|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:07:46.962|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:07:46.962|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 28144 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:07:46.962|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:07:47.969|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:07:47.969|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:07:48.006|9001]|[]|Finished Spring Data repository scanning in 12 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:07:48.670|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:07:48.685|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:07:48.685|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:07:48.685|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:07:48.769|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:07:48.769|9001]|[]|Root WebApplicationContext: initialization completed in 1712 ms
+2025-06-25 22:08:33.055|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:08:33.105|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:08:33.114|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:08:33.129|9001]|[]|Started ToolApplication in 46.661 seconds (JVM running for 47.717)
+2025-06-25 22:08:33.352|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:08:33.352|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:08:33.354|9001]|[]|Completed initialization in 2 ms
+2025-06-25 22:08:33.841|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:08:34.119|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:10:36.924|9001]|[267283]|请求地址: /tabs/stream
+2025-06-25 22:10:36.940|9001]|[267283]|class com.tiankong44.tool.websocket.StreamController.stream方法入参：
+2025-06-25 22:10:37.022|9001]|[267283]|class com.tiankong44.tool.websocket.StreamController.stream方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:10:37.022|9001]|[267283]|class com.tiankong44.tool.websocket.StreamController.stream接口执行时间:83ms
+2025-06-25 22:13:23.797|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:13:23.810|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:13:28.151|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 33324 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:13:28.150|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:13:28.153|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:13:28.920|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:13:28.922|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:13:28.950|9001]|[]|Finished Spring Data repository scanning in 12 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:13:29.632|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:13:29.642|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:13:29.643|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:13:29.643|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:13:29.732|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:13:29.732|9001]|[]|Root WebApplicationContext: initialization completed in 1542 ms
+2025-06-25 22:13:39.186|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:13:39.211|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:13:39.218|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:13:39.233|9001]|[]|Started ToolApplication in 11.494 seconds (JVM running for 12.355)
+2025-06-25 22:13:39.321|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:13:39.321|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:13:39.323|9001]|[]|Completed initialization in 2 ms
+2025-06-25 22:13:39.685|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:13:39.919|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:13:52.039|9001]|[334448]|请求地址: /tabs/stream
+2025-06-25 22:13:52.039|9001]|[334448]|class com.tiankong44.tool.websocket.StreamController.stream方法入参：
+2025-06-25 22:13:52.101|9001]|[334448]|class com.tiankong44.tool.websocket.StreamController.stream方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:13:52.102|9001]|[334448]|class com.tiankong44.tool.websocket.StreamController.stream接口执行时间:62ms
+2025-06-25 22:13:59.264|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:13:59.279|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:14:01.569|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 31032 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:14:01.567|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:14:01.571|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:14:02.337|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:14:02.339|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:14:02.360|9001]|[]|Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:14:02.980|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:14:02.988|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:14:02.989|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:14:02.989|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:14:03.065|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:14:03.065|9001]|[]|Root WebApplicationContext: initialization completed in 1454 ms
+2025-06-25 22:14:33.932|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:14:33.967|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:14:33.983|9001]|[]|Started ToolApplication in 32.836 seconds (JVM running for 33.583)
+2025-06-25 22:14:38.700|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:14:38.703|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 29292 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:14:38.704|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:14:39.590|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:14:39.592|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:14:39.613|9001]|[]|Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:14:40.303|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:14:40.311|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:14:40.312|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:14:40.312|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:14:40.401|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:14:40.401|9001]|[]|Root WebApplicationContext: initialization completed in 1658 ms
+2025-06-25 22:14:41.653|9001]|[]|Stopping service [Tomcat]
+2025-06-25 22:14:41.665|9001]|[]|
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2025-06-25 22:16:18.420|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 32208 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:16:18.420|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:16:18.423|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:16:19.288|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:16:19.290|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:16:19.314|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:16:20.092|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:16:20.101|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:16:20.102|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:16:20.102|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:16:20.193|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:16:20.193|9001]|[]|Root WebApplicationContext: initialization completed in 1733 ms
+2025-06-25 22:16:22.256|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:16:22.287|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:16:22.299|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:16:22.318|9001]|[]|Started ToolApplication in 4.36 seconds (JVM running for 5.205)
+2025-06-25 22:16:22.434|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:16:22.435|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:16:22.438|9001]|[]|Completed initialization in 3 ms
+2025-06-25 22:16:22.477|9001]|[780692]|请求地址: /tabs/stream
+2025-06-25 22:16:22.478|9001]|[780692]|class com.tiankong44.tool.websocket.StreamController.stream方法入参：
+2025-06-25 22:16:22.537|9001]|[780692]|class com.tiankong44.tool.websocket.StreamController.stream方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:16:22.537|9001]|[780692]|class com.tiankong44.tool.websocket.StreamController.stream接口执行时间:60ms
+2025-06-25 22:16:23.462|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:16:23.793|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:18:03.000|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:18:03.014|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:18:21.308|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:18:21.310|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 29948 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:18:21.311|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:18:22.057|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:18:22.058|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:18:22.085|9001]|[]|Finished Spring Data repository scanning in 12 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:18:22.796|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:18:22.806|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:18:22.807|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:18:22.807|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:18:22.888|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:18:22.888|9001]|[]|Root WebApplicationContext: initialization completed in 1543 ms
+2025-06-25 22:18:24.789|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:18:24.818|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:18:24.827|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:18:24.844|9001]|[]|Started ToolApplication in 3.94 seconds (JVM running for 4.744)
+2025-06-25 22:18:25.279|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:18:25.279|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:18:25.281|9001]|[]|Completed initialization in 2 ms
+2025-06-25 22:18:25.682|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:18:26.153|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:18:28.134|9001]|[455946]|请求地址: /tabs/stream
+2025-06-25 22:18:28.135|9001]|[455946]|class com.tiankong44.tool.websocket.StreamController.stream方法入参：
+2025-06-25 22:18:28.199|9001]|[455946]|class com.tiankong44.tool.websocket.StreamController.stream方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:18:28.199|9001]|[455946]|class com.tiankong44.tool.websocket.StreamController.stream接口执行时间:64ms
+2025-06-25 22:20:30.560|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:20:30.574|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:20:36.178|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 31952 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:20:36.178|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:20:36.180|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:20:37.025|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:20:37.027|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:20:37.052|9001]|[]|Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:20:37.716|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:20:37.725|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:20:37.726|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:20:37.726|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:20:37.805|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:20:37.805|9001]|[]|Root WebApplicationContext: initialization completed in 1585 ms
+2025-06-25 22:20:39.864|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:20:39.894|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:20:39.903|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:20:39.921|9001]|[]|Started ToolApplication in 4.145 seconds (JVM running for 5.02)
+2025-06-25 22:20:40.161|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:20:40.162|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:20:40.162|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:20:40.163|9001]|[]|Completed initialization in 1 ms
+2025-06-25 22:20:40.641|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:20:43.384|9001]|[637751]|请求地址: /tabs/stream
+2025-06-25 22:20:43.384|9001]|[637751]|class com.tiankong44.tool.websocket.StreamController.stream方法入参：
+2025-06-25 22:20:43.437|9001]|[637751]|class com.tiankong44.tool.websocket.StreamController.stream方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:20:43.437|9001]|[637751]|class com.tiankong44.tool.websocket.StreamController.stream接口执行时间:53ms
+2025-06-25 22:20:51.800|9001]|[180436]|请求地址: /tabs/stream
+2025-06-25 22:20:51.801|9001]|[180436]|class com.tiankong44.tool.websocket.StreamController.stream方法入参：
+2025-06-25 22:20:51.801|9001]|[180436]|class com.tiankong44.tool.websocket.StreamController.stream方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:20:51.801|9001]|[180436]|class com.tiankong44.tool.websocket.StreamController.stream接口执行时间:0ms
+2025-06-25 22:21:26.827|9001]|[748340]|请求地址: /tabs/stream
+2025-06-25 22:21:26.827|9001]|[748340]|class com.tiankong44.tool.websocket.StreamController.stream方法入参：
+2025-06-25 22:21:26.828|9001]|[748340]|class com.tiankong44.tool.websocket.StreamController.stream方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:21:26.828|9001]|[748340]|class com.tiankong44.tool.websocket.StreamController.stream接口执行时间:0ms
+2025-06-25 22:24:39.134|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:24:39.148|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:24:43.962|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:24:43.967|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 33008 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:24:43.967|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:24:44.821|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:24:44.823|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:24:44.853|9001]|[]|Finished Spring Data repository scanning in 15 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:24:45.488|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:24:45.497|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:24:45.498|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:24:45.498|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:24:45.579|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:24:45.579|9001]|[]|Root WebApplicationContext: initialization completed in 1571 ms
+2025-06-25 22:24:47.533|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:24:47.561|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:24:47.572|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:24:47.588|9001]|[]|Started ToolApplication in 4.055 seconds (JVM running for 4.888)
+2025-06-25 22:24:47.735|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:24:48.215|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:24:48.328|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:24:48.329|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:24:48.330|9001]|[]|Completed initialization in 1 ms
+2025-06-25 22:24:55.156|9001]|[968022]|请求地址: /tabs/connect-websocket
+2025-06-25 22:24:55.156|9001]|[968022]|class com.tiankong44.tool.websocket.StreamController.connectToWebSocket方法入参：
+2025-06-25 22:24:55.194|9001]|[968022]|class com.tiankong44.tool.websocket.StreamController.connectToWebSocket方法回参：null
+2025-06-25 22:24:55.194|9001]|[968022]|class com.tiankong44.tool.websocket.StreamController.connectToWebSocket接口执行时间:38ms
+2025-06-25 22:27:22.775|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:27:22.789|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:27:27.634|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:27:27.639|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 32716 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:27:27.640|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:27:28.503|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:27:28.505|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:27:28.529|9001]|[]|Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:27:29.172|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:27:29.180|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:27:29.181|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:27:29.181|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:27:29.259|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:27:29.260|9001]|[]|Root WebApplicationContext: initialization completed in 1583 ms
+2025-06-25 22:27:31.114|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:27:31.140|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:27:31.150|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:27:31.166|9001]|[]|Started ToolApplication in 3.981 seconds (JVM running for 4.827)
+2025-06-25 22:27:31.354|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:27:31.842|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:27:31.905|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:27:31.905|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:27:31.907|9001]|[]|Completed initialization in 2 ms
+2025-06-25 22:27:36.924|9001]|[013360]|请求地址: /tabs/connect-websocket
+2025-06-25 22:27:36.924|9001]|[013360]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:27:36.985|9001]|[013360]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:27:36.985|9001]|[013360]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:62ms
+2025-06-25 22:27:46.248|9001]|[]|发生异常
+
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: The current thread was interrupted
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:310)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:273)
+	at org.apache.catalina.connector.Response.flushBuffer(Response.java:500)
+	at org.apache.catalina.connector.ResponseFacade.flushBuffer(ResponseFacade.java:312)
+	at org.springframework.http.server.ServletServerHttpResponse.flush(ServletServerHttpResponse.java:104)
+	at org.springframework.http.server.DelegatingServerHttpResponse.flush(DelegatingServerHttpResponse.java:61)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.complete(ResponseBodyEmitterReturnValueHandler.java:223)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.complete(ResponseBodyEmitter.java:236)
+	at com.tiankong44.tool.websocket.WebSocketController$1.afterConnectionClosed(WebSocketController.java:49)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.onClose(StandardWebSocketHandlerAdapter.java:145)
+	at org.apache.tomcat.websocket.WsSession.fireEndpointOnClose(WsSession.java:767)
+	at org.apache.tomcat.websocket.WsSession.doClose(WsSession.java:715)
+	at org.apache.tomcat.websocket.WsFrameClient.close(WsFrameClient.java:132)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:224)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.io.IOException: The current thread was interrupted
+	at org.apache.tomcat.util.net.NioChannel.checkInterruptStatus(NioChannel.java:236)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:134)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1424)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:768)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:732)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:716)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:573)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:221)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1255)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:402)
+	at org.apache.coyote.Response.action(Response.java:209)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:306)
+	... 22 common frames omitted
+
+2025-06-25 22:27:46.251|9001]|[]|方法回参:{"code":1,"message":"java.io.IOException: The current thread was interrupted"}
+2025-06-25 22:28:01.623|9001]|[235315]|请求地址: /tabs/connect-websocket
+2025-06-25 22:28:01.623|9001]|[235315]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:28:01.623|9001]|[235315]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:28:01.623|9001]|[235315]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 22:28:06.478|9001]|[]|发生异常
+
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: The current thread was interrupted
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:310)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:273)
+	at org.apache.catalina.connector.Response.flushBuffer(Response.java:500)
+	at org.apache.catalina.connector.ResponseFacade.flushBuffer(ResponseFacade.java:312)
+	at org.springframework.http.server.ServletServerHttpResponse.flush(ServletServerHttpResponse.java:104)
+	at org.springframework.http.server.DelegatingServerHttpResponse.flush(DelegatingServerHttpResponse.java:61)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.complete(ResponseBodyEmitterReturnValueHandler.java:223)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.complete(ResponseBodyEmitter.java:236)
+	at com.tiankong44.tool.websocket.WebSocketController$1.afterConnectionClosed(WebSocketController.java:49)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.onClose(StandardWebSocketHandlerAdapter.java:145)
+	at org.apache.tomcat.websocket.WsSession.fireEndpointOnClose(WsSession.java:767)
+	at org.apache.tomcat.websocket.WsSession.doClose(WsSession.java:715)
+	at org.apache.tomcat.websocket.WsFrameClient.close(WsFrameClient.java:132)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:224)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.io.IOException: The current thread was interrupted
+	at org.apache.tomcat.util.net.NioChannel.checkInterruptStatus(NioChannel.java:236)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:134)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1424)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:768)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:732)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:716)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:573)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:221)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1255)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:402)
+	at org.apache.coyote.Response.action(Response.java:209)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:306)
+	... 22 common frames omitted
+
+2025-06-25 22:28:06.478|9001]|[]|方法回参:{"code":1,"message":"java.io.IOException: The current thread was interrupted"}
+2025-06-25 22:29:56.772|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:29:56.787|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:29:59.101|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:29:59.104|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 2580 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:29:59.105|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:29:59.905|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:29:59.907|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:29:59.931|9001]|[]|Finished Spring Data repository scanning in 12 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:30:00.606|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:30:00.615|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:30:00.616|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:30:00.616|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:30:00.691|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:30:00.691|9001]|[]|Root WebApplicationContext: initialization completed in 1546 ms
+2025-06-25 22:30:02.646|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:30:02.674|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:30:02.682|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:30:02.697|9001]|[]|Started ToolApplication in 4.012 seconds (JVM running for 4.788)
+2025-06-25 22:30:02.927|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:30:02.927|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:30:02.928|9001]|[]|Completed initialization in 1 ms
+2025-06-25 22:30:03.296|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:30:03.756|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:30:04.594|9001]|[916397]|请求地址: /tabs/connect-websocket
+2025-06-25 22:30:04.595|9001]|[916397]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:30:04.664|9001]|[916397]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:30:04.664|9001]|[916397]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:69ms
+2025-06-25 22:30:08.809|9001]|[]|发生异常
+
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: The current thread was interrupted
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:310)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:273)
+	at org.apache.catalina.connector.Response.flushBuffer(Response.java:500)
+	at org.apache.catalina.connector.ResponseFacade.flushBuffer(ResponseFacade.java:312)
+	at org.springframework.http.server.ServletServerHttpResponse.flush(ServletServerHttpResponse.java:104)
+	at org.springframework.http.server.DelegatingServerHttpResponse.flush(DelegatingServerHttpResponse.java:61)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.complete(ResponseBodyEmitterReturnValueHandler.java:223)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.complete(ResponseBodyEmitter.java:236)
+	at com.tiankong44.tool.websocket.WebSocketController$1.afterConnectionClosed(WebSocketController.java:49)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.onClose(StandardWebSocketHandlerAdapter.java:145)
+	at org.apache.tomcat.websocket.WsSession.fireEndpointOnClose(WsSession.java:767)
+	at org.apache.tomcat.websocket.WsSession.doClose(WsSession.java:715)
+	at org.apache.tomcat.websocket.WsFrameClient.close(WsFrameClient.java:132)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:224)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.io.IOException: The current thread was interrupted
+	at org.apache.tomcat.util.net.NioChannel.checkInterruptStatus(NioChannel.java:236)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:134)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1424)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:768)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:732)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:716)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:573)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:221)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1255)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:402)
+	at org.apache.coyote.Response.action(Response.java:209)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:306)
+	... 22 common frames omitted
+
+2025-06-25 22:30:08.813|9001]|[]|方法回参:{"code":1,"message":"java.io.IOException: The current thread was interrupted"}
+2025-06-25 22:30:34.379|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:30:34.395|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:30:36.758|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 32132 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:30:36.758|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:30:36.760|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:30:37.526|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:30:37.529|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:30:37.550|9001]|[]|Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:30:38.206|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:30:38.214|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:30:38.215|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:30:38.215|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:30:38.293|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:30:38.294|9001]|[]|Root WebApplicationContext: initialization completed in 1497 ms
+2025-06-25 22:30:40.190|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:30:40.222|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:30:40.234|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:30:40.252|9001]|[]|Started ToolApplication in 3.887 seconds (JVM running for 4.71)
+2025-06-25 22:30:40.493|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:30:40.954|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:30:40.982|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:30:40.983|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:30:40.985|9001]|[]|Completed initialization in 2 ms
+2025-06-25 22:30:46.283|9001]|[941208]|请求地址: /tabs/connect-websocket
+2025-06-25 22:30:46.284|9001]|[941208]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:30:46.355|9001]|[941208]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:30:46.355|9001]|[941208]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:71ms
+2025-06-25 22:30:52.555|9001]|[]|发生异常
+
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: The current thread was interrupted
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:310)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:273)
+	at org.apache.catalina.connector.Response.flushBuffer(Response.java:500)
+	at org.apache.catalina.connector.ResponseFacade.flushBuffer(ResponseFacade.java:312)
+	at org.springframework.http.server.ServletServerHttpResponse.flush(ServletServerHttpResponse.java:104)
+	at org.springframework.http.server.DelegatingServerHttpResponse.flush(DelegatingServerHttpResponse.java:61)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.complete(ResponseBodyEmitterReturnValueHandler.java:223)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.complete(ResponseBodyEmitter.java:236)
+	at com.tiankong44.tool.websocket.WebSocketController$1.afterConnectionClosed(WebSocketController.java:49)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.onClose(StandardWebSocketHandlerAdapter.java:145)
+	at org.apache.tomcat.websocket.WsSession.fireEndpointOnClose(WsSession.java:767)
+	at org.apache.tomcat.websocket.WsSession.doClose(WsSession.java:715)
+	at org.apache.tomcat.websocket.WsFrameClient.close(WsFrameClient.java:132)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:224)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.io.IOException: The current thread was interrupted
+	at org.apache.tomcat.util.net.NioChannel.checkInterruptStatus(NioChannel.java:236)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:134)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1424)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:768)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:732)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:716)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:573)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:221)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1255)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:402)
+	at org.apache.coyote.Response.action(Response.java:209)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:306)
+	... 22 common frames omitted
+
+2025-06-25 22:30:52.559|9001]|[]|方法回参:{"code":1,"message":"java.io.IOException: The current thread was interrupted"}
+2025-06-25 22:34:12.931|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:34:12.949|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:34:48.023|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:34:48.027|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 29884 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:34:48.027|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:34:48.793|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:34:48.795|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:34:48.818|9001]|[]|Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:34:49.450|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:34:49.459|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:34:49.460|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:34:49.460|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:34:49.539|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:34:49.540|9001]|[]|Root WebApplicationContext: initialization completed in 1475 ms
+2025-06-25 22:34:51.491|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:34:51.520|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:34:51.529|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:34:51.545|9001]|[]|Started ToolApplication in 3.959 seconds (JVM running for 4.764)
+2025-06-25 22:34:51.766|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:34:51.767|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:34:51.768|9001]|[]|Completed initialization in 1 ms
+2025-06-25 22:34:52.149|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:34:52.615|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:34:54.547|9001]|[819529]|请求地址: /tabs/connect-websocket
+2025-06-25 22:34:54.547|9001]|[819529]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:34:54.604|9001]|[819529]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:34:54.604|9001]|[819529]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:57ms
+2025-06-25 22:35:01.992|9001]|[338956]|请求地址: /tabs/connect-websocket
+2025-06-25 22:35:01.992|9001]|[338956]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:35:01.992|9001]|[338956]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:35:01.992|9001]|[338956]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 22:38:42.332|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:38:42.347|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:38:47.623|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 28760 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:38:47.623|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:38:47.625|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:38:48.428|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:38:48.430|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:38:48.457|9001]|[]|Finished Spring Data repository scanning in 12 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:38:49.089|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:38:49.098|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:38:49.099|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:38:49.099|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:38:49.180|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:38:49.180|9001]|[]|Root WebApplicationContext: initialization completed in 1518 ms
+2025-06-25 22:38:51.186|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:38:51.215|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:38:51.226|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:38:51.244|9001]|[]|Started ToolApplication in 4.027 seconds (JVM running for 4.864)
+2025-06-25 22:38:51.610|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:38:51.610|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:38:51.611|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:38:51.612|9001]|[]|Completed initialization in 2 ms
+2025-06-25 22:38:52.082|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:38:56.369|9001]|[638127]|请求地址: /tabs/connect-websocket
+2025-06-25 22:38:56.370|9001]|[638127]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:38:56.432|9001]|[638127]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:38:56.432|9001]|[638127]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:61ms
+2025-06-25 22:40:00.393|9001]|[]|发生异常
+
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: The current thread was interrupted
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:310)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:273)
+	at org.apache.catalina.connector.Response.flushBuffer(Response.java:500)
+	at org.apache.catalina.connector.ResponseFacade.flushBuffer(ResponseFacade.java:312)
+	at org.springframework.http.server.ServletServerHttpResponse.flush(ServletServerHttpResponse.java:104)
+	at org.springframework.http.server.DelegatingServerHttpResponse.flush(DelegatingServerHttpResponse.java:61)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.complete(ResponseBodyEmitterReturnValueHandler.java:223)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.complete(ResponseBodyEmitter.java:236)
+	at com.tiankong44.tool.websocket.WebSocketController$1.afterConnectionClosed(WebSocketController.java:51)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.onClose(StandardWebSocketHandlerAdapter.java:145)
+	at org.apache.tomcat.websocket.WsSession.fireEndpointOnClose(WsSession.java:767)
+	at org.apache.tomcat.websocket.WsSession.doClose(WsSession.java:715)
+	at org.apache.tomcat.websocket.WsFrameClient.close(WsFrameClient.java:132)
+	at org.apache.tomcat.websocket.WsFrameClient.access$100(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.failed(WsFrameClient.java:178)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.failed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.fail(AsyncChannelWrapperSecure.java:479)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:346)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.io.IOException: The current thread was interrupted
+	at org.apache.tomcat.util.net.NioChannel.checkInterruptStatus(NioChannel.java:236)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:134)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1424)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:768)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:732)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:716)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:573)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:221)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1255)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:402)
+	at org.apache.coyote.Response.action(Response.java:209)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:306)
+	... 20 common frames omitted
+
+2025-06-25 22:40:00.396|9001]|[]|方法回参:{"code":1,"message":"java.io.IOException: The current thread was interrupted"}
+2025-06-25 22:45:46.613|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:45:46.628|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:45:51.875|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 5708 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:45:51.873|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:45:51.876|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:45:52.627|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:45:52.629|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:45:52.653|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:45:53.311|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:45:53.323|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:45:53.324|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:45:53.325|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:45:53.416|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:45:53.416|9001]|[]|Root WebApplicationContext: initialization completed in 1503 ms
+2025-06-25 22:45:55.338|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:45:55.371|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:45:55.383|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:45:55.399|9001]|[]|Started ToolApplication in 3.928 seconds (JVM running for 4.708)
+2025-06-25 22:45:55.672|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:45:55.673|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:45:55.674|9001]|[]|Completed initialization in 1 ms
+2025-06-25 22:45:56.076|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:45:56.602|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:46:01.178|9001]|[366778]|请求地址: /tabs/connect-websocket
+2025-06-25 22:46:01.179|9001]|[366778]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:46:01.221|9001]|[366778]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：null
+2025-06-25 22:46:01.221|9001]|[366778]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:43ms
+2025-06-25 22:47:53.447|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:47:53.465|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:47:58.763|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:47:58.764|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 12716 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:47:58.765|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:47:59.520|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:47:59.522|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:47:59.545|9001]|[]|Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:48:00.176|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:48:00.184|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:48:00.185|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:48:00.185|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:48:00.263|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:48:00.264|9001]|[]|Root WebApplicationContext: initialization completed in 1462 ms
+2025-06-25 22:48:02.397|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:48:02.437|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:48:02.450|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:48:02.474|9001]|[]|Started ToolApplication in 4.114 seconds (JVM running for 4.912)
+2025-06-25 22:48:03.226|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:48:03.226|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:48:03.226|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:48:03.227|9001]|[]|Completed initialization in 1 ms
+2025-06-25 22:48:03.712|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:48:04.020|9001]|[032814]|请求地址: /tabs/connect-websocket
+2025-06-25 22:48:04.022|9001]|[032814]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:48:04.102|9001]|[032814]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:48:04.102|9001]|[032814]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:82ms
+2025-06-25 22:48:08.249|9001]|[]|发生异常
+
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: The current thread was interrupted
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:310)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:273)
+	at org.apache.catalina.connector.Response.flushBuffer(Response.java:500)
+	at org.apache.catalina.connector.ResponseFacade.flushBuffer(ResponseFacade.java:312)
+	at org.springframework.http.server.ServletServerHttpResponse.flush(ServletServerHttpResponse.java:104)
+	at org.springframework.http.server.DelegatingServerHttpResponse.flush(DelegatingServerHttpResponse.java:61)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.complete(ResponseBodyEmitterReturnValueHandler.java:223)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.complete(ResponseBodyEmitter.java:236)
+	at com.tiankong44.tool.websocket.WebSocketController$1.afterConnectionClosed(WebSocketController.java:64)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.onClose(StandardWebSocketHandlerAdapter.java:145)
+	at org.apache.tomcat.websocket.WsSession.fireEndpointOnClose(WsSession.java:767)
+	at org.apache.tomcat.websocket.WsSession.doClose(WsSession.java:715)
+	at org.apache.tomcat.websocket.WsFrameClient.close(WsFrameClient.java:132)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:224)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.io.IOException: The current thread was interrupted
+	at org.apache.tomcat.util.net.NioChannel.checkInterruptStatus(NioChannel.java:236)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:134)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1424)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:768)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:732)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:716)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:573)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:221)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1255)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:402)
+	at org.apache.coyote.Response.action(Response.java:209)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:306)
+	... 22 common frames omitted
+
+2025-06-25 22:48:08.254|9001]|[]|方法回参:{"code":1,"message":"java.io.IOException: The current thread was interrupted"}
+2025-06-25 22:50:12.852|9001]|[976559]|请求地址: /tabs/connect-websocket
+2025-06-25 22:50:12.852|9001]|[976559]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:50:12.853|9001]|[976559]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:50:12.853|9001]|[976559]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 22:50:16.683|9001]|[]|发生异常
+
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: The current thread was interrupted
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:310)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:273)
+	at org.apache.catalina.connector.Response.flushBuffer(Response.java:500)
+	at org.apache.catalina.connector.ResponseFacade.flushBuffer(ResponseFacade.java:312)
+	at org.springframework.http.server.ServletServerHttpResponse.flush(ServletServerHttpResponse.java:104)
+	at org.springframework.http.server.DelegatingServerHttpResponse.flush(DelegatingServerHttpResponse.java:61)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.complete(ResponseBodyEmitterReturnValueHandler.java:223)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.complete(ResponseBodyEmitter.java:236)
+	at com.tiankong44.tool.websocket.WebSocketController$1.afterConnectionClosed(WebSocketController.java:64)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.onClose(StandardWebSocketHandlerAdapter.java:145)
+	at org.apache.tomcat.websocket.WsSession.fireEndpointOnClose(WsSession.java:767)
+	at org.apache.tomcat.websocket.WsSession.doClose(WsSession.java:715)
+	at org.apache.tomcat.websocket.WsFrameClient.close(WsFrameClient.java:132)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:224)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.io.IOException: The current thread was interrupted
+	at org.apache.tomcat.util.net.NioChannel.checkInterruptStatus(NioChannel.java:236)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:134)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1424)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:768)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:732)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:716)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:573)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:221)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1255)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:402)
+	at org.apache.coyote.Response.action(Response.java:209)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:306)
+	... 22 common frames omitted
+
+2025-06-25 22:50:16.684|9001]|[]|方法回参:{"code":1,"message":"java.io.IOException: The current thread was interrupted"}
+2025-06-25 22:51:55.589|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:51:55.602|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:51:59.664|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 30012 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:51:59.663|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:51:59.666|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:52:00.452|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:52:00.455|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:52:00.477|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:52:01.108|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:52:01.117|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:52:01.117|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:52:01.117|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:52:01.192|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:52:01.193|9001]|[]|Root WebApplicationContext: initialization completed in 1496 ms
+2025-06-25 22:52:03.056|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:52:03.085|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:52:03.094|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:52:03.111|9001]|[]|Started ToolApplication in 3.803 seconds (JVM running for 4.446)
+2025-06-25 22:52:03.742|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:52:04.244|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:52:04.315|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:52:04.316|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:52:04.317|9001]|[]|Completed initialization in 1 ms
+2025-06-25 22:52:15.737|9001]|[012835]|请求地址: /tabs/connect-websocket
+2025-06-25 22:52:15.737|9001]|[012835]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:52:15.830|9001]|[012835]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:52:15.831|9001]|[012835]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:93ms
+2025-06-25 22:52:19.705|9001]|[]|发生异常
+
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: The current thread was interrupted
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:310)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:273)
+	at org.apache.catalina.connector.Response.flushBuffer(Response.java:500)
+	at org.apache.catalina.connector.ResponseFacade.flushBuffer(ResponseFacade.java:312)
+	at org.springframework.http.server.ServletServerHttpResponse.flush(ServletServerHttpResponse.java:104)
+	at org.springframework.http.server.DelegatingServerHttpResponse.flush(DelegatingServerHttpResponse.java:61)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.complete(ResponseBodyEmitterReturnValueHandler.java:223)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.complete(ResponseBodyEmitter.java:236)
+	at com.tiankong44.tool.websocket.WebSocketController$1.afterConnectionClosed(WebSocketController.java:64)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.onClose(StandardWebSocketHandlerAdapter.java:145)
+	at org.apache.tomcat.websocket.WsSession.fireEndpointOnClose(WsSession.java:767)
+	at org.apache.tomcat.websocket.WsSession.doClose(WsSession.java:715)
+	at org.apache.tomcat.websocket.WsFrameClient.close(WsFrameClient.java:132)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:224)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.io.IOException: The current thread was interrupted
+	at org.apache.tomcat.util.net.NioChannel.checkInterruptStatus(NioChannel.java:236)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:134)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1424)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:768)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:732)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:716)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:573)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:221)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1255)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:402)
+	at org.apache.coyote.Response.action(Response.java:209)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:306)
+	... 22 common frames omitted
+
+2025-06-25 22:52:19.709|9001]|[]|方法回参:{"code":1,"message":"java.io.IOException: The current thread was interrupted"}
+2025-06-25 22:54:49.717|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:54:49.732|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:54:54.119|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:54:54.122|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 4912 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:54:54.123|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:54:54.914|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:54:54.916|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:54:54.940|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:54:55.590|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:54:55.598|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:54:55.599|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:54:55.599|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:54:55.677|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:54:55.677|9001]|[]|Root WebApplicationContext: initialization completed in 1515 ms
+2025-06-25 22:54:57.625|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:54:57.657|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:54:57.667|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:54:57.685|9001]|[]|Started ToolApplication in 4.02 seconds (JVM running for 4.806)
+2025-06-25 22:54:57.884|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:54:58.361|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:54:58.419|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:54:58.419|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:54:58.420|9001]|[]|Completed initialization in 1 ms
+2025-06-25 22:55:00.574|9001]|[572275]|请求地址: /tabs/connect-websocket
+2025-06-25 22:55:00.575|9001]|[572275]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:55:00.649|9001]|[572275]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:55:00.649|9001]|[572275]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:74ms
+2025-06-25 22:55:06.818|9001]|[]|发生异常
+
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: The current thread was interrupted
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:310)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:273)
+	at org.apache.catalina.connector.Response.flushBuffer(Response.java:500)
+	at org.apache.catalina.connector.ResponseFacade.flushBuffer(ResponseFacade.java:312)
+	at org.springframework.http.server.ServletServerHttpResponse.flush(ServletServerHttpResponse.java:104)
+	at org.springframework.http.server.DelegatingServerHttpResponse.flush(DelegatingServerHttpResponse.java:61)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.complete(ResponseBodyEmitterReturnValueHandler.java:223)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.complete(ResponseBodyEmitter.java:236)
+	at com.tiankong44.tool.websocket.WebSocketController$1.afterConnectionClosed(WebSocketController.java:64)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.onClose(StandardWebSocketHandlerAdapter.java:145)
+	at org.apache.tomcat.websocket.WsSession.fireEndpointOnClose(WsSession.java:767)
+	at org.apache.tomcat.websocket.WsSession.doClose(WsSession.java:715)
+	at org.apache.tomcat.websocket.WsFrameClient.close(WsFrameClient.java:132)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:224)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.io.IOException: The current thread was interrupted
+	at org.apache.tomcat.util.net.NioChannel.checkInterruptStatus(NioChannel.java:236)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:134)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1424)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:768)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:732)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:716)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:573)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:221)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1255)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:402)
+	at org.apache.coyote.Response.action(Response.java:209)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:306)
+	... 22 common frames omitted
+
+2025-06-25 22:55:06.823|9001]|[]|方法回参:{"code":1,"message":"java.io.IOException: The current thread was interrupted"}
+2025-06-25 22:56:17.079|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:56:17.092|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:56:19.016|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:56:19.018|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 31368 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:56:19.018|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:56:19.707|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:56:19.709|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:56:19.729|9001]|[]|Finished Spring Data repository scanning in 9 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:56:20.375|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:56:20.383|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:56:20.385|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:56:20.385|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:56:20.472|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:56:20.473|9001]|[]|Root WebApplicationContext: initialization completed in 1423 ms
+2025-06-25 22:56:22.417|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:56:22.444|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:56:22.453|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:56:22.469|9001]|[]|Started ToolApplication in 3.823 seconds (JVM running for 4.494)
+2025-06-25 22:56:23.051|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:56:23.052|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:56:23.053|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:56:23.054|9001]|[]|Completed initialization in 2 ms
+2025-06-25 22:56:23.523|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:56:26.434|9001]|[795112]|请求地址: /tabs/connect-websocket
+2025-06-25 22:56:26.434|9001]|[795112]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 22:56:26.557|9001]|[795112]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:56:26.557|9001]|[795112]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:122ms
+2025-06-25 22:56:30.583|9001]|[]|发生异常
+
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: The current thread was interrupted
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:310)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:273)
+	at org.apache.catalina.connector.Response.flushBuffer(Response.java:500)
+	at org.apache.catalina.connector.ResponseFacade.flushBuffer(ResponseFacade.java:312)
+	at org.springframework.http.server.ServletServerHttpResponse.flush(ServletServerHttpResponse.java:104)
+	at org.springframework.http.server.DelegatingServerHttpResponse.flush(DelegatingServerHttpResponse.java:61)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.complete(ResponseBodyEmitterReturnValueHandler.java:223)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.complete(ResponseBodyEmitter.java:236)
+	at com.tiankong44.tool.websocket.WebSocketController$1.afterConnectionClosed(WebSocketController.java:64)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.onClose(StandardWebSocketHandlerAdapter.java:145)
+	at org.apache.tomcat.websocket.WsSession.fireEndpointOnClose(WsSession.java:767)
+	at org.apache.tomcat.websocket.WsSession.doClose(WsSession.java:715)
+	at org.apache.tomcat.websocket.WsFrameClient.close(WsFrameClient.java:132)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:224)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.io.IOException: The current thread was interrupted
+	at org.apache.tomcat.util.net.NioChannel.checkInterruptStatus(NioChannel.java:236)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:134)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1424)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:768)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:732)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:716)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:573)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:221)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1255)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:402)
+	at org.apache.coyote.Response.action(Response.java:209)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:306)
+	... 22 common frames omitted
+
+2025-06-25 22:56:30.587|9001]|[]|方法回参:{"code":1,"message":"java.io.IOException: The current thread was interrupted"}
+2025-06-25 22:57:47.065|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 22:57:47.080|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 22:57:52.079|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 22:57:52.079|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 1468 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 22:57:52.081|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 22:57:52.840|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 22:57:52.842|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 22:57:52.865|9001]|[]|Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2025-06-25 22:57:53.539|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 22:57:53.549|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:57:53.549|9001]|[]|Starting service [Tomcat]
+2025-06-25 22:57:53.549|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 22:57:53.642|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 22:57:53.643|9001]|[]|Root WebApplicationContext: initialization completed in 1525 ms
+2025-06-25 22:57:55.575|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 22:57:55.608|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 22:57:55.618|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 22:57:55.636|9001]|[]|Started ToolApplication in 3.969 seconds (JVM running for 4.824)
+2025-06-25 22:57:55.822|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 22:57:56.332|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 22:57:56.388|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 22:57:56.388|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 22:57:56.389|9001]|[]|Completed initialization in 1 ms
+2025-06-25 22:58:02.829|9001]|[608279]|请求地址: /tabs/connect-websocket2
+2025-06-25 22:58:02.829|9001]|[608279]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket2方法入参：
+2025-06-25 22:58:02.926|9001]|[608279]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket2方法回参：{"timeout":9223372036854775807}
+2025-06-25 22:58:02.926|9001]|[608279]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket2接口执行时间:96ms
+2025-06-25 22:58:07.698|9001]|[]|发生异常
+
+org.apache.catalina.connector.ClientAbortException: java.io.IOException: The current thread was interrupted
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:310)
+	at org.apache.catalina.connector.OutputBuffer.flush(OutputBuffer.java:273)
+	at org.apache.catalina.connector.Response.flushBuffer(Response.java:500)
+	at org.apache.catalina.connector.ResponseFacade.flushBuffer(ResponseFacade.java:312)
+	at org.springframework.http.server.ServletServerHttpResponse.flush(ServletServerHttpResponse.java:104)
+	at org.springframework.http.server.DelegatingServerHttpResponse.flush(DelegatingServerHttpResponse.java:61)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitterReturnValueHandler$HttpMessageConvertingHandler.complete(ResponseBodyEmitterReturnValueHandler.java:223)
+	at org.springframework.web.servlet.mvc.method.annotation.ResponseBodyEmitter.complete(ResponseBodyEmitter.java:236)
+	at com.tiankong44.tool.websocket.WebSocketController$2.afterConnectionClosed(WebSocketController.java:123)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.onClose(StandardWebSocketHandlerAdapter.java:145)
+	at org.apache.tomcat.websocket.WsSession.fireEndpointOnClose(WsSession.java:767)
+	at org.apache.tomcat.websocket.WsSession.doClose(WsSession.java:715)
+	at org.apache.tomcat.websocket.WsFrameClient.close(WsFrameClient.java:132)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:224)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: java.io.IOException: The current thread was interrupted
+	at org.apache.tomcat.util.net.NioChannel.checkInterruptStatus(NioChannel.java:236)
+	at org.apache.tomcat.util.net.NioChannel.write(NioChannel.java:134)
+	at org.apache.tomcat.util.net.NioEndpoint$NioSocketWrapper.doWrite(NioEndpoint.java:1424)
+	at org.apache.tomcat.util.net.SocketWrapperBase.doWrite(SocketWrapperBase.java:768)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flushBlocking(SocketWrapperBase.java:732)
+	at org.apache.tomcat.util.net.SocketWrapperBase.flush(SocketWrapperBase.java:716)
+	at org.apache.coyote.http11.Http11OutputBuffer$SocketOutputBuffer.flush(Http11OutputBuffer.java:573)
+	at org.apache.coyote.http11.filters.ChunkedOutputFilter.flush(ChunkedOutputFilter.java:157)
+	at org.apache.coyote.http11.Http11OutputBuffer.flush(Http11OutputBuffer.java:221)
+	at org.apache.coyote.http11.Http11Processor.flush(Http11Processor.java:1255)
+	at org.apache.coyote.AbstractProcessor.action(AbstractProcessor.java:402)
+	at org.apache.coyote.Response.action(Response.java:209)
+	at org.apache.catalina.connector.OutputBuffer.doFlush(OutputBuffer.java:306)
+	... 22 common frames omitted
+
+2025-06-25 22:58:07.702|9001]|[]|方法回参:{"code":1,"message":"java.io.IOException: The current thread was interrupted"}
+2025-06-25 23:03:18.277|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:03:18.293|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:03:23.574|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:03:23.575|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 30744 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:03:23.576|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:03:24.388|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:03:24.390|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:03:24.411|9001]|[]|Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:03:25.088|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:03:25.096|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:03:25.097|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:03:25.097|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:03:25.182|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:03:25.182|9001]|[]|Root WebApplicationContext: initialization completed in 1568 ms
+2025-06-25 23:03:27.149|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:03:27.183|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:03:27.193|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:03:27.210|9001]|[]|Started ToolApplication in 4.06 seconds (JVM running for 4.812)
+2025-06-25 23:03:27.561|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:03:27.561|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:03:27.561|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:03:27.563|9001]|[]|Completed initialization in 2 ms
+2025-06-25 23:03:28.034|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:03:35.014|9001]|[254027]|请求地址: /tabs/connect-websocket
+2025-06-25 23:03:35.015|9001]|[254027]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:03:39.740|9001]|[254027]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:03:39.741|9001]|[254027]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:4725ms
+2025-06-25 23:04:11.199|9001]|[017212]|请求地址: /tabs/connect-websocket
+2025-06-25 23:04:11.199|9001]|[017212]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:04:11.199|9001]|[017212]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:04:11.199|9001]|[017212]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:04:33.994|9001]|[175613]|请求地址: /tabs/connect-websocket
+2025-06-25 23:04:33.994|9001]|[175613]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:04:33.995|9001]|[175613]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:04:33.995|9001]|[175613]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:1ms
+2025-06-25 23:05:00.375|9001]|[521966]|请求地址: /tabs/connect-websocket
+2025-06-25 23:05:00.375|9001]|[521966]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:05:00.375|9001]|[521966]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:05:00.375|9001]|[521966]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:05:13.717|9001]|[825519]|请求地址: /tabs/connect-websocket
+2025-06-25 23:05:13.718|9001]|[825519]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:05:13.718|9001]|[825519]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:05:13.718|9001]|[825519]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:05:15.144|9001]|[499268]|请求地址: /tabs/connect-websocket
+2025-06-25 23:05:15.144|9001]|[499268]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:05:15.144|9001]|[499268]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:05:15.144|9001]|[499268]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:06:26.499|9001]|[371401]|请求地址: /tabs/connect-websocket
+2025-06-25 23:06:26.499|9001]|[371401]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:06:26.500|9001]|[371401]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:06:26.500|9001]|[371401]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:07:00.585|9001]|[751454]|请求地址: /tabs/connect-websocket
+2025-06-25 23:07:00.585|9001]|[751454]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:07:00.585|9001]|[751454]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:07:00.585|9001]|[751454]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:07:43.013|9001]|[318123]|请求地址: /tabs/connect-websocket
+2025-06-25 23:07:43.013|9001]|[318123]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:07:43.013|9001]|[318123]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:07:43.013|9001]|[318123]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:08:25.221|9001]|[714364]|请求地址: /tabs/connect-websocket
+2025-06-25 23:08:25.222|9001]|[714364]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:08:25.222|9001]|[714364]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:08:25.222|9001]|[714364]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:08:35.077|9001]|[143963]|请求地址: /tabs/connect-websocket
+2025-06-25 23:08:35.078|9001]|[143963]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:08:35.078|9001]|[143963]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:08:35.078|9001]|[143963]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:08:41.922|9001]|[791584]|请求地址: /tabs/connect-websocket
+2025-06-25 23:08:41.922|9001]|[791584]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:08:41.922|9001]|[791584]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:08:41.922|9001]|[791584]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:08:57.960|9001]|[214719]|请求地址: /tabs/connect-websocket
+2025-06-25 23:08:57.960|9001]|[214719]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:08:57.960|9001]|[214719]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:08:57.960|9001]|[214719]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:08:59.915|9001]|[487527]|请求地址: /tabs/connect-websocket
+2025-06-25 23:08:59.915|9001]|[487527]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:08:59.915|9001]|[487527]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:08:59.915|9001]|[487527]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:10:48.189|9001]|[334981]|请求地址: /tabs/connect-websocket
+2025-06-25 23:10:48.191|9001]|[334981]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:10:48.191|9001]|[334981]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"timeout":9223372036854775807}
+2025-06-25 23:10:48.191|9001]|[334981]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:2ms
+2025-06-25 23:11:43.785|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:11:43.799|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:11:48.187|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:11:48.187|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 14792 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:11:48.189|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:11:48.892|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:11:48.894|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:11:48.916|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:11:49.593|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:11:49.603|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:11:49.604|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:11:49.604|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:11:49.691|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:11:49.691|9001]|[]|Root WebApplicationContext: initialization completed in 1468 ms
+2025-06-25 23:11:51.763|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:11:51.791|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:11:51.801|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:11:51.819|9001]|[]|Started ToolApplication in 3.995 seconds (JVM running for 4.707)
+2025-06-25 23:11:52.077|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:11:52.077|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:11:52.079|9001]|[]|Completed initialization in 2 ms
+2025-06-25 23:11:52.464|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:11:52.999|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:11:58.830|9001]|[949001]|请求地址: /tabs/connect-websocket
+2025-06-25 23:11:58.830|9001]|[949001]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:11:58.910|9001]|[949001]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:11:58.910|9001]|[949001]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:80ms
+2025-06-25 23:12:07.548|9001]|[238312]|请求地址: /tabs/connect-websocket
+2025-06-25 23:12:07.548|9001]|[238312]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:12:07.549|9001]|[238312]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:12:07.549|9001]|[238312]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:1ms
+2025-06-25 23:12:14.993|9001]|[798857]|请求地址: /tabs/connect-websocket
+2025-06-25 23:12:14.994|9001]|[798857]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:12:14.994|9001]|[798857]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:12:14.994|9001]|[798857]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:12:16.378|9001]|[075574]|请求地址: /tabs/connect-websocket
+2025-06-25 23:12:16.378|9001]|[075574]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:12:16.378|9001]|[075574]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:12:16.378|9001]|[075574]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:0ms
+2025-06-25 23:19:01.259|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:19:01.274|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:19:06.536|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:19:06.536|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 33380 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:19:06.539|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:19:07.377|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:19:07.379|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:19:07.404|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:19:08.055|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:19:08.066|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:19:08.067|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:19:08.067|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:19:08.148|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:19:08.149|9001]|[]|Root WebApplicationContext: initialization completed in 1569 ms
+2025-06-25 23:19:10.109|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:19:10.139|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:19:10.150|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:19:10.172|9001]|[]|Started ToolApplication in 4.064 seconds (JVM running for 4.876)
+2025-06-25 23:19:10.472|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:19:10.473|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:19:10.474|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:19:10.475|9001]|[]|Completed initialization in 2 ms
+2025-06-25 23:19:10.938|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:19:11.682|9001]|[017518]|请求地址: /tabs/connect-websocket
+2025-06-25 23:19:11.682|9001]|[017518]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:19:11.768|9001]|[017518]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:19:11.769|9001]|[017518]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:87ms
+2025-06-25 23:21:40.172|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:21:40.187|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:21:50.939|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:21:50.939|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 8216 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:21:50.941|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:21:51.730|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:21:51.733|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:21:51.756|9001]|[]|Finished Spring Data repository scanning in 10 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:21:52.414|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:21:52.424|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:21:52.424|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:21:52.424|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:21:52.509|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:21:52.509|9001]|[]|Root WebApplicationContext: initialization completed in 1512 ms
+2025-06-25 23:21:54.433|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:21:54.462|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:21:54.474|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:21:54.490|9001]|[]|Started ToolApplication in 4.023 seconds (JVM running for 4.895)
+2025-06-25 23:21:54.789|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:21:54.789|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:21:54.790|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:21:54.791|9001]|[]|Completed initialization in 2 ms
+2025-06-25 23:21:55.275|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:21:59.920|9001]|[415986]|请求地址: /tabs/connect-websocket
+2025-06-25 23:21:59.921|9001]|[415986]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:22:00.005|9001]|[415986]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:22:00.006|9001]|[415986]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:85ms
+2025-06-25 23:22:00.339|9001]|[]|发生异常
+
+com.alibaba.fastjson.JSONException: syntax error, pos 1, line 1, column 2C7493375EED047B1986981B3CBFEF9B2
+	at com.alibaba.fastjson.parser.DefaultJSONParser.parse(DefaultJSONParser.java:1497)
+	at com.alibaba.fastjson.parser.DefaultJSONParser.parse(DefaultJSONParser.java:1383)
+	at com.alibaba.fastjson.JSON.parse(JSON.java:182)
+	at com.alibaba.fastjson.JSON.parse(JSON.java:192)
+	at com.alibaba.fastjson.JSON.parse(JSON.java:148)
+	at com.alibaba.fastjson.JSON.parseObject(JSON.java:253)
+	at com.alibaba.fastjson.JSONObject.getJSONObject(JSONObject.java:137)
+	at com.tiankong44.tool.websocket.WebSocketController$1.handleMessage(WebSocketController.java:65)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.handleTextMessage(StandardWebSocketHandlerAdapter.java:114)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.access$000(StandardWebSocketHandlerAdapter.java:43)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter$3.onMessage(StandardWebSocketHandlerAdapter.java:85)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter$3.onMessage(StandardWebSocketHandlerAdapter.java:82)
+	at org.apache.tomcat.websocket.WsFrameBase.sendMessageText(WsFrameBase.java:415)
+	at org.apache.tomcat.websocket.WsFrameBase.processDataText(WsFrameBase.java:515)
+	at org.apache.tomcat.websocket.WsFrameBase.processData(WsFrameBase.java:301)
+	at org.apache.tomcat.websocket.WsFrameBase.processInputBuffer(WsFrameBase.java:133)
+	at org.apache.tomcat.websocket.WsFrameClient.processSocketRead(WsFrameClient.java:95)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:212)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+
+2025-06-25 23:22:00.343|9001]|[]|方法回参:{"code":1,"message":"syntax error, pos 1, line 1, column 2C7493375EED047B1986981B3CBFEF9B2"}
+2025-06-25 23:22:31.295|9001]|[325815]|请求地址: /tabs/connect-websocket
+2025-06-25 23:22:31.295|9001]|[325815]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:22:31.295|9001]|[325815]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:22:31.295|9001]|[325815]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:1ms
+2025-06-25 23:22:31.636|9001]|[]|发生异常
+
+com.alibaba.fastjson.JSONException: syntax error, pos 1, line 1, column 2DE2EB0BAE8D043879F7E7EBB9EDB7D5A
+	at com.alibaba.fastjson.parser.DefaultJSONParser.parse(DefaultJSONParser.java:1497)
+	at com.alibaba.fastjson.parser.DefaultJSONParser.parse(DefaultJSONParser.java:1383)
+	at com.alibaba.fastjson.JSON.parse(JSON.java:182)
+	at com.alibaba.fastjson.JSON.parse(JSON.java:192)
+	at com.alibaba.fastjson.JSON.parse(JSON.java:148)
+	at com.alibaba.fastjson.JSON.parseObject(JSON.java:253)
+	at com.alibaba.fastjson.JSONObject.getJSONObject(JSONObject.java:137)
+	at com.tiankong44.tool.websocket.WebSocketController$1.handleMessage(WebSocketController.java:65)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.handleTextMessage(StandardWebSocketHandlerAdapter.java:114)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.access$000(StandardWebSocketHandlerAdapter.java:43)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter$3.onMessage(StandardWebSocketHandlerAdapter.java:85)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter$3.onMessage(StandardWebSocketHandlerAdapter.java:82)
+	at org.apache.tomcat.websocket.WsFrameBase.sendMessageText(WsFrameBase.java:415)
+	at org.apache.tomcat.websocket.WsFrameBase.processDataText(WsFrameBase.java:515)
+	at org.apache.tomcat.websocket.WsFrameBase.processData(WsFrameBase.java:301)
+	at org.apache.tomcat.websocket.WsFrameBase.processInputBuffer(WsFrameBase.java:133)
+	at org.apache.tomcat.websocket.WsFrameClient.processSocketRead(WsFrameClient.java:95)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:212)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+
+2025-06-25 23:22:31.637|9001]|[]|方法回参:{"code":1,"message":"syntax error, pos 1, line 1, column 2DE2EB0BAE8D043879F7E7EBB9EDB7D5A"}
+2025-06-25 23:24:05.495|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:24:05.509|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:24:09.916|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:24:09.919|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 10176 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:24:09.920|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:24:10.705|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:24:10.706|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:24:10.730|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:24:11.369|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:24:11.378|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:24:11.378|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:24:11.378|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:24:11.465|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:24:11.465|9001]|[]|Root WebApplicationContext: initialization completed in 1507 ms
+2025-06-25 23:24:13.311|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:24:13.342|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:24:13.342|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:24:13.357|9001]|[]|Started ToolApplication in 3.869 seconds (JVM running for 4.632)
+2025-06-25 23:24:13.640|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:24:14.061|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:24:14.099|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:24:14.099|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:24:14.099|9001]|[]|Completed initialization in 0 ms
+2025-06-25 23:24:36.081|9001]|[472354]|请求地址: /tabs/connect-websocket
+2025-06-25 23:24:36.081|9001]|[472354]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:24:36.287|9001]|[472354]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:24:36.293|9001]|[472354]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:210ms
+2025-06-25 23:24:53.485|9001]|[302895]|请求地址: /tabs/connect-websocket
+2025-06-25 23:24:53.486|9001]|[302895]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:24:53.486|9001]|[302895]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:24:53.486|9001]|[302895]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:1ms
+2025-06-25 23:25:06.982|9001]|[289354]|请求地址: /tabs/connect-websocket
+2025-06-25 23:25:06.982|9001]|[289354]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:25:06.982|9001]|[289354]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:25:06.982|9001]|[289354]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:1ms
+2025-06-25 23:25:26.113|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:25:26.130|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:25:28.623|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 33312 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:25:28.622|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:25:28.624|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:25:29.384|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:25:29.386|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:25:29.409|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:25:30.018|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:25:30.028|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:25:30.029|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:25:30.029|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:25:30.118|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:25:30.118|9001]|[]|Root WebApplicationContext: initialization completed in 1419 ms
+2025-06-25 23:25:31.996|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:25:32.036|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:25:32.045|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:25:32.062|9001]|[]|Started ToolApplication in 3.848 seconds (JVM running for 4.756)
+2025-06-25 23:25:32.647|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:25:32.980|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:25:32.980|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:25:32.981|9001]|[]|Completed initialization in 1 ms
+2025-06-25 23:25:33.196|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:25:34.661|9001]|[746575]|请求地址: /tabs/connect-websocket
+2025-06-25 23:25:34.661|9001]|[746575]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:25:34.785|9001]|[746575]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:25:34.785|9001]|[746575]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:124ms
+2025-06-25 23:26:49.646|9001]|[012104]|请求地址: /tabs/connect-websocket
+2025-06-25 23:26:49.647|9001]|[012104]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:26:49.647|9001]|[012104]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:26:49.647|9001]|[012104]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:1ms
+2025-06-25 23:27:48.629|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:27:48.644|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:28:00.369|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 25332 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:28:00.368|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:28:00.371|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:28:01.154|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:28:01.155|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:28:01.179|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:28:01.870|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:28:01.879|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:28:01.879|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:28:01.879|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:28:01.961|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:28:01.961|9001]|[]|Root WebApplicationContext: initialization completed in 1509 ms
+2025-06-25 23:28:03.848|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:28:03.875|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:28:03.884|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:28:03.902|9001]|[]|Started ToolApplication in 3.963 seconds (JVM running for 4.815)
+2025-06-25 23:28:04.270|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:28:04.272|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:28:04.272|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:28:04.273|9001]|[]|Completed initialization in 1 ms
+2025-06-25 23:28:04.738|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:28:06.885|9001]|[744592]|请求地址: /tabs/connect-websocket
+2025-06-25 23:28:06.885|9001]|[744592]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:28:06.998|9001]|[744592]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:28:06.998|9001]|[744592]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:113ms
+2025-06-25 23:28:07.373|9001]|[]|发生异常
+
+com.alibaba.fastjson.JSONException: not close json text, token : float
+	at com.alibaba.fastjson.parser.DefaultJSONParser.close(DefaultJSONParser.java:1543)
+	at com.alibaba.fastjson.JSON.parse(JSON.java:186)
+	at com.alibaba.fastjson.JSON.parse(JSON.java:192)
+	at com.alibaba.fastjson.JSON.parse(JSON.java:148)
+	at com.alibaba.fastjson.JSON.parseObject(JSON.java:253)
+	at com.alibaba.fastjson.JSONObject.getJSONObject(JSONObject.java:137)
+	at com.tiankong44.tool.websocket.WebSocketController$1.handleMessage(WebSocketController.java:66)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.handleTextMessage(StandardWebSocketHandlerAdapter.java:114)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.access$000(StandardWebSocketHandlerAdapter.java:43)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter$3.onMessage(StandardWebSocketHandlerAdapter.java:85)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter$3.onMessage(StandardWebSocketHandlerAdapter.java:82)
+	at org.apache.tomcat.websocket.WsFrameBase.sendMessageText(WsFrameBase.java:415)
+	at org.apache.tomcat.websocket.WsFrameBase.processDataText(WsFrameBase.java:515)
+	at org.apache.tomcat.websocket.WsFrameBase.processData(WsFrameBase.java:301)
+	at org.apache.tomcat.websocket.WsFrameBase.processInputBuffer(WsFrameBase.java:133)
+	at org.apache.tomcat.websocket.WsFrameClient.processSocketRead(WsFrameClient.java:95)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:212)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+
+2025-06-25 23:28:07.378|9001]|[]|方法回参:{"code":1,"message":"not close json text, token : float"}
+2025-06-25 23:28:21.230|9001]|[880389]|请求地址: /tabs/connect-websocket
+2025-06-25 23:28:21.230|9001]|[880389]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:28:21.232|9001]|[880389]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:28:21.232|9001]|[880389]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:1ms
+2025-06-25 23:28:21.563|9001]|[]|发生异常
+
+com.alibaba.fastjson.JSONException: not close json text, token : int
+	at com.alibaba.fastjson.parser.DefaultJSONParser.close(DefaultJSONParser.java:1543)
+	at com.alibaba.fastjson.JSON.parse(JSON.java:186)
+	at com.alibaba.fastjson.JSON.parse(JSON.java:192)
+	at com.alibaba.fastjson.JSON.parse(JSON.java:148)
+	at com.alibaba.fastjson.JSON.parseObject(JSON.java:253)
+	at com.alibaba.fastjson.JSONObject.getJSONObject(JSONObject.java:137)
+	at com.tiankong44.tool.websocket.WebSocketController$1.handleMessage(WebSocketController.java:66)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.handleTextMessage(StandardWebSocketHandlerAdapter.java:114)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter.access$000(StandardWebSocketHandlerAdapter.java:43)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter$3.onMessage(StandardWebSocketHandlerAdapter.java:85)
+	at org.springframework.web.socket.adapter.standard.StandardWebSocketHandlerAdapter$3.onMessage(StandardWebSocketHandlerAdapter.java:82)
+	at org.apache.tomcat.websocket.WsFrameBase.sendMessageText(WsFrameBase.java:415)
+	at org.apache.tomcat.websocket.WsFrameBase.processDataText(WsFrameBase.java:515)
+	at org.apache.tomcat.websocket.WsFrameBase.processData(WsFrameBase.java:301)
+	at org.apache.tomcat.websocket.WsFrameBase.processInputBuffer(WsFrameBase.java:133)
+	at org.apache.tomcat.websocket.WsFrameClient.processSocketRead(WsFrameClient.java:95)
+	at org.apache.tomcat.websocket.WsFrameClient.resumeProcessing(WsFrameClient.java:212)
+	at org.apache.tomcat.websocket.WsFrameClient.access$500(WsFrameClient.java:31)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.doResumeProcessing(WsFrameClient.java:189)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:163)
+	at org.apache.tomcat.websocket.WsFrameClient$WsFrameClientCompletionHandler.completed(WsFrameClient.java:148)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$WrapperFuture.complete(AsyncChannelWrapperSecure.java:471)
+	at org.apache.tomcat.websocket.AsyncChannelWrapperSecure$ReadTask.run(AsyncChannelWrapperSecure.java:338)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+
+2025-06-25 23:28:21.565|9001]|[]|方法回参:{"code":1,"message":"not close json text, token : int"}
+2025-06-25 23:30:55.566|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:30:55.582|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:31:00.413|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:31:00.413|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 7844 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:31:00.417|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:31:01.215|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:31:01.217|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:31:01.242|9001]|[]|Finished Spring Data repository scanning in 12 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:31:01.952|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:31:01.963|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:31:01.963|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:31:01.963|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:31:02.049|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:31:02.050|9001]|[]|Root WebApplicationContext: initialization completed in 1544 ms
+2025-06-25 23:31:03.995|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:31:04.026|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:31:04.039|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:31:04.057|9001]|[]|Started ToolApplication in 4.098 seconds (JVM running for 4.954)
+2025-06-25 23:31:04.693|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:31:04.695|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:31:04.695|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:31:04.697|9001]|[]|Completed initialization in 2 ms
+2025-06-25 23:31:05.165|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:31:07.061|9001]|[360473]|请求地址: /tabs/connect-websocket
+2025-06-25 23:31:07.061|9001]|[360473]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:31:07.134|9001]|[360473]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:31:07.135|9001]|[360473]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:74ms
+2025-06-25 23:32:30.810|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:32:30.825|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:32:35.589|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:32:35.592|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 14452 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:32:35.593|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:32:36.352|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:32:36.354|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:32:36.377|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:32:37.014|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:32:37.022|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:32:37.024|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:32:37.024|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:32:37.105|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:32:37.105|9001]|[]|Root WebApplicationContext: initialization completed in 1472 ms
+2025-06-25 23:32:38.970|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:32:38.998|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:32:39.008|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:32:39.026|9001]|[]|Started ToolApplication in 3.872 seconds (JVM running for 4.702)
+2025-06-25 23:32:39.291|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:32:39.291|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:32:39.293|9001]|[]|Completed initialization in 2 ms
+2025-06-25 23:32:39.876|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:32:40.370|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:32:47.995|9001]|[446544]|请求地址: /tabs/connect-websocket
+2025-06-25 23:32:47.996|9001]|[446544]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:32:48.061|9001]|[446544]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:32:48.061|9001]|[446544]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:66ms
+2025-06-25 23:38:06.880|9001]|[168896]|请求地址: /tabs/connect-websocket
+2025-06-25 23:38:06.880|9001]|[168896]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:38:06.881|9001]|[168896]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:38:06.881|9001]|[168896]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:1ms
+2025-06-25 23:43:48.768|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:43:48.783|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:43:53.927|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:43:53.930|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 33664 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:43:53.931|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:43:54.814|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:43:54.815|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:43:54.839|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:43:55.509|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:43:55.518|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:43:55.518|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:43:55.518|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:43:55.596|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:43:55.596|9001]|[]|Root WebApplicationContext: initialization completed in 1627 ms
+2025-06-25 23:43:57.534|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:43:57.564|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:43:57.575|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:43:57.592|9001]|[]|Started ToolApplication in 4.067 seconds (JVM running for 4.899)
+2025-06-25 23:43:57.914|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:43:57.914|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:43:57.916|9001]|[]|Completed initialization in 2 ms
+2025-06-25 23:43:57.916|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:43:58.390|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:44:01.127|9001]|[734014]|请求地址: /tabs/connect-websocket
+2025-06-25 23:44:01.127|9001]|[734014]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:44:01.200|9001]|[734014]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:44:01.200|9001]|[734014]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:73ms
+2025-06-25 23:45:36.244|9001]|[248921]|请求地址: /tabs/connect-websocket
+2025-06-25 23:45:36.244|9001]|[248921]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:45:36.244|9001]|[248921]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:45:36.244|9001]|[248921]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:1ms
+2025-06-25 23:50:43.356|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:50:43.371|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:50:49.023|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 12960 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:50:49.023|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:50:49.025|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:50:49.995|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:50:49.998|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:50:50.028|9001]|[]|Finished Spring Data repository scanning in 13 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:50:50.774|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:50:50.784|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:50:50.785|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:50:50.785|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:50:50.870|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:50:50.870|9001]|[]|Root WebApplicationContext: initialization completed in 1790 ms
+2025-06-25 23:50:53.151|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:50:53.187|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:50:53.198|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:50:53.216|9001]|[]|Started ToolApplication in 4.679 seconds (JVM running for 5.655)
+2025-06-25 23:50:53.954|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:50:53.954|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:50:53.954|9001]|[]|Completed initialization in 0 ms
+2025-06-25 23:50:53.954|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:50:54.458|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:51:01.070|9001]|[205403]|请求地址: /tabs/connect-websocket
+2025-06-25 23:51:01.082|9001]|[205403]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:51:01.355|9001]|[205403]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:51:01.355|9001]|[205403]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:282ms
+2025-06-25 23:53:07.698|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:53:07.714|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:53:11.962|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 9580 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:53:11.960|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:53:11.962|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:53:12.680|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:53:12.681|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:53:12.705|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:53:13.386|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:53:13.395|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:53:13.396|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:53:13.396|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:53:13.481|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:53:13.482|9001]|[]|Root WebApplicationContext: initialization completed in 1488 ms
+2025-06-25 23:53:15.414|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:53:15.443|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:53:15.452|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:53:15.468|9001]|[]|Started ToolApplication in 3.868 seconds (JVM running for 4.547)
+2025-06-25 23:53:16.022|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:53:16.023|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:53:16.023|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:53:16.026|9001]|[]|Completed initialization in 3 ms
+2025-06-25 23:53:16.503|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:53:21.445|9001]|[174415]|请求地址: /tabs/connect-websocket
+2025-06-25 23:53:21.446|9001]|[174415]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:53:21.527|9001]|[174415]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:53:21.527|9001]|[174415]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:81ms
+2025-06-25 23:59:28.554|9001]|[]|HikariPool-1 - Shutdown initiated...
+2025-06-25 23:59:28.569|9001]|[]|HikariPool-1 - Shutdown completed.
+2025-06-25 23:59:33.624|9001]|[]|HV000001: Hibernate Validator 6.2.5.Final
+2025-06-25 23:59:33.625|9001]|[]|Starting ToolApplication using Java 1.8.0_382 on tiankong with PID 24800 (D:\Coding\GitRepo\union_lotto\target\classes started by 12481 in D:\Coding\GitRepo\union_lotto)
+2025-06-25 23:59:33.627|9001]|[]|The following 1 profile is active: "out"
+2025-06-25 23:59:34.464|9001]|[]|Multiple Spring Data modules found, entering strict repository configuration mode
+2025-06-25 23:59:34.466|9001]|[]|Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2025-06-25 23:59:34.489|9001]|[]|Finished Spring Data repository scanning in 11 ms. Found 0 Redis repository interfaces.
+2025-06-25 23:59:35.160|9001]|[]|Tomcat initialized with port(s): 9001 (http)
+2025-06-25 23:59:35.171|9001]|[]|Initializing ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:59:35.172|9001]|[]|Starting service [Tomcat]
+2025-06-25 23:59:35.172|9001]|[]|Starting Servlet engine: [Apache Tomcat/9.0.65]
+2025-06-25 23:59:35.257|9001]|[]|Initializing Spring embedded WebApplicationContext
+2025-06-25 23:59:35.257|9001]|[]|Root WebApplicationContext: initialization completed in 1550 ms
+2025-06-25 23:59:37.148|9001]|[]|Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-06-25 23:59:37.192|9001]|[]|Starting ProtocolHandler ["http-nio-9001"]
+2025-06-25 23:59:37.201|9001]|[]|Tomcat started on port(s): 9001 (http) with context path '/tabs'
+2025-06-25 23:59:37.220|9001]|[]|Started ToolApplication in 4.069 seconds (JVM running for 4.928)
+2025-06-25 23:59:37.518|9001]|[]|Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-25 23:59:37.518|9001]|[]|Initializing Servlet 'dispatcherServlet'
+2025-06-25 23:59:37.519|9001]|[]|HikariPool-1 - Starting...
+2025-06-25 23:59:37.520|9001]|[]|Completed initialization in 2 ms
+2025-06-25 23:59:38.001|9001]|[]|HikariPool-1 - Start completed.
+2025-06-25 23:59:42.216|9001]|[388412]|请求地址: /tabs/connect-websocket
+2025-06-25 23:59:42.216|9001]|[388412]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法入参：
+2025-06-25 23:59:42.297|9001]|[388412]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket方法回参：{"headers":{"Cache-Control":["no-cache"],"Connection":["keep-alive"],"Content-Type":["text/event-stream"]},"statusCodeValue":200,"body":{"timeout":9223372036854775807},"statusCode":"OK"}
+2025-06-25 23:59:42.298|9001]|[388412]|class com.tiankong44.tool.websocket.WebSocketController.connectToWebSocket接口执行时间:82ms
