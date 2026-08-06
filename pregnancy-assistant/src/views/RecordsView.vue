@@ -44,6 +44,15 @@ function formatDate(value: string): string {
   return new Intl.DateTimeFormat('zh-CN', { month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(value))
 }
 
+function formatDurationSeconds(value: number | undefined): string {
+  if (value === undefined || !Number.isFinite(value) || value < 0) return '未记录'
+  const totalSeconds = Math.floor(value)
+  const minutes = Math.floor(totalSeconds / 60)
+  const seconds = totalSeconds % 60
+  if (minutes === 0) return `${seconds} 秒`
+  return `${minutes} 分 ${seconds} 秒`
+}
+
 function healthLabel(type: string): string {
   return { weight: '体重', 'blood-pressure': '血压', symptom: '症状' }[type] ?? type
 }
@@ -56,10 +65,14 @@ function healthValue(record: HealthRecord): string {
       const diastolic = (parsed as { diastolic?: unknown }).diastolic
       if ((typeof systolic === 'string' || typeof systolic === 'number') && (typeof diastolic === 'string' || typeof diastolic === 'number')) return `${systolic} / ${diastolic}`
     }
+    if (typeof parsed === 'object' && parsed !== null && 'value' in parsed) {
+      const value = (parsed as { value?: unknown }).value
+      if (typeof value === 'string' || typeof value === 'number') return String(value)
+    }
   } catch {
-    return record.valueJson.replace(/[{}\"\[\]]/g, ' ')
+    return record.valueJson
   }
-  return record.valueJson.replace(/[{}\"\[\]]/g, ' ')
+  return record.valueJson
 }
 
 function noteKey(recordType: RecordNoteType, clientRecordId: string): string {
@@ -161,8 +174,8 @@ async function deleteRecord(recordType: RecordNoteType, clientRecordId: string):
       <div v-else-if="activeTab === 'contraction'" class="record-list">
         <div v-for="session in store.contractions" :key="session.clientRecordId" class="record-row">
           <div class="record-symbol blue-symbol"><Waves :size="18" /></div>
-          <div class="record-main"><strong>宫缩记录</strong><span>{{ formatDate(session.startedAt) }} · 持续 {{ session.durationSeconds }} 秒</span></div>
-          <div class="record-detail"><strong>{{ session.intervalSeconds ?? '--' }} 秒</strong><span>{{ session.note || '无备注' }}</span></div>
+          <div class="record-main"><strong>宫缩记录</strong><span>{{ formatDate(session.startedAt) }} · 持续 {{ formatDurationSeconds(session.durationSeconds) }}</span></div>
+          <div class="record-detail"><strong>间隔 {{ formatDurationSeconds(session.intervalSeconds) }}</strong><span>{{ session.note || '无备注' }}</span></div>
           <span class="record-row-actions"><button class="icon-button record-note-action" type="button" :title="session.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="beginNoteEdit('contraction', session.clientRecordId, session.note)"><Pencil :size="15" /></button><button class="icon-button record-delete-action" type="button" title="删除记录" :disabled="Boolean(savingNoteKey) || Boolean(deletingRecordKey)" @click="deleteRecord('contraction', session.clientRecordId)"><Trash2 :size="15" /></button></span>
           <div v-if="isEditingNote('contraction', session.clientRecordId)" class="record-note-editor">
             <textarea v-model="noteDrafts[noteKey('contraction', session.clientRecordId)]" rows="2" maxlength="500" placeholder="补充这次宫缩记录的备注"></textarea>
