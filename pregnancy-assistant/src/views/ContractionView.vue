@@ -103,7 +103,7 @@ onBeforeUnmount(() => { if (timer) window.clearInterval(timer) })
         <div class="strength-field">
           <div class="field-label"><span>主观强度</span><span>{{ intensity }}/5</span></div>
           <div class="strength-options" role="group" aria-label="宫缩主观强度">
-            <button v-for="level in 5" :key="level" :class="['strength-option', { active: intensity === level }]" type="button" :aria-pressed="intensity === level" :disabled="isSaving || Boolean(pendingSession)" @click="intensity = level">{{ level }}</button>
+            <button v-for="level in 5" :key="level" :class="['strength-option', `strength-level-${level}`, { active: intensity === level }]" type="button" :aria-pressed="intensity === level" :disabled="isSaving || Boolean(pendingSession)" @click="intensity = level">{{ level }}</button>
           </div>
           <div class="strength-endpoints"><span>轻</span><span>强</span></div>
         </div>

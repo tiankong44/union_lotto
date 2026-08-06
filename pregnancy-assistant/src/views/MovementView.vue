@@ -180,7 +180,7 @@ onBeforeUnmount(() => {
         <div class="strength-field">
           <div class="field-label"><span>主观强度</span><span>{{ strength }}/5</span></div>
           <div class="strength-options" role="group" aria-label="胎动主观强度">
-            <button v-for="level in 5" :key="level" :class="['strength-option', { active: strength === level }]" type="button" :aria-pressed="strength === level" :disabled="isSaving || Boolean(pendingSession)" @click="strength = level">{{ level }}</button>
+            <button v-for="level in 5" :key="level" :class="['strength-option', `strength-level-${level}`, { active: strength === level }]" type="button" :aria-pressed="strength === level" :disabled="isSaving || Boolean(pendingSession)" @click="strength = level">{{ level }}</button>
           </div>
           <div class="strength-endpoints"><span>轻柔</span><span>明显</span></div>
         </div>
@@ -203,7 +203,7 @@ onBeforeUnmount(() => {
         <article class="panel aside-card">
           <div class="panel-heading small-heading"><div><p class="eyebrow">HOW IT FEELS</p><h2>记下你的感觉</h2></div><TimerReset :size="19" /></div>
           <p class="panel-copy">强度是你的主观感受，不是检测结果。持续几次记录后，你会更熟悉自己的日常节奏。</p>
-        <div class="strength-summary"><span>当前选择</span><strong>{{ strength }} / 5</strong></div>
+        <div :class="['strength-summary', `strength-level-${strength}`]"><span>当前选择</span><strong>{{ strength }} / 5</strong></div>
         </article>
         <article class="panel aside-card history-mini">
           <div class="panel-heading small-heading"><div><p class="eyebrow">RECENT</p><h2>最近几次</h2></div><RouterLink class="icon-link" to="/records" title="查看全部记录"><ArrowUpRight :size="17" /></RouterLink></div>
