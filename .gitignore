@@ -38,4 +38,4 @@ build/
 /pregnancy-assistant/node_modules/
 /pregnancy-assistant/dist/
 /pregnancy-assistant/.vite/
-/frontend/node_modules/*
+/pregnancy-assistant/node_modules/*
