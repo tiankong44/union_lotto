@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { Activity, ArrowUpRight, CalendarDays, CheckCircle2, Clock3, FileText, HeartPulse, ListFilter, Waves } from 'lucide-vue-next'
+import { computed, reactive, ref } from 'vue'
+import { Activity, AlertCircle, ArrowUpRight, CalendarDays, CheckCircle2, FileText, HeartPulse, ListFilter, Pencil, Save, Waves, X } from 'lucide-vue-next'
 import { usePregnancyStore } from '../stores/pregnancy'
+import type { RecordNoteType } from '../types/pregnancy'
 
 const store = usePregnancyStore()
 const activeTab = ref<'movement' | 'contraction' | 'health' | 'tasks'>('movement')
+const editingNoteKey = ref<string | null>(null)
+const savingNoteKey = ref<string | null>(null)
+const noteDrafts = reactive<Record<string, string>>({})
+const noteErrors = reactive<Record<string, string>>({})
 
 const tabs = [
   { key: 'movement' as const, label: '胎动', icon: Activity },
@@ -26,6 +31,44 @@ function formatDate(value: string): string {
 
 function healthLabel(type: string): string {
   return { weight: '体重', 'blood-pressure': '血压', symptom: '症状' }[type] ?? type
+}
+
+function noteKey(recordType: RecordNoteType, clientRecordId: string): string {
+  return `${recordType}:${clientRecordId}`
+}
+
+function isEditingNote(recordType: RecordNoteType, clientRecordId: string): boolean {
+  return editingNoteKey.value === noteKey(recordType, clientRecordId)
+}
+
+function beginNoteEdit(recordType: RecordNoteType, clientRecordId: string, note?: string): void {
+  const key = noteKey(recordType, clientRecordId)
+  editingNoteKey.value = key
+  noteDrafts[key] = note ?? ''
+  delete noteErrors[key]
+}
+
+function cancelNoteEdit(recordType: RecordNoteType, clientRecordId: string): void {
+  const key = noteKey(recordType, clientRecordId)
+  delete noteDrafts[key]
+  delete noteErrors[key]
+  if (editingNoteKey.value === key) editingNoteKey.value = null
+}
+
+async function saveNote(recordType: RecordNoteType, clientRecordId: string): Promise<void> {
+  const key = noteKey(recordType, clientRecordId)
+  if (savingNoteKey.value) return
+  savingNoteKey.value = key
+  delete noteErrors[key]
+  try {
+    await store.updateRecordNote({ recordType, clientRecordId, note: noteDrafts[key] ?? '' })
+    delete noteDrafts[key]
+    if (editingNoteKey.value === key) editingNoteKey.value = null
+  } catch (error) {
+    noteErrors[key] = error instanceof Error ? error.message : '备注保存失败，请重试'
+  } finally {
+    savingNoteKey.value = null
+  }
 }
 </script>
 
@@ -54,7 +97,12 @@ function healthLabel(type: string): string {
         <div v-for="session in store.movementSessions" :key="session.clientRecordId" class="record-row">
           <div class="record-symbol coral-symbol"><Activity :size="18" /></div>
           <div class="record-main"><strong>{{ session.movementCount }} 次胎动</strong><span>{{ formatDate(session.startedAt) }} · {{ session.sessionMode === 'target' ? '目标计时' : '自由记录' }}</span></div>
-          <div class="record-detail"><strong>{{ Math.max(0, Math.floor((new Date(session.endedAt).getTime() - new Date(session.startedAt).getTime()) / 60000)) }} 分钟</strong><span>云端记录</span></div>
+          <div class="record-detail"><strong>{{ Math.max(0, Math.floor((new Date(session.endedAt).getTime() - new Date(session.startedAt).getTime()) / 60000)) }} 分钟</strong><span>{{ session.note || '无备注' }}</span></div>
+          <button class="icon-button record-note-action" type="button" :title="session.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey)" @click="beginNoteEdit('movement', session.clientRecordId, session.note)"><Pencil :size="15" /></button>
+          <div v-if="isEditingNote('movement', session.clientRecordId)" class="record-note-editor">
+            <textarea v-model="noteDrafts[noteKey('movement', session.clientRecordId)]" rows="2" maxlength="500" placeholder="补充这次胎动记录的备注"></textarea>
+            <div class="record-note-editor-footer"><span v-if="noteErrors[noteKey('movement', session.clientRecordId)]" class="record-note-error"><AlertCircle :size="14" />{{ noteErrors[noteKey('movement', session.clientRecordId)] }}</span><span v-else></span><span class="record-note-editor-actions"><button class="text-button" type="button" :disabled="savingNoteKey === noteKey('movement', session.clientRecordId)" @click="cancelNoteEdit('movement', session.clientRecordId)"><X :size="14" /> 取消</button><button class="secondary-button" type="button" :disabled="savingNoteKey === noteKey('movement', session.clientRecordId)" @click="saveNote('movement', session.clientRecordId)"><Save :size="14" /> {{ savingNoteKey === noteKey('movement', session.clientRecordId) ? '保存中' : '保存备注' }}</button></span></div>
+          </div>
         </div>
       </div>
 
@@ -62,15 +110,25 @@ function healthLabel(type: string): string {
         <div v-for="session in store.contractions" :key="session.clientRecordId" class="record-row">
           <div class="record-symbol blue-symbol"><Waves :size="18" /></div>
           <div class="record-main"><strong>宫缩记录</strong><span>{{ formatDate(session.startedAt) }} · 持续 {{ session.durationSeconds }} 秒</span></div>
-          <div class="record-detail"><strong>{{ session.intervalSeconds ?? '--' }} 秒</strong><span>间隔</span></div>
+          <div class="record-detail"><strong>{{ session.intervalSeconds ?? '--' }} 秒</strong><span>{{ session.note || '无备注' }}</span></div>
+          <button class="icon-button record-note-action" type="button" :title="session.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey)" @click="beginNoteEdit('contraction', session.clientRecordId, session.note)"><Pencil :size="15" /></button>
+          <div v-if="isEditingNote('contraction', session.clientRecordId)" class="record-note-editor">
+            <textarea v-model="noteDrafts[noteKey('contraction', session.clientRecordId)]" rows="2" maxlength="500" placeholder="补充这次宫缩记录的备注"></textarea>
+            <div class="record-note-editor-footer"><span v-if="noteErrors[noteKey('contraction', session.clientRecordId)]" class="record-note-error"><AlertCircle :size="14" />{{ noteErrors[noteKey('contraction', session.clientRecordId)] }}</span><span v-else></span><span class="record-note-editor-actions"><button class="text-button" type="button" :disabled="savingNoteKey === noteKey('contraction', session.clientRecordId)" @click="cancelNoteEdit('contraction', session.clientRecordId)"><X :size="14" /> 取消</button><button class="secondary-button" type="button" :disabled="savingNoteKey === noteKey('contraction', session.clientRecordId)" @click="saveNote('contraction', session.clientRecordId)"><Save :size="14" /> {{ savingNoteKey === noteKey('contraction', session.clientRecordId) ? '保存中' : '保存备注' }}</button></span></div>
+          </div>
         </div>
       </div>
 
       <div v-else-if="activeTab === 'health'" class="record-list">
         <div v-for="record in store.healthRecords" :key="record.clientRecordId" class="record-row">
           <div class="record-symbol yellow-symbol"><HeartPulse :size="18" /></div>
-          <div class="record-main"><strong>{{ healthLabel(record.recordType) }}</strong><span>{{ formatDate(record.recordedAt) }}{{ record.note ? ` · ${record.note}` : '' }}</span></div>
-          <div class="record-detail"><strong>{{ record.valueJson.replace(/[{}\"\[\]]/g, ' ') }}</strong><span>{{ record.unit || '记录' }}</span></div>
+          <div class="record-main"><strong>{{ healthLabel(record.recordType) }}</strong><span>{{ formatDate(record.recordedAt) }}</span></div>
+          <div class="record-detail"><strong>{{ record.valueJson.replace(/[{}\"\[\]]/g, ' ') }}</strong><span>{{ record.note || '无备注' }} · {{ record.unit || '记录' }}</span></div>
+          <button class="icon-button record-note-action" type="button" :title="record.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey)" @click="beginNoteEdit('health', record.clientRecordId, record.note)"><Pencil :size="15" /></button>
+          <div v-if="isEditingNote('health', record.clientRecordId)" class="record-note-editor">
+            <textarea v-model="noteDrafts[noteKey('health', record.clientRecordId)]" rows="2" maxlength="500" placeholder="补充这条健康记录的备注"></textarea>
+            <div class="record-note-editor-footer"><span v-if="noteErrors[noteKey('health', record.clientRecordId)]" class="record-note-error"><AlertCircle :size="14" />{{ noteErrors[noteKey('health', record.clientRecordId)] }}</span><span v-else></span><span class="record-note-editor-actions"><button class="text-button" type="button" :disabled="savingNoteKey === noteKey('health', record.clientRecordId)" @click="cancelNoteEdit('health', record.clientRecordId)"><X :size="14" /> 取消</button><button class="secondary-button" type="button" :disabled="savingNoteKey === noteKey('health', record.clientRecordId)" @click="saveNote('health', record.clientRecordId)"><Save :size="14" /> {{ savingNoteKey === noteKey('health', record.clientRecordId) ? '保存中' : '保存备注' }}</button></span></div>
+          </div>
         </div>
       </div>
 
@@ -79,6 +137,11 @@ function healthLabel(type: string): string {
           <div class="record-symbol green-symbol"><CalendarDays :size="18" /></div>
           <div class="record-main"><strong :class="{ struck: task.status === 'DONE' }">{{ task.title }}</strong><span>{{ formatDate(task.plannedAt) }} · {{ task.taskType === 'checkup' ? '产检' : '个人待办' }}</span></div>
           <div class="record-detail"><strong>{{ task.status === 'DONE' ? '已完成' : '待处理' }}</strong><span>{{ task.note || '无备注' }}</span></div>
+          <button class="icon-button record-note-action" type="button" :title="task.note ? '编辑备注' : '添加备注'" :disabled="Boolean(savingNoteKey)" @click="beginNoteEdit('task', task.clientRecordId, task.note)"><Pencil :size="15" /></button>
+          <div v-if="isEditingNote('task', task.clientRecordId)" class="record-note-editor">
+            <textarea v-model="noteDrafts[noteKey('task', task.clientRecordId)]" rows="2" maxlength="500" placeholder="补充这条待办的备注"></textarea>
+            <div class="record-note-editor-footer"><span v-if="noteErrors[noteKey('task', task.clientRecordId)]" class="record-note-error"><AlertCircle :size="14" />{{ noteErrors[noteKey('task', task.clientRecordId)] }}</span><span v-else></span><span class="record-note-editor-actions"><button class="text-button" type="button" :disabled="savingNoteKey === noteKey('task', task.clientRecordId)" @click="cancelNoteEdit('task', task.clientRecordId)"><X :size="14" /> 取消</button><button class="secondary-button" type="button" :disabled="savingNoteKey === noteKey('task', task.clientRecordId)" @click="saveNote('task', task.clientRecordId)"><Save :size="14" /> {{ savingNoteKey === noteKey('task', task.clientRecordId) ? '保存中' : '保存备注' }}</button></span></div>
+          </div>
         </div>
       </div>
 

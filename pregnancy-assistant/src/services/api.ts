@@ -8,6 +8,7 @@ import type {
   HealthRecordPayload,
   PregnancyProfile,
   PregnancyProfilePayload,
+  RecordNoteUpdatePayload,
 } from '../types/pregnancy'
 
 const API_ROOT = '/tabs/pregnancy'
@@ -102,5 +103,12 @@ export function saveTask(task: AntenatalTask): Promise<AntenatalTask> {
   return request('/tasks', {
     method: 'POST',
     body: JSON.stringify({ ...task, plannedAt: normalizeDateTime(task.plannedAt), completedAt: normalizeDateTime(task.completedAt) }),
+  })
+}
+
+export function updateRecordNote(payload: RecordNoteUpdatePayload): Promise<FetalMovementSession | ContractionSession | HealthRecord | AntenatalTask> {
+  return request('/record-notes', {
+    method: 'PUT',
+    body: JSON.stringify(payload),
   })
 }

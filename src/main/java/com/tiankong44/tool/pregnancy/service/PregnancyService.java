@@ -6,6 +6,7 @@ import com.tiankong44.tool.pregnancy.dto.ContractionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.FetalMovementSessionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.HealthRecordSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.ProfileSaveRequest;
+import com.tiankong44.tool.pregnancy.dto.RecordNoteUpdateRequest;
 
 import java.time.LocalDate;
 
@@ -96,6 +97,14 @@ public interface PregnancyService {
      * @return 待办列表
      */
     BaseRes listTasks(String status);
+
+    /**
+     * 更新孕期记录备注，支持补充、修改和清空四类记录的备注。
+     *
+     * @param request 记录类型、客户端编号和备注内容
+     * @return 更新后的记录；记录不存在或类型不支持时返回业务失败
+     */
+    BaseRes updateRecordNote(RecordNoteUpdateRequest request);
 
     /**
      * 汇总记录数量和个人趋势基础指标。

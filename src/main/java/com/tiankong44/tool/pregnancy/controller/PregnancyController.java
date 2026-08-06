@@ -6,6 +6,7 @@ import com.tiankong44.tool.pregnancy.dto.ContractionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.FetalMovementSessionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.HealthRecordSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.ProfileSaveRequest;
+import com.tiankong44.tool.pregnancy.dto.RecordNoteUpdateRequest;
 import com.tiankong44.tool.pregnancy.service.PregnancyService;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
@@ -157,6 +158,18 @@ public class PregnancyController {
     public BaseRes saveTask(@RequestBody @Valid AntenatalTaskSaveRequest request) {
         // 调用待办保存服务，使用客户端编号保障重复提交幂等。
         return pregnancyService.saveTask(request);
+    }
+
+    /**
+     * 更新孕期记录备注。
+     *
+     * @param request 记录类型、客户端编号和备注内容
+     * @return 更新后的记录或业务失败信息
+     */
+    @PutMapping("/record-notes")
+    public BaseRes updateRecordNote(@RequestBody @Valid RecordNoteUpdateRequest request) {
+        // 调用记录备注更新服务，统一处理四类记录的补充、修改和清空。
+        return pregnancyService.updateRecordNote(request);
     }
 
     /**

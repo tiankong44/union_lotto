@@ -7,6 +7,7 @@ import com.tiankong44.tool.pregnancy.dto.ContractionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.FetalMovementSessionSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.HealthRecordSaveRequest;
 import com.tiankong44.tool.pregnancy.dto.ProfileSaveRequest;
+import com.tiankong44.tool.pregnancy.dto.RecordNoteUpdateRequest;
 import com.tiankong44.tool.pregnancy.entity.AntenatalTask;
 import com.tiankong44.tool.pregnancy.entity.ContractionSession;
 import com.tiankong44.tool.pregnancy.entity.FetalMovementSession;
@@ -37,6 +38,11 @@ import java.util.Map;
  */
 @Service
 public class PregnancyServiceImpl implements PregnancyService {
+    private static final String RECORD_TYPE_MOVEMENT = "movement"; // 胎动记录类型标识。
+    private static final String RECORD_TYPE_CONTRACTION = "contraction"; // 宫缩记录类型标识。
+    private static final String RECORD_TYPE_HEALTH = "health"; // 健康记录类型标识。
+    private static final String RECORD_TYPE_TASK = "task"; // 待办记录类型标识。
+
     @Resource
     private PregnancyProfileMapper pregnancyProfileMapper;
 
@@ -328,6 +334,75 @@ public class PregnancyServiceImpl implements PregnancyService {
         query.orderByAsc("planned_at");
         // 按计划时间升序返回待办，方便形成时间线。
         return BaseRes.success(antenatalTaskMapper.selectList(query));
+    }
+
+    /**
+     * 更新单用户孕期记录的备注内容。
+     *
+     * @param request 记录类型、客户端编号和备注；空备注用于清空已有内容
+     * @return 更新后的记录；记录不存在或类型不支持时返回业务失败
+     */
+    @Override
+    @Transactional
+    public BaseRes updateRecordNote(RecordNoteUpdateRequest request) {
+        if (request == null || isBlank(request.getRecordType()) || isBlank(request.getClientRecordId())) {
+            return BaseRes.failure("记录备注参数不完整");
+        }
+        String note = request.getNote() == null ? null : request.getNote().trim();
+        if (note != null && note.isEmpty()) {
+            note = null;
+        }
+        String recordType = request.getRecordType();
+        String clientRecordId = request.getClientRecordId();
+        if (RECORD_TYPE_MOVEMENT.equals(recordType)) {
+            QueryWrapper<FetalMovementSession> query = new QueryWrapper<>();
+            query.eq("client_record_id", clientRecordId);
+            // 按客户端编号查找目标胎动记录，确保只更新用户指定的记录。
+            FetalMovementSession record = fetalMovementSessionMapper.selectOne(query);
+            if (record == null) return BaseRes.failure("未找到对应的胎动记录");
+            record.setNote(note);
+            record.setUpdatedAt(LocalDateTime.now());
+            // 只更新备注和更新时间，保持已保存的胎动数据不变。
+            fetalMovementSessionMapper.updateById(record);
+            return BaseRes.success(record);
+        }
+        if (RECORD_TYPE_CONTRACTION.equals(recordType)) {
+            QueryWrapper<ContractionSession> query = new QueryWrapper<>();
+            query.eq("client_record_id", clientRecordId);
+            // 按客户端编号查找目标宫缩记录，确保只更新用户指定的记录。
+            ContractionSession record = contractionSessionMapper.selectOne(query);
+            if (record == null) return BaseRes.failure("未找到对应的宫缩记录");
+            record.setNote(note);
+            record.setUpdatedAt(LocalDateTime.now());
+            // 只更新备注和更新时间，保持已保存的宫缩数据不变。
+            contractionSessionMapper.updateById(record);
+            return BaseRes.success(record);
+        }
+        if (RECORD_TYPE_HEALTH.equals(recordType)) {
+            QueryWrapper<PregnancyHealthRecord> query = new QueryWrapper<>();
+            query.eq("client_record_id", clientRecordId);
+            // 按客户端编号查找目标健康记录，确保只更新用户指定的记录。
+            PregnancyHealthRecord record = pregnancyHealthRecordMapper.selectOne(query);
+            if (record == null) return BaseRes.failure("未找到对应的健康记录");
+            record.setNote(note);
+            record.setUpdatedAt(LocalDateTime.now());
+            // 只更新备注和更新时间，保持已保存的健康数据不变。
+            pregnancyHealthRecordMapper.updateById(record);
+            return BaseRes.success(record);
+        }
+        if (RECORD_TYPE_TASK.equals(recordType)) {
+            QueryWrapper<AntenatalTask> query = new QueryWrapper<>();
+            query.eq("client_record_id", clientRecordId);
+            // 按客户端编号查找目标待办记录，确保只更新用户指定的记录。
+            AntenatalTask record = antenatalTaskMapper.selectOne(query);
+            if (record == null) return BaseRes.failure("未找到对应的待办记录");
+            record.setNote(note);
+            record.setUpdatedAt(LocalDateTime.now());
+            // 只更新备注和更新时间，保持已保存的待办数据不变。
+            antenatalTaskMapper.updateById(record);
+            return BaseRes.success(record);
+        }
+        return BaseRes.failure("记录类型不支持备注更新");
     }
 
     /**

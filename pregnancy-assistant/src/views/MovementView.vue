@@ -2,17 +2,19 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { AlertCircle, ArrowUpRight, Check, Clock3, Pause, Play, RotateCcw, Sparkles, TimerReset, Undo2 } from 'lucide-vue-next'
 import { usePregnancyStore } from '../stores/pregnancy'
+import type { FetalMovementSessionPayload } from '../types/pregnancy'
 
 const store = usePregnancyStore()
 const online = ref(typeof navigator === 'undefined' ? true : navigator.onLine)
 const isRunning = ref(false)
 const startedAt = ref<number | null>(null)
+const clientRecordId = ref('')
 const count = ref(0)
 const strength = ref(3)
-const note = ref('')
 const selectedMode = ref<'free' | 'target'>('target')
 const elapsedNow = ref(Date.now())
 const isSaving = ref(false)
+const pendingSession = ref<FetalMovementSessionPayload | null>(null)
 const saveMessage = ref('')
 const saveMessageTone = ref<'success' | 'error'>('success')
 let timer: number | undefined
@@ -40,6 +42,7 @@ const cloudStatusLabel = computed(() => {
 function startSession(): void {
   if (!startedAt.value) {
     startedAt.value = Date.now()
+    clientRecordId.value = makeRecordId('movement')
     saveMessage.value = ''
   }
   isRunning.value = true
@@ -64,22 +67,25 @@ function undoMovement(): void {
 
 async function finishSession(): Promise<void> {
   if (isSaving.value || !startedAt.value || count.value === 0) return
-  const end = new Date()
-  const start = new Date(startedAt.value)
   pauseSession()
-  isSaving.value = true
-  saveMessage.value = ''
-  try {
-    await store.addMovementSession({
-      clientRecordId: makeRecordId('movement'),
+  if (!pendingSession.value) {
+    const end = new Date()
+    const start = new Date(startedAt.value)
+    pendingSession.value = {
+      clientRecordId: clientRecordId.value,
       sessionMode: selectedMode.value,
       startedAt: start.toISOString(),
       endedAt: end.toISOString(),
       movementCount: count.value,
       targetCount: selectedMode.value === 'target' ? 10 : undefined,
       averageStrength: strength.value,
-      note: note.value.trim() || undefined,
-    })
+    }
+  }
+  isSaving.value = true
+  saveMessage.value = ''
+  try {
+    await store.addMovementSession(pendingSession.value)
+    pendingSession.value = null
     resetSession()
     saveMessageTone.value = 'success'
     saveMessage.value = '已保存到云端 MySQL。'
@@ -94,8 +100,9 @@ async function finishSession(): Promise<void> {
 function resetSession(): void {
   pauseSession()
   startedAt.value = null
+  clientRecordId.value = ''
   count.value = 0
-  note.value = ''
+  pendingSession.value = null
   elapsedNow.value = Date.now()
   saveMessage.value = ''
 }
@@ -154,33 +161,34 @@ onBeforeUnmount(() => {
         </div>
         <div class="target-hint" :class="{ reached: targetReached }" role="status">
           <Check v-if="targetReached" :size="15" />
-          <span>{{ targetReached ? '已达到目标，可以继续记录或手动保存。' : selectedMode === 'target' ? '目标为 10 次，不代表医疗判断。' : '自由记录，不设次数目标。' }}</span>
+          <span>{{ targetReached ? '已达到目标，可以继续记录或结束自动保存。' : selectedMode === 'target' ? '目标为 10 次，不代表医疗判断。' : '自由记录，不设次数目标。' }}</span>
         </div>
-        <button class="movement-tap" type="button" aria-label="记录一次胎动" :disabled="isSaving" @click="addMovement">
+        <button class="movement-tap" type="button" aria-label="记录一次胎动" :disabled="isSaving || Boolean(pendingSession)" @click="addMovement">
           <span><Sparkles :size="27" /></span>
           <strong>点按记录</strong>
           <small>{{ isRunning ? '每次感受到胎动时点按' : '点击后开始计时' }}</small>
         </button>
         <div class="timer-row">
           <div class="timer-display"><Clock3 :size="17" /> {{ elapsedText }}</div>
-          <button class="ghost-button" type="button" :disabled="isSaving" @click="isRunning ? pauseSession() : startSession()">
+          <button class="ghost-button" type="button" :disabled="isSaving || Boolean(pendingSession)" @click="isRunning ? pauseSession() : startSession()">
             <Pause v-if="isRunning" :size="16" />
             <Play v-else :size="16" />
             {{ isRunning ? '暂停' : '继续' }}
           </button>
-          <button class="icon-button" type="button" title="撤销最近一次点按" :disabled="count === 0 || isSaving" @click="undoMovement"><Undo2 :size="17" /></button>
+          <button class="icon-button" type="button" title="撤销最近一次点按" :disabled="count === 0 || isSaving || Boolean(pendingSession)" @click="undoMovement"><Undo2 :size="17" /></button>
         </div>
         <div class="strength-field">
           <div class="field-label"><span>主观强度</span><span>{{ strength }}/5</span></div>
-          <input v-model.number="strength" type="range" min="1" max="5" step="1" aria-label="胎动主观强度" :disabled="isSaving" />
-          <div class="range-labels"><span>轻柔</span><span>明显</span></div>
+          <div class="strength-options" role="group" aria-label="胎动主观强度">
+            <button v-for="level in 5" :key="level" :class="['strength-option', { active: strength === level }]" type="button" :aria-pressed="strength === level" :disabled="isSaving || Boolean(pendingSession)" @click="strength = level">{{ level }}</button>
+          </div>
+          <div class="strength-endpoints"><span>轻柔</span><span>明显</span></div>
         </div>
-        <textarea v-model="note" class="note-input" rows="2" placeholder="给这次记录留一句备注（可选）" :disabled="isSaving"></textarea>
         <div class="console-actions">
           <button class="primary-button" type="button" :disabled="count === 0 || isSaving" @click="finishSession">
             <span v-if="isSaving" class="button-loader" aria-hidden="true"></span>
             <Check v-else :size="18" />
-            {{ isSaving ? '保存中…' : '完成并保存' }}
+            {{ isSaving ? '自动保存中…' : pendingSession ? '重试保存' : '结束并自动保存' }}
           </button>
           <button class="text-button" type="button" :disabled="(!startedAt && count === 0) || isSaving" @click="resetSession"><RotateCcw :size="15" /> 重新开始</button>
         </div>
@@ -195,7 +203,7 @@ onBeforeUnmount(() => {
         <article class="panel aside-card">
           <div class="panel-heading small-heading"><div><p class="eyebrow">HOW IT FEELS</p><h2>记下你的感觉</h2></div><TimerReset :size="19" /></div>
           <p class="panel-copy">强度是你的主观感受，不是检测结果。持续几次记录后，你会更熟悉自己的日常节奏。</p>
-          <div class="strength-scale"><span v-for="level in 5" :key="level" :class="{ selected: level <= strength }"></span></div>
+        <div class="strength-summary"><span>当前选择</span><strong>{{ strength }} / 5</strong></div>
         </article>
         <article class="panel aside-card history-mini">
           <div class="panel-heading small-heading"><div><p class="eyebrow">RECENT</p><h2>最近几次</h2></div><RouterLink class="icon-link" to="/records" title="查看全部记录"><ArrowUpRight :size="17" /></RouterLink></div>

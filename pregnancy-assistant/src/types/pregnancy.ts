@@ -53,6 +53,14 @@ export interface RecordTimelineItem {
   note?: string
 }
 
+export type RecordNoteType = 'movement' | 'contraction' | 'health' | 'task'
+
+export interface RecordNoteUpdatePayload {
+  recordType: RecordNoteType
+  clientRecordId: string
+  note: string
+}
+
 export interface WeightTrendPoint {
   dateKey: string
   label: string
