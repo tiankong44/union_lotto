@@ -6,6 +6,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { prepareMiniProgramNpm } from './prepare-miniprogram-npm.mjs'
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const outputDirectory = path.resolve(projectRoot, 'dist')
@@ -19,6 +20,7 @@ const vantLibrary = path.join(projectRoot, 'node_modules', '@vant', 'weapp', 'li
 if (!fs.existsSync(vantLibrary)) throw new Error('未找到 Vant Weapp 构建目录，请先执行 npm install')
 const miniProgramNpm = path.join(outputDirectory, 'miniprogram_npm', '@vant', 'weapp')
 fs.mkdirSync(path.dirname(miniProgramNpm), { recursive: true })
+prepareMiniProgramNpm()
 fs.cpSync(vantLibrary, miniProgramNpm, { recursive: true })
 process.stdout.write(`小程序构建文件已生成：${outputDirectory}\n`)
 

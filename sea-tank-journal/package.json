@@ -4,6 +4,8 @@
   "private": true,
   "description": "海缸日记原生微信小程序",
   "scripts": {
+    "postinstall": "node scripts/prepare-miniprogram-npm.mjs",
+    "prepare:mini-program": "node scripts/prepare-miniprogram-npm.mjs",
     "typecheck": "node scripts/check-source.mjs && tsc -p tsconfig.json",
     "build": "node scripts/build-project.mjs",
     "audit": "npm audit --audit-level=high --registry=https://registry.npmjs.org",

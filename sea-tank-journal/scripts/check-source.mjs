@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url'
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const appConfig = JSON.parse(fs.readFileSync(path.join(projectRoot, 'app.json'), 'utf8'))
-const ignoredDirectories = new Set(['node_modules', 'dist', '.git'])
+const ignoredDirectories = new Set(['node_modules', 'dist', 'miniprogram_npm', '.git'])
 const jsonFiles = []
 const javascriptFiles = []
 
