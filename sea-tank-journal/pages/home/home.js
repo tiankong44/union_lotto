@@ -5,7 +5,7 @@
  */
 const reefApi = require('../../services/reef-api')
 const { shanghaiDateTimeParts } = require('../../services/date-time')
-const { syncTabBar } = require('../../services/tab-bar')
+const { syncTabBar, setTabBarHidden } = require('../../services/tab-bar')
 
 Page({
   data: {
@@ -19,6 +19,9 @@ Page({
   onShow() {
     // 将全局导航选中项同步到首页。
     syncTabBar(this, 0)
+    // 离开表单返回首页时恢复底部导航，并关闭残留菜单。
+    setTabBarHidden(this, false)
+    this.setData({ menuOpen: false })
     const hour = Number(shanghaiDateTimeParts(new Date()).time.slice(0, 2))
     this.setData({ greeting: hour < 11 ? '早上好' : hour < 18 ? '下午好' : '晚上好' })
     this.loadDashboard()
@@ -37,22 +40,39 @@ Page({
   },
 
   toggleMenu() {
-    this.setData({ menuOpen: !this.data.menuOpen })
+    const menuOpen = !this.data.menuOpen
+    this.setData({ menuOpen })
+    // 菜单展开时隐藏最上层的底部导航，避免遮住菜单项。
+    setTabBarHidden(this, menuOpen)
   },
 
   closeMenu() {
     this.setData({ menuOpen: false })
+    // 点击遮罩或关闭弹层后恢复底部导航。
+    setTabBarHidden(this, false)
   },
 
   openTankForm() {
     this.setData({ menuOpen: false })
     // 跳转到独立鱼缸表单，保存后返回首页刷新列表。
-    wx.navigateTo({ url: '/pages/tank/add' })
+    wx.navigateTo({
+      url: '/pages/tank/add',
+      fail: () => {
+        setTabBarHidden(this, false)
+        wx.showToast({ title: '鱼缸表单暂时无法打开', icon: 'none' })
+      }
+    })
   },
 
   openQuickLog() {
     this.setData({ menuOpen: false })
-    wx.navigateTo({ url: '/pages/log/add' })
+    wx.navigateTo({
+      url: '/pages/log/add',
+      fail: () => {
+        setTabBarHidden(this, false)
+        wx.showToast({ title: '日志表单暂时无法打开', icon: 'none' })
+      }
+    })
   },
 
 })

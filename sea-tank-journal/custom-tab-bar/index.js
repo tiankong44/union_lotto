@@ -6,6 +6,7 @@
 Component({
   data: {
     selected: 0,
+    hidden: false,
     items: [
       { label: '首页', icon: 'home-o', path: '/pages/home/home' },
       { label: '日志', icon: 'records', path: '/pages/log/list' },
