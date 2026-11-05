@@ -1,0 +1,19 @@
+<!-- 照片详情把实际影像放在首屏，资料和编辑操作紧随其后。 -->
+<view class="page-shell photo-detail-page">
+  <view wx:if="{{loading}}" class="loading-line">正在读取照片…</view>
+  <block wx:elif="{{photo.id}}">
+    <image class="detail-image" src="{{photo.contentUrl}}" mode="aspectFit"></image>
+    <view class="photo-info card">
+      <text class="photo-title">{{photo.title || '影像记录'}}</text>
+      <view class="info-row"><text>分类</text><text>{{categoryLabel}}</text></view>
+      <view class="info-row"><text>关联对象</text><text>{{referenceLabel}} · {{referenceName}}</text></view>
+      <view class="info-row"><text>拍摄时间</text><text>{{photo.recordedAt}}</text></view>
+      <view class="info-row note-row"><text>备注</text><text>{{photo.note || '没有填写备注'}}</text></view>
+    </view>
+    <view class="photo-actions">
+      <button class="edit-button" bindtap="editPhoto"><van-icon name="edit" /> 编辑照片</button>
+      <button class="delete-button" loading="{{deleting}}" disabled="{{deleting}}" bindtap="deletePhoto"><van-icon name="delete-o" /> 删除照片</button>
+    </view>
+  </block>
+  <view wx:else class="inline-error">照片暂时无法显示，请返回影像列表后重试。</view>
+</view>

@@ -51,11 +51,15 @@ button::after {
   background: var(--reef-page);
 }
 
+.has-tabbar {
+  padding-bottom: calc(156rpx + env(safe-area-inset-bottom));
+}
+
 .card {
   border: 1rpx solid var(--reef-line);
-  border-radius: 24rpx;
+  border-radius: 16rpx;
   background: var(--reef-card);
-  box-shadow: 0 8rpx 32rpx rgba(135, 206, 250, 0.1);
+  box-shadow: 0 6rpx 20rpx rgba(68, 115, 142, 0.07);
 }
 
 .muted {

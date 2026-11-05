@@ -7,7 +7,7 @@ const reefApi = require('../../services/reef-api')
 
 Page({
   data: {
-    tankId: '', tank: {}, biology: [], biologyPageNum: 1, biologyHasMore: false, biologyLoading: false, logs: [], equipment: [], waterRanges: [],
+    tankId: '', tank: { name: '' }, tankCoverUrl: '', biology: [], biologyPageNum: 1, biologyHasMore: false, biologyLoading: false, logs: [], equipment: [], waterRanges: [],
     tabs: [{ key: 'biology', label: '生物' }, { key: 'logs', label: '日志' }, { key: 'water', label: '水质' }, { key: 'equipment', label: '设备' }],
     biologyCategories: [{ value: 'FISH', label: '鱼' }, { value: 'CORAL', label: '珊瑚' }, { value: 'PLANT', label: '植物' }, { value: 'OTHER', label: '其他' }],
     biologyStatuses: [{ value: 'NORMAL', label: '正常' }, { value: 'QUARANTINE', label: '检疫中' }, { value: 'ISOLATED', label: '隔离中' }, { value: 'SICK', label: '生病' }, { value: 'DEAD', label: '阵亡' }],
@@ -36,11 +36,12 @@ Page({
 
   async loadTank() {
     try {
-      const [tank, biology, logs, equipment] = await Promise.all([
+      const [tank, biology, logs, equipment, photoResult] = await Promise.all([
         reefApi.getTank(this.data.tankId),
         reefApi.listBiology(this.data.tankId),
         reefApi.listLogs({ tankId: this.data.tankId, pageSize: 10 }),
-        reefApi.listEquipment('', 1, 50, this.data.tankId)
+        reefApi.listEquipment('', 1, 50, this.data.tankId),
+        reefApi.listPhotos('TANK', 1, 20, 'TANK', this.data.tankId)
       ])
       const waterRanges = tank?.waterRanges ?? []
       const rangeFields = this.data.rangeFields.map((field) => {
@@ -49,7 +50,7 @@ Page({
       })
       const biologyRows = biology?.list ?? biology ?? []
       this.setData({
-        tank: tank || {}, biology: biologyRows, biologyPageNum: 1, biologyHasMore: biologyRows.length === 50,
+        tank: tank || {}, tankCoverUrl: (photoResult?.list ?? photoResult ?? [])[0]?.contentUrl || '', biology: biologyRows, biologyPageNum: 1, biologyHasMore: biologyRows.length === 50,
         logs: logs?.list ?? logs ?? [], equipment: equipment?.list ?? equipment ?? [], waterRanges, rangeFields
       })
     } catch (error) {
@@ -123,7 +124,12 @@ Page({
     }
   },
 
-  openLogList() { wx.navigateTo({ url: '/pages/log/list' }) },
+  openLogList() {
+    const app = getApp()
+    app.globalData.pendingLogTank = { id: this.data.tankId, name: this.data.tank.name || '' }
+    // 日志页属于底部 Tab，通过原生切换并带入当前鱼缸筛选。
+    wx.switchTab({ url: '/pages/log/list' })
+  },
   openWaterTrend() { wx.navigateTo({ url: `/pages/water/trend?tankId=${this.data.tankId}` }) },
   openEquipment() { wx.navigateTo({ url: `/pages/equipment/list?tankId=${this.data.tankId}` }) },
   openRangeForm() { this.setData({ rangeFormOpen: true }) },

@@ -13,13 +13,12 @@ Page({
     equipmentStatuses: [{ value: 'RUNNING', label: '运行中' }, { value: 'DIRTY', label: '待清洗' }, { value: 'STANDBY', label: '待机' }],
     equipmentStatusLabels: ['运行中', '待清洗', '待机'],
     selectedCategory: '', tankId: '', tanks: [], tankNames: [], equipment: [], formOpen: false, saving: false, pageNum: 0, hasMore: true, loading: false, loadVersion: 0,
-    form: { id: '', name: '', model: '', category: 'LIGHT', categoryLabel: '灯光', status: 'RUNNING', statusLabel: '运行中', tankId: '', tankName: '', dailyHours: '', startedAt: '', maintenanceIntervalDays: '', lastMaintainedAt: '' }
+    form: { id: '', name: '', model: '', category: 'LIGHT', categoryLabel: '灯光', status: 'RUNNING', statusLabel: '运行中', tankId: '', tankName: '', powerWatt: '', dailyHours: '', startedAt: '', maintenanceIntervalDays: '', lastMaintainedAt: '' }
   },
 
   onLoad(query) {
     this.setData({ tankId: query.tankId || '' })
     this.loadTanks()
-    this.loadEquipment()
   },
   onShow() { this.loadEquipment(true) },
   onReachBottom() { if (this.data.hasMore) this.loadEquipment(false) },
@@ -58,7 +57,10 @@ Page({
     this.loadEquipment(true)
   },
 
-  openForm() { this.setData({ formOpen: true }) },
+  openForm() {
+    // 新增设备使用独立表单页，管理列表只保留维护状态编辑。
+    wx.navigateTo({ url: `/pages/equipment/add?tankId=${this.data.tankId}` })
+  },
   closeForm() { this.setData({ formOpen: false }) },
   onFieldChange(event) { this.setData({ [`form.${event.currentTarget.dataset.field}`]: event.detail }) },
 
@@ -102,13 +104,14 @@ Page({
         name: form.name,
         model: form.model,
         status: form.status,
+        powerWatt: Number(form.powerWatt) || null,
         dailyHours: Number(form.dailyHours) || null,
         startedAt: form.startedAt,
         maintenanceIntervalDays: Number(form.maintenanceIntervalDays) || null,
         lastMaintainedAt: form.lastMaintainedAt
       })
       const defaultTank = this.data.tanks.find((item) => item.id === this.data.tankId)
-      const cleanForm = { id: '', name: '', model: '', category: 'LIGHT', categoryLabel: '灯光', status: 'RUNNING', statusLabel: '运行中', tankId: defaultTank?.id || '', tankName: defaultTank?.name || '', dailyHours: '', startedAt: '', maintenanceIntervalDays: '', lastMaintainedAt: '' }
+      const cleanForm = { id: '', name: '', model: '', category: 'LIGHT', categoryLabel: '灯光', status: 'RUNNING', statusLabel: '运行中', tankId: defaultTank?.id || '', tankName: defaultTank?.name || '', powerWatt: '', dailyHours: '', startedAt: '', maintenanceIntervalDays: '', lastMaintainedAt: '' }
       this.setData({ formOpen: false, form: cleanForm })
       await this.loadEquipment(true)
       wx.showToast({ title: '设备信息已保存', icon: 'success' })

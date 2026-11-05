@@ -12,7 +12,7 @@ const API_PREFIX = '/tabs/reef-journal'
  * @Author zhanghao_SMEICS
  * @Date 2026-11-05
  * @param {string} path 模块接口相对路径
- * @param {{method?: 'GET' | 'POST' | 'PUT', data?: object, contentType?: string}} options 请求方式和数据
+ * @param {{method?: 'GET' | 'POST' | 'PUT' | 'DELETE', data?: object, contentType?: string}} options 请求方式和数据
  * @param {boolean} retryAfterLogin 是否允许过期后重试一次
  * @returns {Promise<any>} 服务端 data 数据
  */

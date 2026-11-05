@@ -9,4 +9,4 @@
 .photo-caption { display: flex; flex-direction: column; gap: 6rpx; min-height: 72rpx; padding: 10rpx; }
 .photo-caption text:first-child { overflow: hidden; color: #566d82; font-size: 19rpx; text-overflow: ellipsis; white-space: nowrap; }
 .photo-caption text:last-child { color: #9ab0c4; font-size: 17rpx; }
-.fab { position: fixed; right: 36rpx; bottom: calc(36rpx + env(safe-area-inset-bottom)); display: flex; align-items: center; justify-content: center; width: 96rpx; min-width: 96rpx; max-width: 96rpx; height: 96rpx; min-height: 96rpx; padding: 0; border-radius: 50%; background: linear-gradient(135deg, #87cefa, #6bb8f0); color: #ffffff; font-size: 52rpx; line-height: 96rpx; }
+.fab { position: fixed; right: 36rpx; bottom: calc(140rpx + env(safe-area-inset-bottom)); display: flex; align-items: center; justify-content: center; width: 96rpx; min-width: 96rpx; max-width: 96rpx; height: 96rpx; min-height: 96rpx; padding: 0; border-radius: 50%; background: linear-gradient(135deg, #87cefa, #6bb8f0); color: #ffffff; font-size: 52rpx; line-height: 96rpx; }

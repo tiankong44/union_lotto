@@ -1,0 +1,45 @@
+<!-- 日志详情按记录类型呈现字段，生物和影像均保留各自详情入口。 -->
+<view class="page-shell detail-page">
+  <view wx:if="{{loading}}" class="loading-line">正在读取日志…</view>
+  <block wx:elif="{{log.id}}">
+    <view class="detail-head card">
+      <text class="type-tag type-{{log.type}}">{{typeLabel}}</text>
+      <text class="detail-title">{{log.title || typeLabel}}</text>
+      <text class="detail-meta">{{log.recordedAt || '时间待补充'}} · {{log.tankName || '所属鱼缸'}}</text>
+    </view>
+
+    <view wx:if="{{waterValues.length}}" class="detail-section">
+      <text class="section-title">水质参数</text>
+      <view class="water-grid card">
+        <view wx:for="{{waterValues}}" wx:key="label" class="water-value"><text>{{item.label}}</text><text>{{item.value}} {{item.unit}}</text></view>
+      </view>
+    </view>
+
+    <view class="detail-section">
+      <view class="section-title-row"><text class="section-title">关联生物</text><text class="section-count">{{biology.length}}</text></view>
+      <view wx:for="{{biology}}" wx:key="id" class="linked-row card" data-id="{{item.id}}" bindtap="openBiology">
+        <text class="linked-icon">{{item.emoji || '🐠'}}</text><text class="linked-name">{{item.name}}</text><text class="row-arrow">›</text>
+      </view>
+      <text wx:if="{{!biology.length}}" class="empty-copy">这条日志没有关联生物</text>
+    </view>
+
+    <view class="detail-section">
+      <view class="section-title-row"><text class="section-title">照片</text><text class="section-count">{{photos.length}}</text></view>
+      <view wx:if="{{photos.length}}" class="photo-grid">
+        <image wx:for="{{photos}}" wx:key="id" class="photo-thumb" src="{{item.contentUrl}}" mode="aspectFill" data-id="{{item.id}}" bindtap="openPhoto"></image>
+      </view>
+      <text wx:else class="empty-copy">这条日志还没有照片</text>
+    </view>
+
+    <view class="detail-section">
+      <text class="section-title">备注</text>
+      <view class="note-card card">{{log.note || '没有填写备注'}}</view>
+    </view>
+  </block>
+  <view wx:else class="inline-error">日志暂时无法显示，请返回列表后重试。</view>
+
+  <view wx:if="{{log.id}}" class="detail-actions">
+    <button class="edit-button" bindtap="editLog"><van-icon name="edit" /> 编辑日志</button>
+    <button class="delete-button" loading="{{deleting}}" disabled="{{deleting}}" bindtap="deleteLog"><van-icon name="delete-o" /> 删除日志</button>
+  </view>
+</view>

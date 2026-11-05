@@ -57,6 +57,8 @@ public final class ReefJournalConstants {
     public static final String PHOTO_CATEGORY_CORAL = "CORAL";
     public static final String PHOTO_CATEGORY_EQUIPMENT = "EQUIPMENT";
     public static final String PHOTO_CATEGORY_PLANT = "PLANT";
+    public static final String PHOTO_REFERENCE_BIOLOGY = "BIOLOGY";
+    public static final String PHOTO_REFERENCE_LOG = "LOG";
     public static final int DEFAULT_PAGE_NUMBER = 1;
     public static final int DEFAULT_PAGE_SIZE = 20;
     public static final int MAX_PAGE_SIZE = 100;

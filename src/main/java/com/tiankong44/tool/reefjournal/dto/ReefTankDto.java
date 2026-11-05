@@ -18,6 +18,7 @@ public class ReefTankDto {
     private String startedAt;
     private String capacityLiter;
     private String systemType;
+    private String note;
     private Integer daysOpen;
     private Integer biologyCount;
     private Integer equipmentCount;

@@ -1,0 +1,13 @@
+<!-- 深色浏览场景保留照片比例，底部信息栏持续显示当前记录。 -->
+<view class="viewer-page">
+  <view class="viewer-top"><button bindtap="backToList">‹ 返回</button><text>{{currentIndex + 1}} / {{photos.length}}</text></view>
+  <view wx:if="{{loading}}" class="viewer-loading">正在读取照片…</view>
+  <swiper wx:elif="{{photos.length}}" class="photo-swiper" current="{{currentIndex}}" bindchange="onSwiperChange">
+    <swiper-item wx:for="{{photos}}" wx:key="id"><image class="viewer-image" src="{{item.contentUrl}}" mode="aspectFit"></image></swiper-item>
+  </swiper>
+  <view wx:else class="viewer-empty">照片暂时无法显示</view>
+  <view wx:if="{{currentPhoto.id}}" class="viewer-info" bindtap="openDetail">
+    <view class="viewer-copy"><text class="viewer-title">{{currentPhoto.title || '影像记录'}}</text><text class="viewer-date">{{currentPhoto.recordedAt}}</text></view>
+    <button class="viewer-detail">详情 ›</button>
+  </view>
+</view>

@@ -2,6 +2,9 @@ package com.tiankong44.tool.reefjournal.dto;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 日志列表和水质趋势采样响应。
  *
@@ -25,4 +28,5 @@ public class ReefLogDto {
     private String no2;
     private String no3;
     private String po4;
+    private List<String> biologyIds = new ArrayList<>();
 }

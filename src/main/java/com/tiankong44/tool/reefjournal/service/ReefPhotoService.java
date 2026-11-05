@@ -6,16 +6,20 @@ import com.tiankong44.tool.common.entity.CloudFile;
 import com.tiankong44.tool.common.service.CommonService;
 import com.tiankong44.tool.reefjournal.dto.ReefPageResponse;
 import com.tiankong44.tool.reefjournal.dto.ReefPhotoDto;
+import com.tiankong44.tool.reefjournal.dto.ReefPhotoSaveRequest;
 import com.tiankong44.tool.reefjournal.exception.ReefJournalException;
 import com.tiankong44.tool.reefjournal.auth.ReefPhotoTokenService;
+import com.tiankong44.tool.reefjournal.support.ReefDateTimeSupport;
 import com.tiankong44.tool.reefjournal.support.ReefPageSupport;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Arrays;
+import java.util.ArrayList;
 
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.ONE;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.ZERO;
@@ -24,6 +28,8 @@ import static com.tiankong44.tool.reefjournal.ReefJournalConstants.PHOTO_CATEGOR
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.PHOTO_CATEGORY_CORAL;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.PHOTO_CATEGORY_EQUIPMENT;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.PHOTO_CATEGORY_PLANT;
+import static com.tiankong44.tool.reefjournal.ReefJournalConstants.PHOTO_REFERENCE_BIOLOGY;
+import static com.tiankong44.tool.reefjournal.ReefJournalConstants.PHOTO_REFERENCE_LOG;
 
 /**
  * 管理用户照片元数据，并在读取二进制内容前检查照片归属。
@@ -61,21 +67,35 @@ public class ReefPhotoService {
      * @Date 2026-11-05
      * @param userId 认证上下文中的用户编号
      * @param category 可选照片分类
+     * @param referenceType 可选关联对象类型
+     * @param referenceId 可选关联对象编号
      * @param requestedPage 客户端页码
      * @param requestedSize 客户端每页条数
      * @return 照片墙分页响应
      */
-    public ReefPageResponse<ReefPhotoDto> list(Long userId, String category, Integer requestedPage, Integer requestedSize) {
+    public ReefPageResponse<ReefPhotoDto> list(Long userId, String category, String referenceType, String referenceId, Integer requestedPage, Integer requestedSize) {
         int pageNum = ReefPageSupport.pageNumber(requestedPage);
         int pageSize = ReefPageSupport.pageSize(requestedSize);
-        String filter = category == null || category.trim().isEmpty() ? "" : " AND category = ?";
-        Long total = category == null || category.trim().isEmpty()
-                ? jdbcTemplate.queryForObject("SELECT COUNT(*) FROM reef_photo WHERE user_id = ?", Long.class, userId)
-                : jdbcTemplate.queryForObject("SELECT COUNT(*) FROM reef_photo WHERE user_id = ? AND category = ?", Long.class, userId, category);
-        String sql = photoSelect() + " WHERE user_id = ?" + filter + " ORDER BY recorded_at DESC, id DESC LIMIT ? OFFSET ?";
-        List<ReefPhotoDto> rows = category == null || category.trim().isEmpty()
-                ? jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(ReefPhotoDto.class), userId, pageSize, ReefPageSupport.offset(pageNum, pageSize))
-                : jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(ReefPhotoDto.class), userId, category, pageSize, ReefPageSupport.offset(pageNum, pageSize));
+        StringBuilder filter = new StringBuilder(" WHERE user_id = ?");
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(userId);
+        if (category != null && !category.trim().isEmpty()) {
+            filter.append(" AND category = ?");
+            parameters.add(category);
+        }
+        if (referenceType != null && !referenceType.trim().isEmpty()) {
+            validateReference(userId, referenceType, referenceId);
+            filter.append(" AND reference_type = ? AND reference_id = ?");
+            parameters.add(referenceType);
+            parameters.add(referenceId.trim());
+        }
+        // 使用相同的归属与筛选条件计算分页总数。
+        Long total = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM reef_photo" + filter, Long.class, parameters.toArray());
+        parameters.add(pageSize);
+        parameters.add(ReefPageSupport.offset(pageNum, pageSize));
+        String sql = photoSelect() + filter + " ORDER BY recorded_at DESC, id DESC LIMIT ? OFFSET ?";
+        // 使用参数化条件读取当前页影像，编号和筛选值不拼入 SQL。
+        List<ReefPhotoDto> rows = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(ReefPhotoDto.class), parameters.toArray());
         for (ReefPhotoDto row : rows) {
             row.setContentUrl(row.getContentUrl() + "?signature=" + photoTokenService.issue(userId, Long.valueOf(row.getId())));
         }
@@ -93,9 +113,11 @@ public class ReefPhotoService {
      * @param category 照片分类编码
      * @param referenceType 可选关联对象类型
      * @param referenceId 可选关联对象编号
+     * @param recordedAt 可选上海本地记录时间
+     * @param note 可选照片备注
      * @return 受保护内容地址的照片元数据
      */
-    public ReefPhotoDto upload(Long userId, MultipartFile file, String title, String category, String referenceType, String referenceId) {
+    public ReefPhotoDto upload(Long userId, MultipartFile file, String title, String category, String referenceType, String referenceId, String recordedAt, String note) {
         validateCategory(category);
         validateReference(userId, referenceType, referenceId);
         // 复用既有文件服务在 MySQL 中保存图片，不写入实例本地磁盘。
@@ -104,12 +126,78 @@ public class ReefPhotoService {
             throw new ReefJournalException(uploadResult == null ? "照片暂时没有保存，请重试" : uploadResult.getMessage());
         }
         CloudFileUploadResponse fileResponse = uploadResult.getData();
-        jdbcTemplate.update("INSERT INTO reef_photo (user_id, file_key, category, title, reference_type, reference_id, recorded_at, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())",
-                userId, fileResponse.getFileKey(), category, cleanTitle(title), referenceType, referenceId);
+        // 使用上海本地时间保存照片记录，未传入时间时取当前时刻。
+        java.time.LocalDateTime photoTime = recordedAt == null || recordedAt.trim().isEmpty()
+                ? ReefDateTimeSupport.now() : ReefDateTimeSupport.parseDateTime(recordedAt);
+        jdbcTemplate.update("INSERT INTO reef_photo (user_id, file_key, category, title, reference_type, reference_id, recorded_at, note, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())",
+                userId, fileResponse.getFileKey(), category, cleanTitle(title), normalizeReference(referenceType), normalizeReference(referenceId), photoTime, cleanNote(note));
         List<ReefPhotoDto> rows = jdbcTemplate.query(photoSelect() + " WHERE user_id = ? AND file_key = ? ORDER BY id DESC LIMIT 1",
                 BeanPropertyRowMapper.newInstance(ReefPhotoDto.class), userId, fileResponse.getFileKey());
         if (rows.isEmpty()) throw new ReefJournalException("照片元数据没有保存，请重试");
         return rows.get(ZERO);
+    }
+
+    /**
+     * 读取当前用户的一条影像记录和受保护图片地址。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param userId 认证上下文中的用户编号
+     * @param photoId 照片编号
+     * @return 照片元数据与签名内容地址
+     */
+    public ReefPhotoDto get(Long userId, Long photoId) {
+        // 通过用户编号和照片编号定位详情记录。
+        List<ReefPhotoDto> rows = jdbcTemplate.query(photoSelect() + " WHERE user_id = ? AND id = ? LIMIT 1",
+                BeanPropertyRowMapper.newInstance(ReefPhotoDto.class), userId, photoId);
+        if (rows.isEmpty()) throw new ReefJournalException("没有找到这张照片，或它不属于当前账号");
+        ReefPhotoDto photo = rows.get(ZERO);
+        photo.setContentUrl(photo.getContentUrl() + "?signature=" + photoTokenService.issue(userId, photoId));
+        return photo;
+    }
+
+    /**
+     * 更新当前用户影像的分类、关联对象、时间和备注。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param userId 认证上下文中的用户编号
+     * @param photoId 照片编号
+     * @param request 用户修改后的影像资料
+     * @return 保存后的影像详情
+     */
+    public ReefPhotoDto update(Long userId, Long photoId, ReefPhotoSaveRequest request) {
+        validateCategory(request.getCategory());
+        String referenceType = normalizeReference(request.getReferenceType());
+        String referenceId = normalizeReference(request.getReferenceId());
+        validateReference(userId, referenceType, referenceId);
+        java.time.LocalDateTime recordedAt = ReefDateTimeSupport.parseDateTime(request.getRecordedAt());
+        // 按用户编号和照片编号同时限定更新范围。
+        int updatedCount = jdbcTemplate.update("UPDATE reef_photo SET category = ?, title = ?, reference_type = ?, reference_id = ?, recorded_at = ?, note = ? WHERE user_id = ? AND id = ?",
+                request.getCategory(), cleanTitle(request.getTitle()), referenceType, referenceId, recordedAt,
+                cleanNote(request.getNote()), userId, photoId);
+        if (updatedCount != ONE) throw new ReefJournalException("没有找到这张照片，或它不属于当前账号");
+        return get(userId, photoId);
+    }
+
+    /**
+     * 删除当前用户的影像元数据和对应云端文件内容。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param userId 认证上下文中的用户编号
+     * @param photoId 照片编号
+     */
+    @Transactional
+    public void delete(Long userId, Long photoId) {
+        List<String> fileKeys = jdbcTemplate.query("SELECT file_key FROM reef_photo WHERE user_id = ? AND id = ? LIMIT 1",
+                (resultSet, rowNumber) -> resultSet.getString(1), userId, photoId);
+        if (fileKeys.isEmpty()) throw new ReefJournalException("没有找到这张照片，或它不属于当前账号");
+        // 先删除用户拥有的照片记录，再删除该记录对应的云端文件。
+        int deletedPhotoCount = jdbcTemplate.update("DELETE FROM reef_photo WHERE user_id = ? AND id = ?", userId, photoId);
+        if (deletedPhotoCount != ONE) throw new ReefJournalException("照片没有删除，请刷新后重试");
+        int deletedFileCount = commonService.deleteFile(fileKeys.get(ZERO));
+        if (deletedFileCount != ONE) throw new ReefJournalException("照片记录已找到，但云端文件无法删除");
     }
 
     /**
@@ -171,10 +259,22 @@ public class ReefPhotoService {
      */
     private String referenceTable(String referenceType) {
         if (PHOTO_CATEGORY_TANK.equals(referenceType)) return "reef_tank";
-        if ("BIOLOGY".equals(referenceType)) return "reef_biology";
+        if (PHOTO_REFERENCE_BIOLOGY.equals(referenceType)) return "reef_biology";
         if (PHOTO_CATEGORY_EQUIPMENT.equals(referenceType)) return "reef_equipment";
-        if ("LOG".equals(referenceType)) return "reef_log";
+        if (PHOTO_REFERENCE_LOG.equals(referenceType)) return "reef_log";
         throw new ReefJournalException("照片关联类型不受支持");
+    }
+
+    /**
+     * 将可选关联字段中的空文本统一转换为空值。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param value 用户输入的关联字段
+     * @return 去除首尾空白后的文本，空值时返回 null
+     */
+    private String normalizeReference(String value) {
+        return value == null || value.trim().isEmpty() ? null : value.trim();
     }
 
     /**
@@ -192,6 +292,20 @@ public class ReefPhotoService {
     }
 
     /**
+     * 清理影像备注并限制数据库字段长度。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param note 用户填写的影像备注
+     * @return 清理后的备注或空值
+     */
+    private String cleanNote(String note) {
+        if (note == null) return null;
+        String cleaned = note.replaceAll("[\\p{Cntrl}&&[^\\r\\n\\t]]", "").trim();
+        return cleaned.length() > 2000 ? cleaned.substring(ZERO, 2000) : cleaned;
+    }
+
+    /**
      * 返回照片墙响应所需的固定字段投影。
      *
      * @Author zhanghao_SMEICS
@@ -199,6 +313,6 @@ public class ReefPhotoService {
      * @return 参数化查询前缀
      */
     private String photoSelect() {
-        return "SELECT CAST(id AS CHAR) id, title, category, reference_type, reference_id, DATE_FORMAT(recorded_at, '%Y-%m-%d %H:%i:%s') recorded_at, CONCAT('/tabs/reef-journal/photos/', CAST(id AS CHAR), '/content') content_url FROM reef_photo";
+        return "SELECT CAST(id AS CHAR) id, title, category, reference_type, reference_id, DATE_FORMAT(recorded_at, '%Y-%m-%d %H:%i:%s') recorded_at, note, CONCAT('/tabs/reef-journal/photos/', CAST(id AS CHAR), '/content') content_url FROM reef_photo";
     }
 }

@@ -35,6 +35,7 @@ import static com.tiankong44.tool.reefjournal.ReefJournalConstants.METRIC_PO4;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.METRIC_SALINITY;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.METRIC_TEMPERATURE;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.ONE;
+import static com.tiankong44.tool.reefjournal.ReefJournalConstants.PHOTO_REFERENCE_LOG;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TYPE_WATER_TEST;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TYPE_WATER_CHANGE;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TYPE_FEEDING;
@@ -139,7 +140,36 @@ public class ReefLogService {
         List<ReefLogDto> rows = jdbcTemplate.query(logSelect() + " WHERE user_id = ? AND id = ? LIMIT 1",
                 BeanPropertyRowMapper.newInstance(ReefLogDto.class), userId, logId);
         if (rows.isEmpty()) throw new ReefJournalException("没有找到这条日志，或它不属于当前账号");
-        return rows.get(ZERO);
+        ReefLogDto log = rows.get(ZERO);
+        // 读取详情页展示和编辑所需的生物关联编号。
+        log.setBiologyIds(jdbcTemplate.query("SELECT CAST(biology_id AS CHAR) FROM reef_log_biology WHERE user_id = ? AND log_id = ? ORDER BY id",
+                (resultSet, rowNumber) -> resultSet.getString(1), userId, logId));
+        return log;
+    }
+
+    /**
+     * 删除当前用户的日志，并阻止仍被影像引用的记录被移除。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param userId 认证上下文中的用户编号
+     * @param logId 日志编号
+     */
+    @Transactional
+    public void delete(Long userId, Long logId) {
+        // 先确认记录归属，避免通过响应差异暴露其他用户数据。
+        Integer ownedCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM reef_log WHERE user_id = ? AND id = ?", Integer.class, userId, logId);
+        if (ownedCount == null || ownedCount != ONE) throw new ReefJournalException("没有找到这条日志，或它不属于当前账号");
+        // 保留仍被照片引用的日志，用户可先在照片详情中解除关联。
+        Integer photoReferenceCount = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM reef_photo WHERE user_id = ? AND reference_type = ? AND reference_id = ?",
+                Integer.class, userId, PHOTO_REFERENCE_LOG, String.valueOf(logId));
+        if (photoReferenceCount != null && photoReferenceCount > ZERO) {
+            throw new ReefJournalException("这条日志还关联着照片，请先在照片详情中解除关联");
+        }
+        // 清理日志与生物的关系后，再删除当前用户的日志主体。
+        jdbcTemplate.update("DELETE FROM reef_log_biology WHERE user_id = ? AND log_id = ?", userId, logId);
+        int deletedCount = jdbcTemplate.update("DELETE FROM reef_log WHERE user_id = ? AND id = ?", userId, logId);
+        if (deletedCount != ONE) throw new ReefJournalException("日志没有删除，请刷新后重试");
     }
 
     /**

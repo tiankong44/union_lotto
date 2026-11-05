@@ -175,7 +175,8 @@ public class ReefExportService {
         List<ReefPhotoDto> result = new ArrayList<>();
         int pageNum = ONE;
         while (true) {
-            ReefPageResponse<ReefPhotoDto> page = photoService.list(userId, null, pageNum, MAX_PAGE_SIZE);
+            // 导出影像元数据时不添加关联对象过滤条件。
+            ReefPageResponse<ReefPhotoDto> page = photoService.list(userId, null, null, null, pageNum, MAX_PAGE_SIZE);
             result.addAll(page.getList());
             if (result.size() >= Long.parseLong(page.getTotal()) || page.getList().isEmpty()) break;
             pageNum++;

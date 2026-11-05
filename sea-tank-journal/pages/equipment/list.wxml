@@ -4,7 +4,7 @@
   </scroll-view>
   <view wx:for="{{equipment}}" wx:key="id" class="equipment-card card">
     <view class="equipment-icon">{{item.icon || '⌁'}}</view>
-    <view class="equipment-info"><text class="equipment-name">{{item.name}}</text><text class="equipment-model">{{item.model || '型号待补充'}}</text><text class="equipment-runtime">每日 {{item.dailyHours || 0}} 小时 · 已运行 {{item.daysRunning || 0}} 天</text><text class="equipment-runtime">维护周期 {{item.maintenanceIntervalDays || '待设置'}} 天</text></view>
+    <view class="equipment-info"><text class="equipment-name">{{item.name}}</text><text class="equipment-model">{{item.model || '型号待补充'}}</text><text class="equipment-runtime">{{item.powerWatt ? item.powerWatt + ' W' : '功率待补充'}} · 每日 {{item.dailyHours || 0}} 小时</text><text class="equipment-runtime">维护周期 {{item.maintenanceIntervalDays || '待设置'}} 天</text></view>
     <view class="equipment-side"><text class="equipment-status status-{{item.status}}">{{item.statusLabel}}</text><text class="edit-link" data-id="{{item.id}}" bindtap="editMaintenance">维护</text></view>
   </view>
   <empty-state wx:if="{{!equipment.length}}" icon="⌁" title="还没有设备" description="添加灯光、过滤或温控设备"></empty-state>
@@ -14,6 +14,7 @@
       <view class="sheet-title">{{form.title || '新增设备'}}</view>
       <van-field label="设备名称" value="{{form.name}}" data-field="name" bind:change="onFieldChange" placeholder="请输入名称"></van-field>
       <van-field label="型号" value="{{form.model}}" data-field="model" bind:change="onFieldChange" placeholder="选填"></van-field>
+      <van-field label="功率（W）" value="{{form.powerWatt}}" type="digit" data-field="powerWatt" bind:change="onFieldChange" placeholder="选填"></van-field>
       <view class="form-select-row"><text>鱼缸</text><picker mode="selector" range="{{tankNames}}" bindchange="onFormTankChange"><text>{{form.tankName || '不绑定鱼缸'}}</text></picker></view>
       <view class="form-select-row"><text>分类</text><picker mode="selector" range="{{equipmentCategoryLabels}}" bindchange="onCategoryChange"><text>{{form.categoryLabel}}</text></picker></view>
       <view class="form-select-row"><text>状态</text><picker mode="selector" range="{{equipmentStatusLabels}}" bindchange="onStatusChange"><text>{{form.statusLabel}}</text></picker></view>

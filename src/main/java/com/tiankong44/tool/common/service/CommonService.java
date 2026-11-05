@@ -27,4 +27,14 @@ public interface CommonService {
      * @return 文件实体，不存在时返回空值
      */
     CloudFile getFile(String fileKey);
+
+    /**
+     * 按随机文件编号删除云端文件内容。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param fileKey 已校验归属且不再被照片记录引用的文件编号
+     * @return 删除的文件条数
+     */
+    int deleteFile(String fileKey);
 }

@@ -1,0 +1,33 @@
+<!-- 设备主资料集中在表单页，分类和鱼缸关系使用小程序选择器。 -->
+<view class="page-shell form-page">
+  <view class="form-nav"><button class="cancel-action" bindtap="cancel">取消</button><text>添加设备</text><view></view></view>
+  <view class="form-card card">
+    <text class="form-label">设备名称</text>
+    <input class="form-input" value="{{form.name}}" data-field="name" bindinput="onFieldInput" maxlength="128" placeholder="给设备起个名字" />
+  </view>
+  <view class="form-card card">
+    <text class="form-label">型号</text>
+    <input class="form-input" value="{{form.model}}" data-field="model" bindinput="onFieldInput" maxlength="128" placeholder="选填" />
+  </view>
+  <view class="form-card card">
+    <text class="form-label">分类</text>
+    <picker mode="selector" range="{{categoryLabels}}" bindchange="onCategoryChange"><view class="select-value">{{form.categoryLabel}}<text>⌄</text></view></picker>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">功率（W）</text>
+    <input class="form-input" type="digit" value="{{form.powerWatt}}" data-field="powerWatt" bindinput="onFieldInput" placeholder="选填" />
+  </view>
+  <view class="form-card card">
+    <text class="form-label">安装日期</text>
+    <picker mode="date" value="{{form.startedAt}}" bindchange="onDateChange"><view class="select-value">{{form.startedAt}}<text>⌄</text></view></picker>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">维护周期（天）</text>
+    <input class="form-input" type="number" value="{{form.maintenanceIntervalDays}}" data-field="maintenanceIntervalDays" bindinput="onFieldInput" placeholder="选填" />
+  </view>
+  <view class="form-card card">
+    <text class="form-label">关联鱼缸</text>
+    <picker mode="selector" range="{{tankNames}}" value="{{tankPickerIndex}}" bindchange="onTankChange"><view class="select-value">{{form.tankName || '不绑定鱼缸'}}<text>⌄</text></view></picker>
+  </view>
+  <button class="primary-button submit-button" loading="{{saving}}" disabled="{{saving}}" bindtap="saveEquipment">保存设备</button>
+</view>

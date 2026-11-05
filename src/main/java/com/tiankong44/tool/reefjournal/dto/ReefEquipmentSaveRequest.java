@@ -24,6 +24,7 @@ public class ReefEquipmentSaveRequest {
     @Size(max = 128, message = "设备型号不能超过128个字符")
     private String model;
     private String status;
+    private BigDecimal powerWatt;
     private BigDecimal dailyHours;
     private String startedAt;
     private Integer maintenanceIntervalDays;

@@ -83,6 +83,8 @@ public class CommonServiceImpl implements CommonService {
      *
      * @param fileKey 文件编号，空值直接视为不存在
      * @return 文件实体，不存在时返回空值
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
      */
     @Override
     public CloudFile getFile(String fileKey) {
@@ -91,5 +93,20 @@ public class CommonServiceImpl implements CommonService {
         }
         // 按随机文件编号查询，避免使用原始文件名构造本地路径。
         return cloudFileMapper.selectOne(new QueryWrapper<CloudFile>().eq("file_key", fileKey));
+    }
+
+    /**
+     * 删除指定随机编号的云端文件记录和二进制内容。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param fileKey 已校验归属的文件编号
+     * @return 删除的文件条数
+     */
+    @Override
+    public int deleteFile(String fileKey) {
+        if (fileKey == null || fileKey.trim().isEmpty()) return 0;
+        // 通过文件随机编号定位云端文件，不访问服务器本地磁盘。
+        return cloudFileMapper.delete(new QueryWrapper<CloudFile>().eq("file_key", fileKey));
     }
 }

@@ -8,7 +8,13 @@
     "pages/equipment/list",
     "pages/log/list",
     "pages/settings/index",
-    "pages/photos/index"
+    "pages/photos/index",
+    "pages/tank/add",
+    "pages/equipment/add",
+    "pages/photos/add",
+    "pages/photos/viewer",
+    "pages/photos/detail",
+    "pages/log/detail"
   ],
   "window": {
     "navigationBarTitleText": "海缸日记",
@@ -18,6 +24,7 @@
   },
   "usingComponents": {
     "van-button": "@vant/weapp/button/index",
+    "van-icon": "@vant/weapp/icon/index",
     "van-dialog": "@vant/weapp/dialog/index",
     "van-field": "@vant/weapp/field/index",
     "van-popup": "@vant/weapp/popup/index",
@@ -28,6 +35,18 @@
     "tank-card": "/components/reef/tank-card"
   },
   "sitemapLocation": "sitemap.json",
+  "tabBar": {
+    "custom": true,
+    "color": "#8195a8",
+    "selectedColor": "#47a4d6",
+    "backgroundColor": "#ffffff",
+    "list": [
+      { "pagePath": "pages/home/home", "text": "首页" },
+      { "pagePath": "pages/log/list", "text": "日志" },
+      { "pagePath": "pages/photos/index", "text": "影像" },
+      { "pagePath": "pages/settings/index", "text": "我的" }
+    ]
+  },
   "lazyCodeLoading": "requiredComponents",
   "style": "v2"
 }

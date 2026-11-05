@@ -1,0 +1,27 @@
+<!-- 单页表单承载鱼缸基础资料，保存成功后回到鱼缸列表。 -->
+<view class="page-shell form-page">
+  <view class="form-nav"><button class="cancel-action" bindtap="cancel">取消</button><text>新增鱼缸</text><view></view></view>
+  <view class="form-card card">
+    <text class="form-label">鱼缸名称</text>
+    <input class="form-input" value="{{form.name}}" data-field="name" bindinput="onFieldInput" maxlength="128" placeholder="给鱼缸起个名字" />
+  </view>
+  <view class="form-card card">
+    <text class="form-label">容量（L）</text>
+    <input class="form-input" type="digit" value="{{form.capacityLiter}}" data-field="capacityLiter" bindinput="onFieldInput" placeholder="选填" />
+  </view>
+  <view class="form-card card">
+    <text class="form-label">系统类型</text>
+    <input class="form-input" value="{{form.systemType}}" data-field="systemType" bindinput="onFieldInput" maxlength="64" placeholder="选填" />
+  </view>
+  <view class="form-card card">
+    <text class="form-label">开缸日期</text>
+    <picker mode="date" value="{{form.startedAt}}" bindchange="onDateChange">
+      <view class="select-value">{{form.startedAt}}<text>⌄</text></view>
+    </picker>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">备注</text>
+    <textarea class="form-textarea" value="{{form.note}}" data-field="note" bindinput="onFieldInput" maxlength="1000" placeholder="记录鱼缸的补充信息" />
+  </view>
+  <button class="primary-button submit-button" loading="{{saving}}" disabled="{{saving}}" bindtap="saveTank">保存鱼缸</button>
+</view>

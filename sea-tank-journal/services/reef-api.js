@@ -23,14 +23,23 @@ module.exports = {
   saveBiologyEvent: (biologyId, data) => request(`/biology/${biologyId}/events`, json('POST', data)),
   listLogs: (filters = {}) => request(`/logs?pageNum=${filters.pageNum || 1}&pageSize=${filters.pageSize || 50}&type=${encodeURIComponent(filters.type || '')}&tankId=${encodeURIComponent(filters.tankId || '')}`),
   saveLog: (data) => request('/logs', json('POST', data)),
+  getLog: (id) => request(`/logs/${id}`),
+  deleteLog: (id) => request(`/logs/${id}`, { method: 'DELETE' }),
   getWaterTrend: (tankId, metric, days) => request(`/water/trend?tankId=${tankId}&metric=${metric}&days=${days}`),
   listEquipment: (category = '', pageNum = 1, pageSize = 50, tankId = '') => request(`/equipment?pageNum=${pageNum}&pageSize=${pageSize}&category=${encodeURIComponent(category)}&tankId=${encodeURIComponent(tankId)}`),
   saveEquipment: (data) => request('/equipment', json('POST', data)),
-  listPhotos: async (category = '', pageNum = 1, pageSize = 60) => {
-    const result = await request(`/photos?pageNum=${pageNum}&pageSize=${pageSize}&category=${encodeURIComponent(category)}`)
+  getEquipment: (id) => request(`/equipment/${id}`),
+  listPhotos: async (category = '', pageNum = 1, pageSize = 60, referenceType = '', referenceId = '') => {
+    const result = await request(`/photos?pageNum=${pageNum}&pageSize=${pageSize}&category=${encodeURIComponent(category)}&referenceType=${encodeURIComponent(referenceType)}&referenceId=${encodeURIComponent(referenceId)}`)
     const withContentUrls = (items) => (items ?? []).map((item) => ({ ...item, contentUrl: `${API_BASE_URL}${item.contentUrl}` }))
     return Array.isArray(result) ? withContentUrls(result) : { ...result, list: withContentUrls(result?.list) }
   },
+  getPhoto: async (id) => {
+    const photo = await request(`/photos/${id}`)
+    return photo ? { ...photo, contentUrl: `${API_BASE_URL}${photo.contentUrl}` } : null
+  },
+  updatePhoto: (id, data) => request(`/photos/${id}`, json('PUT', data)),
+  deletePhoto: (id) => request(`/photos/${id}`, { method: 'DELETE' }),
   uploadPhoto: async (filePath, metadata) => {
     const { API_BASE_URL } = require('../config/env')
     const { ensureLogin } = require('./auth')

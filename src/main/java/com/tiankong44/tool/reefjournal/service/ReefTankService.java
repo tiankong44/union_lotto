@@ -138,15 +138,17 @@ public class ReefTankService {
         LocalDate startedAt = ReefDateTimeSupport.parseDate(request.getStartedAt());
         if (request.getId() == null || request.getId().trim().isEmpty()) {
             KeyHolder keyHolder = new GeneratedKeyHolder();
+            // 写入新鱼缸及用户备注，并读取数据库生成的主键。
             jdbcTemplate.update((Connection connection) -> {
                 PreparedStatement statement = connection.prepareStatement(
-                        "INSERT INTO reef_tank (user_id, name, started_at, capacity_liter, system_type, created_at, updated_at) VALUES (?, ?, ?, ?, ?, NOW(), NOW())",
+                        "INSERT INTO reef_tank (user_id, name, started_at, capacity_liter, system_type, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())",
                         Statement.RETURN_GENERATED_KEYS);
                 statement.setLong(ONE, userId);
                 statement.setString(2, request.getName().trim());
                 statement.setObject(3, startedAt);
                 statement.setBigDecimal(4, request.getCapacityLiter());
                 statement.setString(5, request.getSystemType());
+                statement.setString(6, request.getNote());
                 return statement;
             }, keyHolder);
             Number id = keyHolder.getKey();
@@ -155,8 +157,9 @@ public class ReefTankService {
         }
         Long tankId = parseId(request.getId());
         ensureOwned(userId, tankId);
-        jdbcTemplate.update("UPDATE reef_tank SET name = ?, started_at = ?, capacity_liter = ?, system_type = ?, updated_at = NOW() WHERE user_id = ? AND id = ?",
-                request.getName().trim(), startedAt, request.getCapacityLiter(), request.getSystemType(), userId, tankId);
+        // 更新当前用户鱼缸资料并保留页面录入的备注。
+        jdbcTemplate.update("UPDATE reef_tank SET name = ?, started_at = ?, capacity_liter = ?, system_type = ?, note = ?, updated_at = NOW() WHERE user_id = ? AND id = ?",
+                request.getName().trim(), startedAt, request.getCapacityLiter(), request.getSystemType(), request.getNote(), userId, tankId);
         return get(userId, tankId);
     }
 
@@ -254,7 +257,7 @@ public class ReefTankService {
      * @return 只包含鱼缸响应字段的查询前缀
      */
     private String tankSelect() {
-        return "SELECT CAST(id AS CHAR) id, name, DATE_FORMAT(started_at, '%Y-%m-%d') started_at, CAST(capacity_liter AS CHAR) capacity_liter, system_type FROM reef_tank";
+        return "SELECT CAST(id AS CHAR) id, name, DATE_FORMAT(started_at, '%Y-%m-%d') started_at, CAST(capacity_liter AS CHAR) capacity_liter, system_type, note FROM reef_tank";
     }
 
     /**

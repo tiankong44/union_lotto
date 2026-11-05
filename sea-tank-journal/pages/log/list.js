@@ -4,6 +4,7 @@
  * @Date 2026-11-05
  */
 const reefApi = require('../../services/reef-api')
+const { syncTabBar } = require('../../services/tab-bar')
 
 const FILTERS = [
   { value: '', label: '全部' }, { value: 'WATER_TEST', label: '水质' }, { value: 'WATER_CHANGE', label: '换水' },
@@ -11,9 +12,17 @@ const FILTERS = [
 ]
 
 Page({
-  data: { filters: FILTERS, selectedType: '', groups: [], logs: [], pageNum: 0, hasMore: true, loading: false, loadVersion: 0 },
-  onLoad() { this.loadLogs() },
-  onShow() { this.loadLogs() },
+  data: { filters: FILTERS, selectedType: '', selectedTankId: '', selectedTankName: '', groups: [], logs: [], pageNum: 0, hasMore: true, loading: false, loadVersion: 0 },
+  onShow() {
+    // 将全局导航选中项同步到日志页。
+    syncTabBar(this, 1)
+    const app = getApp()
+    if (app.globalData.pendingLogTank) {
+      this.setData({ selectedTankId: app.globalData.pendingLogTank.id, selectedTankName: app.globalData.pendingLogTank.name })
+      app.globalData.pendingLogTank = null
+    }
+    this.loadLogs()
+  },
   onReachBottom() { if (this.data.hasMore) this.loadLogs(false) },
 
   async loadLogs(reset = true) {
@@ -22,7 +31,7 @@ Page({
     const pageNum = reset ? 1 : this.data.pageNum + 1
     this.setData({ loading: true, loadVersion })
     try {
-      const result = await reefApi.listLogs({ type: this.data.selectedType, pageNum, pageSize: 100 })
+      const result = await reefApi.listLogs({ type: this.data.selectedType, tankId: this.data.selectedTankId, pageNum, pageSize: 100 })
       if (loadVersion !== this.data.loadVersion) return
       const incoming = result?.list ?? result ?? []
       const logs = reset ? incoming : this.data.logs.concat(incoming)
@@ -43,7 +52,7 @@ Page({
     } catch (error) {
       if (loadVersion !== this.data.loadVersion) return
       if (reset) this.setData({ groups: [], logs: [], hasMore: false })
-      wx.showToast({ title: error.message, icon: 'none' })
+      wx.showToast({ title: error?.message || '日志暂时无法读取，请检查网络后重试', icon: 'none' })
     } finally {
       if (loadVersion === this.data.loadVersion) this.setData({ loading: false })
     }
@@ -58,5 +67,17 @@ Page({
     this.loadLogs(true)
   },
 
-  addLog() { wx.navigateTo({ url: '/pages/log/add' }) }
+  clearTankFilter() {
+    this.setData({ selectedTankId: '', selectedTankName: '' })
+    this.loadLogs(true)
+  },
+
+  openLog(event) {
+    // 通过字符串编号进入单条日志详情。
+    wx.navigateTo({ url: `/pages/log/detail?id=${event.currentTarget.dataset.id}` })
+  },
+
+  addLog() {
+    wx.navigateTo({ url: '/pages/log/add' })
+  }
 })

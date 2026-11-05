@@ -1,0 +1,33 @@
+<!-- 影像表单允许选图、分类、关联对象、时间和备注。 -->
+<view class="page-shell photo-form-page">
+  <view class="form-nav"><button class="cancel-action" bindtap="cancel">取消</button><text>{{editing ? '编辑照片' : '添加照片'}}</text><view></view></view>
+  <view class="form-card card">
+    <text class="form-label">照片</text>
+    <button wx:if="{{!editing}}" class="photo-pick" bindtap="choosePhoto">
+      <image wx:if="{{photoPath}}" src="{{photoPath}}" mode="aspectFill"></image>
+      <text wx:else>＋</text>
+      <text wx:if="{{!photoPath}}" class="photo-pick-label">选择照片</text>
+    </button>
+    <image wx:else class="photo-existing" src="{{photoUrl}}" mode="aspectFill"></image>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">照片分类</text>
+    <view class="category-list"><button wx:for="{{categories}}" wx:key="value" class="category-chip {{form.category === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectCategory">{{item.label}}</button></view>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">关联对象</text>
+    <picker mode="selector" range="{{referenceTypeLabels}}" value="{{referenceTypeIndex}}" bindchange="onReferenceTypeChange"><view class="select-value">{{form.referenceTypeLabel}}<text>⌄</text></view></picker>
+    <picker wx:if="{{form.referenceType === 'BIOLOGY'}}" mode="selector" range="{{tankNames}}" value="{{tankPickerIndex}}" bindchange="onTankChange"><view class="select-value nested-select">{{form.tankName || '先选择鱼缸'}}<text>⌄</text></view></picker>
+    <picker wx:if="{{form.referenceType}}" mode="selector" range="{{referenceNames}}" value="{{referenceIndex}}" bindchange="onReferenceChange"><view class="select-value nested-select">{{form.referenceName || '选择关联记录'}}<text>⌄</text></view></picker>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">拍摄时间</text>
+    <picker mode="date" value="{{recordDate}}" bindchange="onDateChange"><view class="select-value">{{recordDate}}<text>⌄</text></view></picker>
+    <picker mode="time" value="{{recordTime}}" bindchange="onTimeChange"><view class="select-value nested-select">{{recordTime}}<text>⌄</text></view></picker>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">备注</text>
+    <textarea class="form-textarea" value="{{form.note}}" bindinput="onNoteInput" maxlength="2000" placeholder="补充这张照片的记录" />
+  </view>
+  <button class="primary-button submit-button" loading="{{saving}}" disabled="{{saving}}" bindtap="savePhoto">{{editing ? '保存修改' : '保存照片'}}</button>
+</view>

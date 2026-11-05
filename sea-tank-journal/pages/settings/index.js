@@ -4,6 +4,7 @@
  * @Date 2026-11-05
  */
 const reefApi = require('../../services/reef-api')
+const { syncTabBar } = require('../../services/tab-bar')
 
 const REMINDER_DEFAULTS = [
   { type: 'WATER_CHANGE', label: '换水提醒', frequency: '每 14 天', icon: '↻', enabled: true },
@@ -14,8 +15,12 @@ const REMINDER_DEFAULTS = [
 
 Page({
   data: { reminders: REMINDER_DEFAULTS, sendTime: '', cacheSize: '读取中…' },
-  onLoad() { this.loadSettings(); this.loadCacheSize() },
-  onShow() { this.loadSettings(); this.loadCacheSize() },
+  onShow() {
+    // 将全局导航选中项同步到“我的”页。
+    syncTabBar(this, 3)
+    this.loadSettings()
+    this.loadCacheSize()
+  },
 
   async loadSettings() {
     try {

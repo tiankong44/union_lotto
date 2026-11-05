@@ -5,6 +5,7 @@
  */
 const reefApi = require('../../services/reef-api')
 const { shanghaiDateTimeParts } = require('../../services/date-time')
+const { syncTabBar } = require('../../services/tab-bar')
 
 Page({
   data: {
@@ -12,13 +13,12 @@ Page({
     greeting: '你好',
     loading: true,
     errorMessage: '',
-    menuOpen: false,
-    tankFormOpen: false,
-    savingTank: false,
-    tankForm: { name: '', startedAt: '', capacityLiter: '', systemType: '' }
+    menuOpen: false
   },
 
   onShow() {
+    // 将全局导航选中项同步到首页。
+    syncTabBar(this, 0)
     const hour = Number(shanghaiDateTimeParts(new Date()).time.slice(0, 2))
     this.setData({ greeting: hour < 11 ? '早上好' : hour < 18 ? '下午好' : '晚上好' })
     this.loadDashboard()
@@ -45,11 +45,9 @@ Page({
   },
 
   openTankForm() {
-    this.setData({ menuOpen: false, tankFormOpen: true })
-  },
-
-  closeTankForm() {
-    this.setData({ tankFormOpen: false })
+    this.setData({ menuOpen: false })
+    // 跳转到独立鱼缸表单，保存后返回首页刷新列表。
+    wx.navigateTo({ url: '/pages/tank/add' })
   },
 
   openQuickLog() {
@@ -57,31 +55,4 @@ Page({
     wx.navigateTo({ url: '/pages/log/add' })
   },
 
-  openLogs() { wx.navigateTo({ url: '/pages/log/list' }) },
-  openPhotos() { wx.navigateTo({ url: '/pages/photos/index' }) },
-  openSettings() { wx.navigateTo({ url: '/pages/settings/index' }) },
-
-  onTankFieldChange(event) {
-    const field = event.currentTarget.dataset.field
-    this.setData({ [`tankForm.${field}`]: event.detail })
-  },
-
-  async saveTank() {
-    const form = this.data.tankForm
-    if (!form.name.trim() || !form.startedAt.trim()) {
-      wx.showToast({ title: '请填写鱼缸名称和开缸日期', icon: 'none' })
-      return
-    }
-    this.setData({ savingTank: true })
-    try {
-      await reefApi.saveTank({ ...form, capacityLiter: Number(form.capacityLiter) || null })
-      this.setData({ tankFormOpen: false, tankForm: { name: '', startedAt: '', capacityLiter: '', systemType: '' } })
-      await this.loadDashboard()
-      wx.showToast({ title: '鱼缸已保存', icon: 'success' })
-    } catch (error) {
-      wx.showToast({ title: error.message, icon: 'none' })
-    } finally {
-      this.setData({ savingTank: false })
-    }
-  }
 })

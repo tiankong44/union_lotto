@@ -1,0 +1,12 @@
+/* 图片区域使用剩余视口高度，底部信息与系统安全区分开。 */
+.viewer-page { display: flex; min-height: 100vh; flex-direction: column; background: #171a1c; color: #f4f6f7; }
+.viewer-top { display: flex; align-items: center; justify-content: space-between; min-height: 74rpx; padding: 0 26rpx; color: #b7c0c5; font-size: 21rpx; }
+.viewer-top button { color: #e5ebee; font-size: 24rpx; }
+.photo-swiper { display: flex; width: 100%; flex: 1; align-items: center; }
+.viewer-image { display: block; width: 100%; height: 100%; }
+.viewer-loading, .viewer-empty { display: flex; flex: 1; align-items: center; justify-content: center; color: #aab4ba; font-size: 23rpx; }
+.viewer-info { display: flex; align-items: center; gap: 20rpx; padding: 22rpx 26rpx calc(22rpx + env(safe-area-inset-bottom)); background: #ffffff; color: #30495e; }
+.viewer-copy { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 8rpx; }
+.viewer-title { color: #2f475c; font-size: 24rpx; font-weight: 700; overflow-wrap: anywhere; }
+.viewer-date { color: #879bae; font-size: 20rpx; }
+.viewer-detail { flex: none; color: #429fce; font-size: 22rpx; }

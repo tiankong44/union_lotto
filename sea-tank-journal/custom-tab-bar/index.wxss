@@ -1,0 +1,39 @@
+/* 全局导航使用等分弹性布局，并为设备安全区留出空间。 */
+.reef-tab-bar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 20;
+  display: flex;
+  min-height: calc(104rpx + env(safe-area-inset-bottom));
+  padding: 10rpx 14rpx calc(10rpx + env(safe-area-inset-bottom));
+  border-top: 1rpx solid #e9f0f4;
+  background: rgba(255, 255, 255, 0.96);
+  box-sizing: border-box;
+}
+
+.reef-tab-item {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4rpx;
+  color: #8195a8;
+}
+
+.reef-tab-icon {
+  display: flex;
+  line-height: 1.1;
+}
+
+.reef-tab-label {
+  font-size: 19rpx;
+  line-height: 1.2;
+}
+
+.reef-tab-item.selected {
+  color: #47a4d6;
+}

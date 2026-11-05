@@ -1,0 +1,28 @@
+/* 详情按信息关系分组，底部操作区为固定高度并避开安全区。 */
+.detail-page { padding-bottom: calc(150rpx + env(safe-area-inset-bottom)); }
+.detail-head { display: flex; flex-direction: column; gap: 12rpx; padding: 24rpx; }
+.type-tag { align-self: flex-start; padding: 8rpx 14rpx; border-radius: 24rpx; background: #e8f5fc; color: #3e9dcf; font-size: 20rpx; }
+.type-WATER_CHANGE { background: #e9f6ee; color: #4eaa77; }
+.type-FEEDING { background: #fff4e3; color: #d18b37; }
+.type-MEDICATION { background: #fceceb; color: #ce706a; }
+.detail-title { color: #2f475c; font-size: 30rpx; font-weight: 700; overflow-wrap: anywhere; }
+.detail-meta { color: #8196a9; font-size: 21rpx; overflow-wrap: anywhere; }
+.detail-section { margin-top: 26rpx; }
+.section-title-row { display: flex; align-items: center; gap: 12rpx; margin-bottom: 12rpx; }
+.section-title { display: block; margin-bottom: 12rpx; color: #344c60; font-size: 25rpx; font-weight: 700; }
+.section-count { color: #93a8b9; font-size: 20rpx; }
+.water-grid { display: flex; flex-wrap: wrap; padding: 12rpx 20rpx; }
+.water-value { display: flex; width: 50%; min-width: 0; flex: 0 0 50%; justify-content: space-between; gap: 12rpx; padding: 15rpx 8rpx 15rpx 0; border-bottom: 1rpx solid #edf2f5; box-sizing: border-box; color: #71879a; font-size: 21rpx; }
+.water-value text:last-child { color: #304b60; text-align: right; overflow-wrap: anywhere; }
+.linked-row { display: flex; align-items: center; gap: 14rpx; margin-bottom: 10rpx; padding: 16rpx; }
+.linked-icon { display: flex; width: 64rpx; height: 64rpx; flex: none; align-items: center; justify-content: center; border-radius: 14rpx; background: #e7f5fc; font-size: 30rpx; }
+.linked-name { min-width: 0; flex: 1; color: #40596d; font-size: 23rpx; overflow-wrap: anywhere; }
+.row-arrow { color: #9bb0bf; font-size: 32rpx; }
+.empty-copy { color: #91a6b8; font-size: 21rpx; }
+.photo-grid { display: flex; flex-wrap: wrap; gap: 10rpx; }
+.photo-thumb { width: calc(25% - 8rpx); height: 20vw; flex: 0 0 calc(25% - 8rpx); border-radius: 12rpx; background: #e4f3fa; }
+.note-card { min-height: 76rpx; padding: 20rpx; color: #667e92; font-size: 22rpx; line-height: 1.6; overflow-wrap: anywhere; }
+.detail-actions { position: fixed; right: 0; bottom: 0; left: 0; display: flex; gap: 12rpx; padding: 16rpx 28rpx calc(16rpx + env(safe-area-inset-bottom)); border-top: 1rpx solid #e9f0f4; background: rgba(255, 255, 255, 0.96); }
+.detail-actions button { min-width: 0; min-height: 76rpx; flex: 1; border-radius: 40rpx; font-size: 23rpx; }
+.edit-button { background: #eaf6fc; color: #419dcf; }
+.delete-button { background: #fff0ef; color: #cd6e6c; }

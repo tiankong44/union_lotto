@@ -5,15 +5,19 @@
  */
 const reefApi = require('../../services/reef-api')
 const { shanghaiDateTimeParts } = require('../../services/date-time')
+const { syncTabBar } = require('../../services/tab-bar')
 
 Page({
   data: {
     categories: [{ value: '', label: '全部' }, { value: 'TANK', label: '鱼缸' }, { value: 'FISH', label: '鱼' }, { value: 'CORAL', label: '珊瑚' }, { value: 'EQUIPMENT', label: '设备' }, { value: 'PLANT', label: '植物' }],
-    selectedCategory: '', recent: [], older: [], uploading: false, pageNum: 0, hasMore: true, loading: false, loadVersion: 0
+    selectedCategory: '', recent: [], older: [], pageNum: 0, hasMore: true, loading: false, loadVersion: 0
   },
 
-  onLoad() { this.loadPhotos() },
-  onShow() { this.loadPhotos() },
+  onShow() {
+    // 将全局导航选中项同步到影像页。
+    syncTabBar(this, 2)
+    this.loadPhotos()
+  },
   onReachBottom() { if (this.data.hasMore) this.loadPhotos(false) },
 
   async loadPhotos(reset = true) {
@@ -37,7 +41,7 @@ Page({
     } catch (error) {
       if (loadVersion !== this.data.loadVersion) return
       if (reset) this.setData({ recent: [], older: [], hasMore: false })
-      wx.showToast({ title: error.message, icon: 'none' })
+      wx.showToast({ title: error?.message || '影像记录暂时无法读取', icon: 'none' })
     } finally {
       if (loadVersion === this.data.loadVersion) this.setData({ loading: false })
     }
@@ -49,27 +53,11 @@ Page({
   },
 
   previewPhoto(event) {
-    const group = event.currentTarget.dataset.group
-    const index = Number(event.currentTarget.dataset.index)
-    const photos = this.data[group]
-    wx.previewImage({ current: photos[index].contentUrl, urls: photos.map((item) => item.contentUrl) })
+    // 使用自定义全屏浏览页保留底部记录信息和详情入口。
+    wx.navigateTo({ url: `/pages/photos/viewer?id=${event.currentTarget.dataset.id}` })
   },
 
   addPhoto() {
-    if (this.data.uploading) return
-    wx.chooseMedia({ count: 9, mediaType: ['image'], sourceType: ['album', 'camera'], success: async (result) => {
-      this.setData({ uploading: true })
-      let failed = false
-      for (const file of result.tempFiles) {
-        try {
-          await reefApi.uploadPhoto(file.tempFilePath, { title: '海缸记录', category: this.data.selectedCategory || 'TANK' })
-        } catch (error) {
-          failed = true
-        }
-      }
-      await this.loadPhotos(true)
-      this.setData({ uploading: false })
-      wx.showToast({ title: failed ? '部分照片没有上传，请检查网络后重试' : '照片已添加', icon: failed ? 'none' : 'success' })
-    } })
+    wx.navigateTo({ url: '/pages/photos/add' })
   }
 })

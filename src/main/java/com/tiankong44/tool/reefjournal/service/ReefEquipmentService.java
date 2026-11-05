@@ -120,8 +120,9 @@ public class ReefEquipmentService {
         }
         Long equipmentId = tankService.parseId(request.getId());
         ensureOwned(userId, equipmentId);
-        jdbcTemplate.update("UPDATE reef_equipment SET tank_id = ?, category = ?, name = ?, model = ?, status = ?, daily_hours = ?, started_at = ?, maintenance_interval_days = ?, last_maintained_at = ?, updated_at = NOW() WHERE user_id = ? AND id = ?",
-                tankId, request.getCategory(), request.getName().trim(), request.getModel(), status, request.getDailyHours(), startedAt,
+        // 保存设备功率及维护资料，更新范围限定为当前用户。
+        jdbcTemplate.update("UPDATE reef_equipment SET tank_id = ?, category = ?, name = ?, model = ?, status = ?, power_watt = ?, daily_hours = ?, started_at = ?, maintenance_interval_days = ?, last_maintained_at = ?, updated_at = NOW() WHERE user_id = ? AND id = ?",
+                tankId, request.getCategory(), request.getName().trim(), request.getModel(), status, request.getPowerWatt(), request.getDailyHours(), startedAt,
                 request.getMaintenanceIntervalDays(), lastMaintainedAt, userId, equipmentId);
         return get(userId, equipmentId);
     }
@@ -172,9 +173,10 @@ public class ReefEquipmentService {
      */
     private Long insert(Long userId, Long tankId, ReefEquipmentSaveRequest request, String status, LocalDate startedAt, LocalDate lastMaintainedAt) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
+        // 保存设备功率和维护资料，并读取数据库生成的主键。
         jdbcTemplate.update((Connection connection) -> {
             PreparedStatement statement = connection.prepareStatement(
-                    "INSERT INTO reef_equipment (user_id, tank_id, category, name, model, status, daily_hours, started_at, maintenance_interval_days, last_maintained_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())",
+                    "INSERT INTO reef_equipment (user_id, tank_id, category, name, model, status, power_watt, daily_hours, started_at, maintenance_interval_days, last_maintained_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())",
                     Statement.RETURN_GENERATED_KEYS);
             statement.setLong(ONE, userId);
             statement.setObject(2, tankId);
@@ -182,10 +184,11 @@ public class ReefEquipmentService {
             statement.setString(4, request.getName().trim());
             statement.setString(5, request.getModel());
             statement.setString(6, status);
-            statement.setBigDecimal(7, request.getDailyHours());
-            statement.setObject(8, startedAt);
-            statement.setObject(9, request.getMaintenanceIntervalDays());
-            statement.setObject(10, lastMaintainedAt);
+            statement.setBigDecimal(7, request.getPowerWatt());
+            statement.setBigDecimal(8, request.getDailyHours());
+            statement.setObject(9, startedAt);
+            statement.setObject(10, request.getMaintenanceIntervalDays());
+            statement.setObject(11, lastMaintainedAt);
             return statement;
         }, keyHolder);
         Number id = keyHolder.getKey();
@@ -270,6 +273,6 @@ public class ReefEquipmentService {
      * @return 参数化查询前缀
      */
     private String equipmentSelect() {
-        return "SELECT CAST(id AS CHAR) id, CAST(tank_id AS CHAR) tank_id, category, name, model, status, CAST(daily_hours AS CHAR) daily_hours, DATE_FORMAT(started_at, '%Y-%m-%d') started_at, maintenance_interval_days, DATE_FORMAT(last_maintained_at, '%Y-%m-%d') last_maintained_at FROM reef_equipment";
+        return "SELECT CAST(id AS CHAR) id, CAST(tank_id AS CHAR) tank_id, category, name, model, status, CAST(power_watt AS CHAR) power_watt, CAST(daily_hours AS CHAR) daily_hours, DATE_FORMAT(started_at, '%Y-%m-%d') started_at, maintenance_interval_days, DATE_FORMAT(last_maintained_at, '%Y-%m-%d') last_maintained_at FROM reef_equipment";
     }
 }

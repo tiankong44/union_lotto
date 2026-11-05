@@ -17,6 +17,7 @@ public class ReefEquipmentDto {
     private String model;
     private String status;
     private String statusLabel;
+    private String powerWatt;
     private String dailyHours;
     private String startedAt;
     private Integer daysRunning;

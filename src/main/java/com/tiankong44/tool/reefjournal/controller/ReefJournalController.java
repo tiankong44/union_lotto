@@ -16,6 +16,7 @@ import com.tiankong44.tool.reefjournal.dto.ReefLogDto;
 import com.tiankong44.tool.reefjournal.dto.ReefLogRequest;
 import com.tiankong44.tool.reefjournal.dto.ReefPageResponse;
 import com.tiankong44.tool.reefjournal.dto.ReefPhotoDto;
+import com.tiankong44.tool.reefjournal.dto.ReefPhotoSaveRequest;
 import com.tiankong44.tool.reefjournal.dto.ReefReminderSettingsDto;
 import com.tiankong44.tool.reefjournal.dto.ReefTankDto;
 import com.tiankong44.tool.reefjournal.dto.ReefTankSaveRequest;
@@ -38,6 +39,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -324,6 +326,39 @@ public class ReefJournalController {
     }
 
     /**
+     * 读取当前用户的单条日志详情。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param userId 已认证用户编号
+     * @param logId 日志字符串编号
+     * @return 日志详情和关联生物编号
+     */
+    @GetMapping("/logs/{logId}")
+    public BaseRes<ReefLogDto> getLog(@RequestAttribute(ReefJournalConstants.REQUEST_USER_ID) Long userId,
+                                    @PathVariable String logId) {
+        // 通过服务端用户编号读取日志详情。
+        return BaseRes.success(logService.get(userId, tankService.parseId(logId)));
+    }
+
+    /**
+     * 删除当前用户的一条日志。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param userId 已认证用户编号
+     * @param logId 日志字符串编号
+     * @return 空成功响应
+     */
+    @DeleteMapping("/logs/{logId}")
+    public BaseRes<Void> deleteLog(@RequestAttribute(ReefJournalConstants.REQUEST_USER_ID) Long userId,
+                                   @PathVariable String logId) {
+        // 服务会核验归属并阻止删除仍被照片引用的日志。
+        logService.delete(userId, tankService.parseId(logId));
+        return BaseRes.success();
+    }
+
+    /**
      * 查询指定鱼缸水质趋势与用户设置范围产生的提醒。
      *
      * @Author zhanghao_SMEICS
@@ -381,6 +416,22 @@ public class ReefJournalController {
     }
 
     /**
+     * 读取当前用户的单台设备资料。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param userId 已认证用户编号
+     * @param equipmentId 设备字符串编号
+     * @return 设备详情
+     */
+    @GetMapping("/equipment/{equipmentId}")
+    public BaseRes<ReefEquipmentDto> getEquipment(@RequestAttribute(ReefJournalConstants.REQUEST_USER_ID) Long userId,
+                                                  @PathVariable String equipmentId) {
+        // 按当前用户编号读取设备，避免跨账号访问。
+        return BaseRes.success(equipmentService.get(userId, tankService.parseId(equipmentId)));
+    }
+
+    /**
      * 分页读取当前用户影像记录。
      *
      * @Author zhanghao_SMEICS
@@ -394,10 +445,12 @@ public class ReefJournalController {
     @GetMapping("/photos")
     public BaseRes<ReefPageResponse<ReefPhotoDto>> listPhotos(@RequestAttribute(ReefJournalConstants.REQUEST_USER_ID) Long userId,
                                                               @RequestParam(required = false) String category,
+                                                              @RequestParam(required = false) String referenceType,
+                                                              @RequestParam(required = false) String referenceId,
                                                               @RequestParam(required = false) Integer pageNum,
                                                               @RequestParam(required = false) Integer pageSize) {
         // 读取当前用户照片元数据和受保护内容链接。
-        return BaseRes.success(photoService.list(userId, category, pageNum, pageSize));
+        return BaseRes.success(photoService.list(userId, category, referenceType, referenceId, pageNum, pageSize));
     }
 
     /**
@@ -411,17 +464,72 @@ public class ReefJournalController {
      * @param category 照片分类
      * @param referenceType 可选关联类型
      * @param referenceId 可选关联编号
+     * @param recordedAt 可选上海本地记录时间
+     * @param note 可选照片备注
      * @return 照片元数据
      */
     @PostMapping(value = "/photos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public BaseRes<ReefPhotoDto> uploadPhoto(@RequestAttribute(ReefJournalConstants.REQUEST_USER_ID) Long userId,
                                              @RequestParam("file") MultipartFile file,
-                                             @RequestParam String title,
+                                             @RequestParam(required = false) String title,
                                              @RequestParam String category,
                                              @RequestParam(required = false) String referenceType,
-                                             @RequestParam(required = false) String referenceId) {
+                                             @RequestParam(required = false) String referenceId,
+                                             @RequestParam(required = false) String recordedAt,
+                                             @RequestParam(required = false) String note) {
         // 复用公共云端文件服务，并将照片关联到当前用户。
-        return BaseRes.success(photoService.upload(userId, file, title, category, referenceType, referenceId));
+        return BaseRes.success(photoService.upload(userId, file, title, category, referenceType, referenceId, recordedAt, note));
+    }
+
+    /**
+     * 读取当前用户的单张照片详情和签名内容地址。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param userId 已认证用户编号
+     * @param photoId 照片字符串编号
+     * @return 当前用户的照片资料
+     */
+    @GetMapping("/photos/{photoId}")
+    public BaseRes<ReefPhotoDto> getPhoto(@RequestAttribute(ReefJournalConstants.REQUEST_USER_ID) Long userId,
+                                        @PathVariable String photoId) {
+        // 读取照片前由照片服务检查用户归属。
+        return BaseRes.success(photoService.get(userId, tankService.parseId(photoId)));
+    }
+
+    /**
+     * 更新当前用户照片的分类、关联对象、记录时间和备注。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param userId 已认证用户编号
+     * @param photoId 照片字符串编号
+     * @param request 影像记录修改 DTO
+     * @return 保存后的照片详情
+     */
+    @PutMapping("/photos/{photoId}")
+    public BaseRes<ReefPhotoDto> updatePhoto(@RequestAttribute(ReefJournalConstants.REQUEST_USER_ID) Long userId,
+                                             @PathVariable String photoId,
+                                             @RequestBody @Valid ReefPhotoSaveRequest request) {
+        // 更新前由照片服务校验分类、时间和关联对象归属。
+        return BaseRes.success(photoService.update(userId, tankService.parseId(photoId), request));
+    }
+
+    /**
+     * 删除当前用户的照片记录及其云端文件内容。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-05
+     * @param userId 已认证用户编号
+     * @param photoId 照片字符串编号
+     * @return 空成功响应
+     */
+    @DeleteMapping("/photos/{photoId}")
+    public BaseRes<Void> deletePhoto(@RequestAttribute(ReefJournalConstants.REQUEST_USER_ID) Long userId,
+                                     @PathVariable String photoId) {
+        // 删除照片前由照片服务校验归属并清理云端文件。
+        photoService.delete(userId, tankService.parseId(photoId));
+        return BaseRes.success();
     }
 
     /**

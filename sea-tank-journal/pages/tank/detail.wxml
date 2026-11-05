@@ -1,10 +1,12 @@
 <view class="page-shell">
   <view class="tank-cover">
-    <text>鱼缸封面</text>
+    <image wx:if="{{tankCoverUrl}}" src="{{tankCoverUrl}}" mode="aspectFill"></image>
+    <text wx:else>还没有鱼缸封面</text>
   </view>
   <view class="tank-heading">
     <text class="tank-title">{{tank.name || '鱼缸详情'}}</text>
     <text class="tank-facts">开缸 {{tank.daysOpen || 0}} 天 · {{tank.capacityLiter || '待补充'}} L · {{tank.systemType || '系统类型待补充'}}</text>
+    <text wx:if="{{tank.note}}" class="tank-note">{{tank.note}}</text>
   </view>
   <scroll-view class="tab-strip" scroll-x enhanced show-scrollbar="false">
     <button wx:for="{{tabs}}" wx:key="key" class="tab-button {{activeTab === item.key ? 'active' : ''}}" data-tab="{{item.key}}" bindtap="selectTab">{{item.label}}</button>

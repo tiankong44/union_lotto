@@ -16,31 +16,6 @@
   font-weight: 700;
 }
 
-.home-shortcuts {
-  display: flex;
-  align-items: stretch;
-  gap: 12rpx;
-  margin: 0 0 20rpx;
-}
-
-.home-shortcuts button {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  gap: 10rpx;
-  width: 0;
-  min-width: 0;
-  min-height: 72rpx;
-  border: 1rpx solid #e5f1f8;
-  border-radius: 20rpx;
-  background: #ffffff;
-  color: #688198;
-  font-size: 21rpx;
-}
-
-.home-shortcuts text { color: #69baf0; font-size: 24rpx; }
-
 .loading-line,
 .inline-error {
   padding: 24rpx 4rpx;
@@ -55,7 +30,7 @@
 .fab {
   position: fixed;
   right: 48rpx;
-  bottom: calc(48rpx + env(safe-area-inset-bottom));
+  bottom: calc(140rpx + env(safe-area-inset-bottom));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -73,8 +48,7 @@
   line-height: 96rpx;
 }
 
-.action-menu,
-.form-sheet {
+.action-menu {
   padding: 24rpx 32rpx calc(36rpx + env(safe-area-inset-bottom));
 }
 
@@ -91,15 +65,4 @@
 .action-dot {
   color: #87cefa;
   font-size: 20rpx;
-}
-
-.sheet-title {
-  margin: 8rpx 0 20rpx;
-  font-size: 32rpx;
-  font-weight: 700;
-  text-align: center;
-}
-
-.form-sheet van-button {
-  margin-top: 24rpx;
 }

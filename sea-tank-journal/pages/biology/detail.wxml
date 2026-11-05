@@ -1,7 +1,10 @@
 <view class="page-shell biology-page">
   <view class="biology-hero">
-    <view class="hero-placeholder">生物图片</view>
-    <view class="hero-dots"><view class="dot selected"></view><view class="dot"></view><view class="dot"></view></view>
+    <swiper wx:if="{{photos.length}}" class="biology-swiper" current="{{imageIndex}}" bindchange="onPhotoChange">
+      <swiper-item wx:for="{{photos}}" wx:key="id"><image class="biology-image" src="{{item.contentUrl}}" mode="aspectFill"></image></swiper-item>
+    </swiper>
+    <view wx:else class="hero-placeholder">还没有生物照片</view>
+    <view wx:if="{{photos.length}}" class="hero-dots"><view wx:for="{{photos}}" wx:key="id" class="dot {{imageIndex === index ? 'selected' : ''}}"></view></view>
   </view>
   <view class="bio-info card">
     <view class="bio-title-row"><text class="bio-title">{{biology.name || '生物详情'}}</text><text class="status-tag status-{{biology.statusKey}}">{{biology.statusLabel}}</text></view>

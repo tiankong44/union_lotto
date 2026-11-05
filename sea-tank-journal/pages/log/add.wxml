@@ -1,5 +1,5 @@
 <view class="page-shell">
-  <view class="form-nav"><button class="cancel-action" bindtap="cancel">取消</button></view>
+  <view class="form-nav"><button class="cancel-action" bindtap="cancel">取消</button><text>{{editingLogId ? '编辑日志' : '新增日志'}}</text><view></view></view>
   <view class="form-card card">
     <text class="form-label">日志类型</text>
     <picker mode="selector" range="{{logTypes}}" bindchange="onTypeChange"><view class="select-value">{{form.typeLabel}}<text>⌄</text></view></picker>
@@ -41,5 +41,5 @@
       <button class="add-photo" bindtap="choosePhotos">＋<text>添加</text></button>
     </view>
   </view>
-  <van-button type="primary" block round loading="{{saving}}" bind:click="submitLog">{{savedLogId ? '重试未完成的照片' : '提交日志'}}</van-button>
+  <van-button type="primary" block round loading="{{saving}}" disabled="{{saving}}" bind:click="submitLog">{{savedLogId ? '重试未完成的照片' : editingLogId ? '保存修改' : '提交日志'}}</van-button>
 </view>

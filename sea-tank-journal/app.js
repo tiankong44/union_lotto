@@ -7,7 +7,8 @@ const { ensureLogin } = require('./services/auth')
 
 App({
   globalData: {
-    loginPromise: null
+    loginPromise: null,
+    pendingLogTank: null
   },
 
   onLaunch() {

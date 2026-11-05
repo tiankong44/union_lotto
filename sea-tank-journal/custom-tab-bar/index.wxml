@@ -1,0 +1,7 @@
+<!-- 主导航固定在页面底部，选中态由当前 Tab 页面同步。 -->
+<view class="reef-tab-bar">
+  <button wx:for="{{items}}" wx:key="path" class="reef-tab-item {{selected === index ? 'selected' : ''}}" data-index="{{index}}" bindtap="switchTab">
+    <van-icon class="reef-tab-icon" name="{{item.icon}}" size="38rpx" />
+    <text class="reef-tab-label">{{item.label}}</text>
+  </button>
+</view>

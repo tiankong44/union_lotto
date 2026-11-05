@@ -1,0 +1,20 @@
+/* 影像表单采用弹性内容宽度，预览图只由屏幕宽度决定比例。 */
+.photo-form-page { display: flex; flex-direction: column; gap: 16rpx; }
+.form-nav { display: flex; align-items: center; min-height: 64rpx; margin-bottom: 4rpx; text-align: center; font-size: 29rpx; font-weight: 700; }
+.form-nav > button, .form-nav > view { width: 25%; flex: none; }
+.form-nav > text { min-width: 0; flex: 1; }
+.cancel-action { color: #47a4d6; font-size: 23rpx; font-weight: 500; text-align: left; }
+.form-card { padding: 22rpx; }
+.form-label { display: block; margin-bottom: 14rpx; color: #70879b; font-size: 22rpx; }
+.photo-pick { display: flex; width: 100%; height: 50vw; min-height: 0; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; border: 1rpx dashed #a4d4eb; border-radius: 14rpx; background: #eff9fd; color: #4ca9d7; font-size: 52rpx; line-height: 1; }
+.photo-pick image { width: 100%; height: 100%; }
+.photo-pick-label { margin-top: 8rpx; font-size: 22rpx; }
+.photo-existing { display: block; width: 100%; height: 50vw; border-radius: 14rpx; background: #e7f4fa; }
+.category-list { display: flex; flex-wrap: wrap; gap: 10rpx; }
+.category-chip { min-height: 54rpx; padding: 0 20rpx; border: 1rpx solid #e0ecf5; border-radius: 30rpx; color: #71899d; font-size: 21rpx; }
+.category-chip.selected { border-color: #8ac9e8; background: #e8f6fc; color: #3b9bcf; }
+.select-value { display: flex; align-items: center; justify-content: space-between; min-height: 68rpx; padding: 0 16rpx; border: 1rpx solid #e0ecf5; border-radius: 12rpx; color: #536b82; font-size: 24rpx; }
+.select-value text { color: #91a8bb; }
+.nested-select { margin-top: 12rpx; }
+.form-textarea { width: 100%; min-height: 150rpx; padding: 16rpx; border: 1rpx solid #e0ecf5; border-radius: 12rpx; color: #30495e; font-size: 24rpx; }
+.submit-button { margin-top: 6rpx; }

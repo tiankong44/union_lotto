@@ -7,7 +7,7 @@ const reefApi = require('../../services/reef-api')
 
 Page({
   data: {
-    biologyId: '', biology: {}, events: [], eventFormOpen: false, savingEvent: false,
+    biologyId: '', biology: {}, events: [], photos: [], imageIndex: 0, eventFormOpen: false, savingEvent: false,
     eventForm: { title: '', eventAt: '', description: '' }
   },
 
@@ -18,14 +18,24 @@ Page({
 
   async loadBiology() {
     try {
-      const [biology, events] = await Promise.all([
+      const [biology, events, photoResult] = await Promise.all([
         reefApi.getBiology(this.data.biologyId),
-        reefApi.listBiologyEvents(this.data.biologyId)
+        reefApi.listBiologyEvents(this.data.biologyId),
+        reefApi.listPhotos('', 1, 100, 'BIOLOGY', this.data.biologyId)
       ])
-      this.setData({ biology: biology || {}, events: events ?? [] })
+      this.setData({ biology: biology || {}, events: events ?? [], photos: photoResult?.list ?? photoResult ?? [], imageIndex: 0 })
     } catch (error) {
       wx.showToast({ title: error.message, icon: 'none' })
     }
+  },
+
+  /**
+   * 同步生物照片轮播的当前位置。
+   * @Author zhanghao_SMEICS
+   * @Date 2026-11-05
+   */
+  onPhotoChange(event) {
+    this.setData({ imageIndex: event.detail.current })
   },
 
   openEventForm() { this.setData({ eventFormOpen: true }) },
