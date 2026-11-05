@@ -1,0 +1,9 @@
+/* 登录页使用视口弹性布局，按钮和品牌内容避开系统安全区。 */
+.login-page { display: flex; min-height: 100vh; flex-direction: column; align-items: center; justify-content: space-between; padding: 18vh 8vw calc(8vh + env(safe-area-inset-bottom)); box-sizing: border-box; background: #f8fbfd; }
+.login-brand { display: flex; flex: 1; flex-direction: column; align-items: center; justify-content: center; gap: 22rpx; }
+.login-mark { display: flex; width: 156rpx; height: 156rpx; align-items: center; justify-content: center; border-radius: 50%; background: #e5f5f7; color: #42aab5; }
+.brand-title { color: #294b5b; font-size: 42rpx; font-weight: 700; }
+.login-actions { display: flex; width: 100%; flex-direction: column; gap: 22rpx; }
+.login-error { color: #c45f67; font-size: 23rpx; line-height: 1.5; text-align: center; overflow-wrap: anywhere; }
+.login-button { display: flex; width: 100%; min-height: 92rpx; align-items: center; justify-content: center; border-radius: 48rpx; background: #51b6c0; color: #ffffff; font-size: 29rpx; font-weight: 600; }
+.login-button[disabled] { opacity: 0.72; }

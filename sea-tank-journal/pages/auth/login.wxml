@@ -1,0 +1,11 @@
+<!-- 登录页提供明确的微信登录入口，并展示可重试的服务端错误。 -->
+<view class="login-page">
+  <view class="login-brand">
+    <view class="login-mark"><van-icon name="flower-o" size="76rpx" /></view>
+    <text class="brand-title">水境日记</text>
+  </view>
+  <view class="login-actions">
+    <text wx:if="{{errorMessage}}" class="login-error">{{errorMessage}}</text>
+    <button class="login-button" loading="{{loggingIn}}" disabled="{{loggingIn}}" bindtap="login">微信登录</button>
+  </view>
+</view>

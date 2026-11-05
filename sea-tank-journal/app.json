@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/auth/login",
     "pages/home/home",
     "pages/tank/detail",
     "pages/biology/detail",
