@@ -45,3 +45,6 @@ build/
 /sea-tank-journal/dist/
 /sea-tank-journal/miniprogram_npm/
 /sea-tank-journal/project.private.config.json
+
+# 本机微信凭证仅本地使用，禁止提交密钥文件。
+/config/application-out.yml

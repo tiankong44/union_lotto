@@ -6,7 +6,7 @@
 
 1. 在微信公众平台创建小程序后，将 `project.config.json` 的 `appid` 填为真实 AppID。
 2. 在 `config/env.js` 设置已备案并配置到小程序 request 合法域名的 HTTPS API 地址。
-3. 后端通过环境变量提供 AppID、AppSecret、令牌签名密钥、订阅模板 ID 和模板字段编码。不要把服务端密钥写入本项目。
+3. 本机开发时，在仓库根目录 `config/application-out.yml` 配置微信 AppID、AppSecret 和令牌签名密钥；该文件已加入 Git 忽略。生产环境继续通过服务端环境变量注入这些配置，不要将密钥提交到仓库。
 4. 在本目录执行 `npm install`；安装脚本会把 Vant 小程序组件准备到 `miniprogram_npm/`。
 5. 执行 `npm run typecheck` 和 `npm run build`。源目录与生成的 `dist/` 均包含 DevTools 可解析的组件目录。
 6. 将项目根目录或 `dist/` 导入微信开发者工具。
