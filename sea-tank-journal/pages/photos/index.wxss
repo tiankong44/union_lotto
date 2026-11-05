@@ -2,10 +2,11 @@
 .category-chip { display: inline-flex; align-items: center; justify-content: center; min-height: 58rpx; margin-right: 12rpx; padding: 0 20rpx; border: 1rpx solid #e0ecf5; border-radius: 34rpx; background: #ffffff; color: #7a8fa6; font-size: 21rpx; }
 .category-chip.selected { border-color: #87cefa; background: #e7f6ff; color: #4c9ecb; }
 .group-title { display: block; margin: 22rpx 0 14rpx; color: #63b4e3; font-size: 23rpx; font-weight: 700; }
-.photo-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14rpx; }
+.photo-grid { display: flex; flex-wrap: wrap; justify-content: space-between; }
 .photo-tile { min-width: 0; overflow: hidden; border: 1rpx solid #e7f1f7; border-radius: 18rpx; background: #ffffff; }
-.photo-tile image { display: block; width: 100%; aspect-ratio: 1; background: linear-gradient(145deg, #e0f4ff, #d5efe3); }
+.photo-tile { width: 31.5%; margin-bottom: 14rpx; }
+.photo-tile image { display: block; width: 100%; height: 31vw; background: linear-gradient(145deg, #e0f4ff, #d5efe3); }
 .photo-caption { display: flex; flex-direction: column; gap: 6rpx; min-height: 72rpx; padding: 10rpx; }
 .photo-caption text:first-child { overflow: hidden; color: #566d82; font-size: 19rpx; text-overflow: ellipsis; white-space: nowrap; }
 .photo-caption text:last-child { color: #9ab0c4; font-size: 17rpx; }
-.fab { position: fixed; right: 48rpx; bottom: calc(48rpx + env(safe-area-inset-bottom)); display: grid; place-items: center; width: 104rpx; aspect-ratio: 1; border-radius: 50%; background: linear-gradient(135deg, #87cefa, #6bb8f0); color: #ffffff; font-size: 58rpx; }
+.fab { position: fixed; right: 36rpx; bottom: calc(36rpx + env(safe-area-inset-bottom)); display: flex; align-items: center; justify-content: center; width: 96rpx; min-width: 96rpx; max-width: 96rpx; height: 96rpx; min-height: 96rpx; padding: 0; border-radius: 50%; background: linear-gradient(135deg, #87cefa, #6bb8f0); color: #ffffff; font-size: 52rpx; line-height: 96rpx; }

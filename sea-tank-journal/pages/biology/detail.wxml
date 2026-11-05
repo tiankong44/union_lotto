@@ -1,6 +1,5 @@
 <view class="page-shell biology-page">
   <view class="biology-hero">
-    <button class="hero-back" bindtap="goBack" aria-label="返回">‹</button>
     <view class="hero-placeholder">生物图片</view>
     <view class="hero-dots"><view class="dot selected"></view><view class="dot"></view><view class="dot"></view></view>
   </view>

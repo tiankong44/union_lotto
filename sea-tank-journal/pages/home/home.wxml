@@ -1,5 +1,4 @@
 <view class="page-shell home-page">
-  <page-header title="海缸日记"></page-header>
   <view class="greeting">
     <text class="greeting-time">{{greeting}}</text>
     <text class="greeting-copy">今天也记得记录哦</text>

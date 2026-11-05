@@ -47,7 +47,7 @@ button::after {
 
 .page-shell {
   min-height: 100vh;
-  padding: calc(24rpx + env(safe-area-inset-top)) 28rpx calc(48rpx + env(safe-area-inset-bottom));
+  padding: 24rpx 28rpx calc(48rpx + env(safe-area-inset-bottom));
   background: var(--reef-page);
 }
 

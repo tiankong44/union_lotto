@@ -1,6 +1,5 @@
 <view class="page-shell">
   <view class="tank-cover">
-    <button class="cover-back" bindtap="goBack" aria-label="返回">‹</button>
     <text>鱼缸封面</text>
   </view>
   <view class="tank-heading">

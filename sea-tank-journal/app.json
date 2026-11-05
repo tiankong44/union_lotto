@@ -14,8 +14,7 @@
     "navigationBarTitleText": "海缸日记",
     "navigationBarBackgroundColor": "#f8fbfd",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f5f7fa",
-    "navigationStyle": "custom"
+    "backgroundColor": "#f5f7fa"
   },
   "usingComponents": {
     "van-button": "@vant/weapp/button/index",
@@ -25,7 +24,6 @@
     "van-switch": "@vant/weapp/switch/index",
     "van-tag": "@vant/weapp/tag/index",
     "van-uploader": "@vant/weapp/uploader/index",
-    "page-header": "/components/layout/page-header",
     "empty-state": "/components/common/empty-state",
     "tank-card": "/components/reef/tank-card"
   },

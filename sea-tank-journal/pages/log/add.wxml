@@ -1,5 +1,5 @@
 <view class="page-shell">
-  <view class="form-nav"><button class="cancel-action" bindtap="cancel">取消</button><text>新增日志</text><view></view></view>
+  <view class="form-nav"><button class="cancel-action" bindtap="cancel">取消</button></view>
   <view class="form-card card">
     <text class="form-label">日志类型</text>
     <picker mode="selector" range="{{logTypes}}" bindchange="onTypeChange"><view class="select-value">{{form.typeLabel}}<text>⌄</text></view></picker>

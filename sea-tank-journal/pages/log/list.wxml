@@ -1,5 +1,4 @@
 <view class="page-shell">
-  <page-header title="我的日志" show-back="{{true}}"></page-header>
   <scroll-view class="filter-strip" scroll-x enhanced show-scrollbar="false">
     <button wx:for="{{filters}}" wx:key="value" class="filter-chip {{selectedType === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectFilter">{{item.label}}</button>
   </scroll-view>

@@ -57,7 +57,6 @@ Page({
     }
   },
 
-  goBack() { wx.navigateBack({ delta: 1 }) },
   selectTab(event) { this.setData({ activeTab: event.currentTarget.dataset.tab }) },
 
   async loadMoreBiology() {

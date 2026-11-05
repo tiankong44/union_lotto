@@ -2,7 +2,7 @@
 .setting-time-row, .setting-row { display: flex; align-items: center; min-height: 108rpx; gap: 16rpx; border-bottom: 1rpx solid #f0f5f8; }
 .setting-time-row { justify-content: space-between; }
 .setting-row:last-child, .setting-action:last-child { border-bottom: 0; }
-.setting-icon { display: grid; place-items: center; width: 54rpx; aspect-ratio: 1; flex: none; border-radius: 16rpx; background: #e9f7ff; color: #64b7e7; font-size: 27rpx; }
+.setting-icon { display: flex; align-items: center; justify-content: center; width: 54rpx; height: 54rpx; flex: none; border-radius: 16rpx; background: #e9f7ff; color: #64b7e7; font-size: 27rpx; }
 .icon-FEEDING { background: #fff3e2; color: #df9d44; }
 .icon-EQUIPMENT { background: #edf4f7; color: #7695a6; }
 .setting-copy, .setting-time-row > view { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 7rpx; }
@@ -11,5 +11,5 @@
 .time-value { color: #60afe0; font-size: 23rpx; }
 .setting-hint { display: block; padding: 0 0 16rpx 70rpx; color: #d09241; font-size: 20rpx; }
 .setting-action { display: flex; align-items: center; gap: 18rpx; width: 100%; min-height: 94rpx; border-bottom: 1rpx solid #f0f5f8; color: #30465a; font-size: 24rpx; text-align: left; }
-.action-icon { display: grid; place-items: center; width: 52rpx; aspect-ratio: 1; border-radius: 15rpx; background: #eef8fd; color: #64b7e7; font-size: 28rpx; }
+.action-icon { display: flex; align-items: center; justify-content: center; width: 52rpx; height: 52rpx; flex: none; border-radius: 15rpx; background: #eef8fd; color: #64b7e7; font-size: 28rpx; }
 .action-end { margin-left: auto; color: #9ab0c4; font-size: 20rpx; }

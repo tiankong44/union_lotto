@@ -28,7 +28,6 @@ Page({
     }
   },
 
-  goBack() { wx.navigateBack({ delta: 1 }) },
   openEventForm() { this.setData({ eventFormOpen: true }) },
   closeEventForm() { this.setData({ eventFormOpen: false }) },
   onEventFieldChange(event) { this.setData({ [`eventForm.${event.currentTarget.dataset.field}`]: event.detail }) },

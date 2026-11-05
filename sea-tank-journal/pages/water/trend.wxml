@@ -1,5 +1,4 @@
 <view class="page-shell">
-  <page-header title="水质趋势" show-back="{{true}}"></page-header>
   <scroll-view class="tank-switch" scroll-x enhanced show-scrollbar="false">
     <button wx:for="{{tanks}}" wx:key="id" class="tank-chip {{selectedTankId === item.id ? 'selected' : ''}}" data-id="{{item.id}}" bindtap="selectTank">{{item.name}}</button>
   </scroll-view>
