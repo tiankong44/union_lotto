@@ -93,7 +93,7 @@ Page({
         filePath,
         data: JSON.stringify(data, null, 2),
         encoding: 'utf8',
-        success: () => wx.shareFileMessage({ filePath, fileName: '海缸日记备份.json', fail: () => wx.showToast({ title: '文件已生成，但当前页面暂不支持分享', icon: 'none' }) }),
+        success: () => wx.shareFileMessage({ filePath, fileName: '水境日记备份.json', fail: () => wx.showToast({ title: '文件已生成，但当前页面暂不支持分享', icon: 'none' }) }),
         fail: () => wx.showToast({ title: '备份文件暂时无法生成', icon: 'none' })
       })
     } catch (error) {

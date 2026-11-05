@@ -1,6 +1,6 @@
 # union_lotto
 
-## 海缸日记
+## 水境日记
 
 原生微信小程序位于 `sea-tank-journal/`，后端接口位于 `/tabs/reef-journal/**`。小程序使用 WXML、WXSS、JavaScript 和 Vant Weapp；导入微信开发者工具前需填写小程序 AppID，并在 `sea-tank-journal/config/env.js` 配置 HTTPS API 域名。
 

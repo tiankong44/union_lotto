@@ -2,7 +2,7 @@
   "name": "sea-tank-journal",
   "version": "1.0.0",
   "private": true,
-  "description": "海缸日记原生微信小程序",
+  "description": "水境日记原生微信小程序",
   "scripts": {
     "postinstall": "node scripts/prepare-miniprogram-npm.mjs",
     "prepare:mini-program": "node scripts/prepare-miniprogram-npm.mjs",

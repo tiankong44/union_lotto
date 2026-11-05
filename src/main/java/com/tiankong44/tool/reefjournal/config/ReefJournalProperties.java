@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 海缸日记微信登录和订阅提醒配置。
+ * 水境日记微信登录和订阅提醒配置。
  *
  * @Author zhanghao_SMEICS
  * @Date 2026-11-05

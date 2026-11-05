@@ -55,7 +55,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
- * 海缸日记小程序接口控制器，只负责协议接入和响应返回。
+ * 水境日记小程序接口控制器，只负责协议接入和响应返回。
  *
  * @Author zhanghao_SMEICS
  * @Date 2026-11-05

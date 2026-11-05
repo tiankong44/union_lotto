@@ -1,7 +1,7 @@
 package com.tiankong44.tool.reefjournal.exception;
 
 /**
- * 海缸日记模块业务异常，承载可供用户理解的失败原因。
+ * 水境日记模块业务异常，承载可供用户理解的失败原因。
  *
  * @Author zhanghao_SMEICS
  * @Date 2026-11-05

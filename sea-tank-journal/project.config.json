@@ -1,5 +1,5 @@
 {
-  "description": "海缸日记微信小程序",
+  "description": "水境日记微信小程序",
   "packOptions": {
     "ignore": [
       {
@@ -53,7 +53,7 @@
   "compileType": "miniprogram",
   "libVersion": "2.10.0",
   "appid": "wx8ef428a6edcc1eca",
-  "projectname": "sea-tank-journal",
+  "projectname": "水境日记",
   "condition": {},
   "simulatorPluginLibVersion": {},
   "editorSetting": {}

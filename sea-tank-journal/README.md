@@ -1,4 +1,4 @@
-# 海缸日记
+# 水境日记
 
 微信小程序原生项目，使用 WXML、WXSS 和 JavaScript；UI 控件使用 Vant Weapp `1.11.7`，不使用跨端框架。
 

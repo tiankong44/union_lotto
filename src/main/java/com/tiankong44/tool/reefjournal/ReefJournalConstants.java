@@ -1,7 +1,7 @@
 package com.tiankong44.tool.reefjournal;
 
 /**
- * 海缸日记模块集中维护的业务常量。
+ * 水境日记模块集中维护的业务常量。
  *
  * @Author zhanghao_SMEICS
  * @Date 2026-11-05

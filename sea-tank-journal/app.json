@@ -17,7 +17,7 @@
     "pages/log/detail"
   ],
   "window": {
-    "navigationBarTitleText": "海缸日记",
+    "navigationBarTitleText": "水境日记",
     "navigationBarBackgroundColor": "#f8fbfd",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#f5f7fa"

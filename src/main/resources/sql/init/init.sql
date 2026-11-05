@@ -1,4 +1,4 @@
--- 海缸日记全新环境初始化脚本
+-- 水境日记全新环境初始化脚本
 -- 本脚本仅创建业务表，不添加外键或存储过程。
 
 -- 保存微信用户的服务端身份映射。
@@ -8,7 +8,7 @@ CREATE TABLE reef_user (
     created_at DATETIME NOT NULL COMMENT '创建时间',
     PRIMARY KEY (id),
     UNIQUE KEY uk_reef_user_openid (openid)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='海缸日记用户';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='水境日记用户';
 
 -- 保存用户维护的鱼缸基本资料。
 CREATE TABLE reef_tank (

@@ -29,7 +29,7 @@ public class ReefJournalWebConfig implements WebMvcConfigurer {
     }
 
     /**
-     * 只保护海缸日记接口，微信登录入口保持公开。
+     * 只保护水境日记接口，微信登录入口保持公开。
      *
      * @Author zhanghao_SMEICS
      * @Date 2026-11-05
