@@ -1,0 +1,20 @@
+<view class="page-shell">
+  <page-header title="影像记录" show-back="{{true}}"></page-header>
+  <scroll-view class="category-strip" scroll-x enhanced show-scrollbar="false">
+    <button wx:for="{{categories}}" wx:key="value" class="category-chip {{selectedCategory === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectCategory">{{item.label}}</button>
+  </scroll-view>
+  <view wx:if="{{recent.length}}">
+    <text class="group-title">最近 30 天</text>
+    <view class="photo-grid">
+      <view wx:for="{{recent}}" wx:key="id" class="photo-tile" data-index="{{index}}" data-group="recent" bindtap="previewPhoto"><image src="{{item.contentUrl}}" mode="aspectFill"></image><view class="photo-caption"><text>{{item.title}}</text><text>{{item.dateLabel}}</text></view></view>
+    </view>
+  </view>
+  <view wx:if="{{older.length}}">
+    <text class="group-title">更早</text>
+    <view class="photo-grid">
+      <view wx:for="{{older}}" wx:key="id" class="photo-tile" data-index="{{index}}" data-group="older" bindtap="previewPhoto"><image src="{{item.contentUrl}}" mode="aspectFill"></image><view class="photo-caption"><text>{{item.title}}</text><text>{{item.dateLabel}}</text></view></view>
+    </view>
+  </view>
+  <empty-state wx:if="{{!recent.length && !older.length}}" icon="▧" title="还没有影像记录" description="添加鱼缸、生物或设备照片"></empty-state>
+  <button class="fab" bindtap="addPhoto" aria-label="添加照片">+</button>
+</view>

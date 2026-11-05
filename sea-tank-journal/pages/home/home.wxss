@@ -1,0 +1,97 @@
+.greeting {
+  display: flex;
+  flex-direction: column;
+  gap: 10rpx;
+  margin: 12rpx 0 28rpx;
+}
+
+.greeting-time {
+  color: #7a8fa6;
+  font-size: 25rpx;
+}
+
+.greeting-copy {
+  color: #2c3e50;
+  font-size: 34rpx;
+  font-weight: 700;
+}
+
+.home-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12rpx;
+  margin: 0 0 20rpx;
+}
+
+.home-shortcuts button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  min-height: 72rpx;
+  border: 1rpx solid #e5f1f8;
+  border-radius: 20rpx;
+  background: #ffffff;
+  color: #688198;
+  font-size: 21rpx;
+}
+
+.home-shortcuts text { color: #69baf0; font-size: 24rpx; }
+
+.loading-line,
+.inline-error {
+  padding: 24rpx 4rpx;
+  color: #7a8fa6;
+  font-size: 24rpx;
+}
+
+.inline-error {
+  color: #c75f67;
+}
+
+.fab {
+  position: fixed;
+  right: 48rpx;
+  bottom: calc(48rpx + env(safe-area-inset-bottom));
+  display: grid;
+  place-items: center;
+  width: 104rpx;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #87cefa, #6bb8f0);
+  box-shadow: 0 12rpx 30rpx rgba(97, 183, 239, 0.35);
+  color: #ffffff;
+  font-size: 58rpx;
+  line-height: 1;
+}
+
+.action-menu,
+.form-sheet {
+  padding: 24rpx 32rpx calc(36rpx + env(safe-area-inset-bottom));
+}
+
+.action-row {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+  min-height: 92rpx;
+  color: #2c3e50;
+  font-size: 29rpx;
+  text-align: left;
+}
+
+.action-dot {
+  color: #87cefa;
+  font-size: 20rpx;
+}
+
+.sheet-title {
+  margin: 8rpx 0 20rpx;
+  font-size: 32rpx;
+  font-weight: 700;
+  text-align: center;
+}
+
+.form-sheet van-button {
+  margin-top: 24rpx;
+}

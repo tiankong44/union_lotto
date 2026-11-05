@@ -1,3 +1,26 @@
+reef-journal:
+  app-id: ${REEF_WECHAT_APP_ID:}
+  app-secret: ${REEF_WECHAT_APP_SECRET:}
+  token-signing-key: ${REEF_TOKEN_SIGNING_KEY:}
+  token-ttl-seconds: ${REEF_TOKEN_TTL_SECONDS:2592000}
+  photo-url-ttl-seconds: ${REEF_PHOTO_URL_TTL_SECONDS:3600}
+  water-change-template-id: ${REEF_WATER_CHANGE_TEMPLATE_ID:}
+  water-test-template-id: ${REEF_WATER_TEST_TEMPLATE_ID:}
+  feeding-template-id: ${REEF_FEEDING_TEMPLATE_ID:}
+  equipment-template-id: ${REEF_EQUIPMENT_TEMPLATE_ID:}
+  water-change-title-field: ${REEF_WATER_CHANGE_TITLE_FIELD:}
+  water-change-time-field: ${REEF_WATER_CHANGE_TIME_FIELD:}
+  water-test-title-field: ${REEF_WATER_TEST_TITLE_FIELD:}
+  water-test-time-field: ${REEF_WATER_TEST_TIME_FIELD:}
+  feeding-title-field: ${REEF_FEEDING_TITLE_FIELD:}
+  feeding-time-field: ${REEF_FEEDING_TIME_FIELD:}
+  equipment-title-field: ${REEF_EQUIPMENT_TITLE_FIELD:}
+  equipment-time-field: ${REEF_EQUIPMENT_TIME_FIELD:}
+  reminder:
+    dispatch-cron: ${REEF_REMINDER_DISPATCH_CRON:0 * * * * ?}
+    lock-lease-seconds: ${REEF_REMINDER_LOCK_LEASE_SECONDS:50}
+    access-token-cache-seconds: ${REEF_WECHAT_ACCESS_TOKEN_CACHE_SECONDS:6000}
+
 server:
   port: 9001
   servlet:

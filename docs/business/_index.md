@@ -10,6 +10,7 @@
 
 | 模块编码 | 模块名称 | 所属业务域 | 文档路径 | 上游模块 | 下游模块 | 负责人 | 更新时间 | 状态 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `reef-journal` | 海缸日记 | 水族记录 | `docs/business/modules/reef-journal.md` | 微信小程序登录、用户录入、云端 MySQL | 鱼缸、生物、日志、水质、设备、提醒、影像记录 | 待补充 | 2026-11-05 | 建设中 |
 | `pregnancy-assistant` | 孕期助手 | 孕期健康记录 | `docs/business/modules/pregnancy-assistant.md` | 用户输入、记录中心、云端 MySQL CRUD | 各孕期记录模块、统计、身体记录时间线、提醒 | 待补充 | 2026-08-06 | 建设中 |
 | `fetal-movement` | 胎动记录 | 孕期健康记录 | `docs/business/modules/fetal-movement.md` | 孕期助手、云端 MySQL CRUD | 统计、身体记录时间线、提醒、导出 | 待补充 | 2026-08-06 | 建设中 |
 | `pregnancy-health` | 孕期健康记录 | 孕期健康记录 | `docs/business/modules/pregnancy-health.md` | 孕期助手、记录中心、云端 MySQL CRUD | 统计、身体记录时间线、导出 | 待补充 | 2026-08-06 | 建设中 |

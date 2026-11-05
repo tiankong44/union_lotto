@@ -1,0 +1,24 @@
+<view class="page-shell">
+  <page-header title="水质趋势" show-back="{{true}}"></page-header>
+  <scroll-view class="tank-switch" scroll-x enhanced show-scrollbar="false">
+    <button wx:for="{{tanks}}" wx:key="id" class="tank-chip {{selectedTankId === item.id ? 'selected' : ''}}" data-id="{{item.id}}" bindtap="selectTank">{{item.name}}</button>
+  </scroll-view>
+  <scroll-view class="metric-switch" scroll-x enhanced show-scrollbar="false">
+    <button wx:for="{{metrics}}" wx:key="key" class="metric-chip {{selectedMetric === item.key ? 'selected' : ''}}" data-key="{{item.key}}" bindtap="selectMetric">{{item.label}}</button>
+  </scroll-view>
+  <view class="stat-grid">
+    <view class="stat-card card"><text>当前值</text><strong>{{stats.currentValue || '—'}}</strong><text>{{currentMetric.unit}}</text></view>
+    <view class="stat-card card"><text>7 日均值</text><strong>{{stats.average7Days || '—'}}</strong><text>{{currentMetric.unit}}</text></view>
+    <view class="stat-card card"><text>趋势</text><strong class="trend-{{stats.trendKey}}">{{stats.trendLabel || '—'}}</strong><text>近段变化</text></view>
+  </view>
+  <view class="chart-card card">
+    <view class="chart-heading"><text>{{currentMetric.label}}变化趋势</text><text>近 {{rangeDaysLabel}} · {{currentMetric.unit}}</text></view>
+    <canvas canvas-id="trendChart" class="chart-canvas"></canvas>
+    <view class="range-tabs">
+      <button wx:for="{{ranges}}" wx:key="days" class="range-button {{selectedDays === item.days ? 'active' : ''}}" data-days="{{item.days}}" bindtap="selectRange">{{item.label}}</button>
+    </view>
+  </view>
+  <view class="section-heading"><text>异常提醒</text></view>
+  <view wx:for="{{alerts}}" wx:key="id" class="alert-row card"><view class="alert-dot alert-{{item.level}}"></view><text>{{item.message}}</text></view>
+  <empty-state wx:if="{{!alerts.length}}" icon="✓" title="暂时没有超出范围的水质记录" description="提醒根据每个鱼缸自行设置的参数范围生成"></empty-state>
+</view>

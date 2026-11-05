@@ -1,0 +1,41 @@
+.biology-hero {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 360rpx;
+  border-radius: 20rpx;
+  background: linear-gradient(145deg, #dff4ff, #b8e6fa);
+}
+
+.hero-back { position: absolute; top: 20rpx; left: 20rpx; width: 64rpx; aspect-ratio: 1; border-radius: 50%; background: rgba(255,255,255,.85); color: #4c9ecb; font-size: 48rpx; line-height: 60rpx; }
+.hero-placeholder { color: #68a8cc; font-size: 26rpx; }
+.hero-dots { position: absolute; bottom: 18rpx; display: flex; gap: 12rpx; }
+.dot { width: 12rpx; height: 12rpx; border-radius: 12rpx; background: rgba(255,255,255,.72); }
+.dot.selected { width: 34rpx; background: #ffffff; }
+
+.bio-info { margin-top: -1rpx; padding: 24rpx; border-radius: 0 0 22rpx 22rpx; }
+.bio-title-row { display: flex; align-items: center; justify-content: space-between; gap: 16rpx; }
+.bio-title { font-size: 34rpx; font-weight: 700; }
+.status-tag { padding: 8rpx 16rpx; border-radius: 28rpx; font-size: 21rpx; }
+.status-NORMAL { background: #e8f8e8; color: #4caf50; }
+.status-QUARANTINE { background: #fff8e1; color: #ffa726; }
+.status-ISOLATED { background: #fff3e0; color: #ff9800; }
+.status-SICK { background: #ffebee; color: #f44336; }
+.status-DEAD { background: #f0f0f0; color: #9e9e9e; }
+.bio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24rpx 18rpx; margin-top: 28rpx; }
+.bio-grid view { display: flex; flex-direction: column; gap: 8rpx; min-width: 0; }
+.bio-label { color: #93a7bb; font-size: 21rpx; }
+.bio-value { overflow-wrap: anywhere; color: #60768b; font-size: 23rpx; }
+.text-action { color: #5baee0; font-size: 24rpx; }
+.timeline-item { position: relative; display: flex; gap: 22rpx; min-height: 124rpx; padding: 8rpx 0 18rpx; }
+.timeline-item:not(:last-of-type)::before { position: absolute; top: 22rpx; bottom: -4rpx; left: 10rpx; width: 2rpx; background: #dceef9; content: ''; }
+.timeline-mark { z-index: 1; width: 22rpx; height: 22rpx; flex: none; margin-top: 4rpx; border: 5rpx solid #dff3ff; border-radius: 50%; background: #72c3f2; }
+.mark-SICK, .mark-DEAD { border-color: #ffe2e5; background: #ef737b; }
+.mark-QUARANTINE, .mark-ISOLATED { border-color: #fff0da; background: #f7ad3d; }
+.timeline-copy { display: flex; flex-direction: column; gap: 8rpx; }
+.timeline-date { color: #9ab0c4; font-size: 20rpx; }
+.timeline-title { color: #34485b; font-size: 25rpx; font-weight: 700; }
+.timeline-description { color: #7a8fa6; font-size: 22rpx; line-height: 1.5; }
+.form-sheet { padding: 24rpx 32rpx calc(36rpx + env(safe-area-inset-bottom)); }
+.sheet-title { margin: 8rpx 0 20rpx; font-size: 32rpx; font-weight: 700; text-align: center; }
+.form-sheet van-button { margin-top: 24rpx; }

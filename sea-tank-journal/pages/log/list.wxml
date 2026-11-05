@@ -1,0 +1,16 @@
+<view class="page-shell">
+  <page-header title="我的日志" show-back="{{true}}"></page-header>
+  <scroll-view class="filter-strip" scroll-x enhanced show-scrollbar="false">
+    <button wx:for="{{filters}}" wx:key="value" class="filter-chip {{selectedType === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectFilter">{{item.label}}</button>
+  </scroll-view>
+  <view wx:for="{{groups}}" wx:key="month" class="month-group">
+    <text class="month-title">{{item.month}}</text>
+    <view wx:for="{{item.items}}" wx:key="id" class="log-row card">
+      <view class="type-icon type-{{item.type}}">{{item.icon}}</view>
+      <view class="log-copy"><text class="log-title">{{item.title}}</text><text class="log-description">{{item.description || item.note || '—'}}</text></view>
+      <text class="log-time">{{item.timeLabel}}</text>
+    </view>
+  </view>
+  <empty-state wx:if="{{!groups.length}}" icon="▤" title="还没有日志" description="记录一次水质、换水或日常观察"></empty-state>
+  <button class="fab" bindtap="addLog" aria-label="新增日志">+</button>
+</view>

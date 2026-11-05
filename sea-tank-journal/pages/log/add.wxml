@@ -1,0 +1,45 @@
+<view class="page-shell">
+  <view class="form-nav"><button class="cancel-action" bindtap="cancel">取消</button><text>新增日志</text><view></view></view>
+  <view class="form-card card">
+    <text class="form-label">日志类型</text>
+    <picker mode="selector" range="{{logTypes}}" bindchange="onTypeChange"><view class="select-value">{{form.typeLabel}}<text>⌄</text></view></picker>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">绑定鱼缸</text>
+    <picker mode="selector" range="{{tankNames}}" bindchange="onTankChange"><view class="select-value">{{form.tankName || '请选择鱼缸'}}<text>⌄</text></view></picker>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">关联生物（多选）</text>
+    <view class="chip-list">
+      <button wx:for="{{biology}}" wx:key="id" class="chip {{item.selected ? 'chip-selected' : ''}}" data-id="{{item.id}}" bindtap="toggleBiology">{{item.name}}</button>
+      <text wx:if="{{!biology.length}}" class="empty-hint">先选择鱼缸，查看可关联生物</text>
+    </view>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">记录时间</text>
+    <picker mode="date" value="{{recordDate}}" bindchange="onDateChange"><view class="select-value">{{recordDate}} {{recordTime}}<text>⌄</text></view></picker>
+    <picker mode="time" value="{{recordTime}}" bindchange="onTimeChange"><view class="time-link">调整时间</view></picker>
+  </view>
+  <view wx:if="{{form.type === 'WATER_TEST'}}" class="form-card card">
+    <text class="form-label">水质参数</text>
+    <view class="water-input-grid">
+      <view wx:for="{{waterFields}}" wx:key="key" class="water-input"><input type="digit" value="{{form.water[item.key]}}" placeholder="{{item.placeholder}}" data-key="{{item.key}}" bindinput="onWaterInput"/><text>{{item.label}}</text></view>
+    </view>
+  </view>
+  <view wx:if="{{form.type === 'WATER_CHANGE'}}" class="form-card card">
+    <text class="form-label">换水比例</text>
+    <van-field value="{{form.changePercent}}" type="digit" placeholder="例如 10" data-field="changePercent" bind:change="onFieldChange"><view slot="right-icon">%</view></van-field>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">备注</text>
+    <van-field type="textarea" autosize value="{{form.note}}" placeholder="记录这次观察或处理" data-field="note" bind:change="onFieldChange"></van-field>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">上传照片</text>
+    <view class="photo-picker-row">
+      <view wx:for="{{selectedPhotos}}" wx:key="path" class="photo-preview"><image src="{{item.path}}" mode="aspectFill"></image><button data-index="{{index}}" bindtap="removePhoto">×</button></view>
+      <button class="add-photo" bindtap="choosePhotos">＋<text>添加</text></button>
+    </view>
+  </view>
+  <van-button type="primary" block round loading="{{saving}}" bind:click="submitLog">{{savedLogId ? '重试未完成的照片' : '提交日志'}}</van-button>
+</view>

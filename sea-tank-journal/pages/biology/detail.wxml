@@ -1,0 +1,31 @@
+<view class="page-shell biology-page">
+  <view class="biology-hero">
+    <button class="hero-back" bindtap="goBack" aria-label="返回">‹</button>
+    <view class="hero-placeholder">生物图片</view>
+    <view class="hero-dots"><view class="dot selected"></view><view class="dot"></view><view class="dot"></view></view>
+  </view>
+  <view class="bio-info card">
+    <view class="bio-title-row"><text class="bio-title">{{biology.name || '生物详情'}}</text><text class="status-tag status-{{biology.statusKey}}">{{biology.statusLabel}}</text></view>
+    <view class="bio-grid">
+      <view><text class="bio-label">学名</text><text class="bio-value">{{biology.scientificName || '待补充'}}</text></view>
+      <view><text class="bio-label">入缸日期</text><text class="bio-value">{{biology.addedAt || '待补充'}}</text></view>
+      <view><text class="bio-label">体长</text><text class="bio-value">{{biology.bodyLengthCm || '待补充'}} cm</text></view>
+      <view><text class="bio-label">来源</text><text class="bio-value">{{biology.source || '待补充'}}</text></view>
+    </view>
+  </view>
+  <view class="section-heading"><text>事件时间轴</text><button class="text-action" bindtap="openEventForm">+ 记录事件</button></view>
+  <view wx:for="{{events}}" wx:key="id" class="timeline-item">
+    <view class="timeline-mark mark-{{item.statusKey}}"></view>
+    <view class="timeline-copy"><text class="timeline-date">{{item.eventAt}}</text><text class="timeline-title">{{item.title}}</text><text class="timeline-description">{{item.description}}</text></view>
+  </view>
+  <empty-state wx:if="{{!events.length}}" icon="◷" title="还没有事件" description="记录入缸、检疫或治疗过程"></empty-state>
+  <van-popup show="{{eventFormOpen}}" position="bottom" round bind:close="closeEventForm">
+    <view class="form-sheet">
+      <view class="sheet-title">记录生物事件</view>
+      <van-field label="事件标题" value="{{eventForm.title}}" data-field="title" bind:change="onEventFieldChange" placeholder="请输入事件"></van-field>
+      <van-field label="记录时间" value="{{eventForm.eventAt}}" data-field="eventAt" bind:change="onEventFieldChange" placeholder="YYYY-MM-DD HH:mm:ss"></van-field>
+      <van-field label="事件描述" type="textarea" autosize value="{{eventForm.description}}" data-field="description" bind:change="onEventFieldChange" placeholder="补充过程或观察"></van-field>
+      <van-button type="primary" block round loading="{{savingEvent}}" bind:click="saveEvent">保存事件</van-button>
+    </view>
+  </van-popup>
+</view>

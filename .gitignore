@@ -39,3 +39,9 @@ build/
 /pregnancy-assistant/dist/
 /pregnancy-assistant/.vite/
 /pregnancy-assistant/node_modules/*
+
+### Sea tank journal mini program ###
+/sea-tank-journal/node_modules/
+/sea-tank-journal/dist/
+/sea-tank-journal/miniprogram_npm/
+/sea-tank-journal/project.private.config.json

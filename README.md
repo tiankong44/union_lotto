@@ -1,5 +1,13 @@
 # union_lotto
 
+## 海缸日记
+
+原生微信小程序位于 `sea-tank-journal/`，后端接口位于 `/tabs/reef-journal/**`。小程序使用 WXML、WXSS、JavaScript 和 Vant Weapp；导入微信开发者工具前需填写小程序 AppID，并在 `sea-tank-journal/config/env.js` 配置 HTTPS API 域名。
+
+后端运行前需在 `application*.yml` 对应环境中提供 `REEF_WECHAT_APP_ID`、`REEF_WECHAT_APP_SECRET`、`REEF_TOKEN_SIGNING_KEY`、API 订阅模板 ID 及模板字段配置。密钥只保留在服务端环境。新环境执行 `src/main/resources/sql/init/init.sql`；已有环境执行 `src/main/resources/sql/fix/fix.sql`。
+
+海缸业务规则与数据结构见 `docs/business/modules/reef-journal.md`。
+
 ## 孕期助手
 
 前端位于 `pregnancy-assistant/`，使用 Vite + Vue + TypeScript。记录直接通过后端接口保存到云端 MySQL，浏览器不保存业务快照或同步队列。

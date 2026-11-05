@@ -1,0 +1,21 @@
+.form-nav { display: grid; grid-template-columns: 1fr 2fr 1fr; align-items: center; min-height: 76rpx; margin-bottom: 20rpx; font-size: 30rpx; font-weight: 700; text-align: center; }
+.cancel-action { justify-self: start; color: #6bb8f0; font-size: 25rpx; font-weight: 500; }
+.form-card { margin-bottom: 18rpx; padding: 22rpx; }
+.form-label { display: block; margin-bottom: 16rpx; color: #8096ac; font-size: 22rpx; }
+.select-value { display: flex; align-items: center; justify-content: space-between; min-height: 64rpx; padding: 0 18rpx; border: 1rpx solid #e0ecf5; border-radius: 14rpx; color: #536b82; font-size: 25rpx; }
+.select-value text { color: #a9bfd0; }
+.time-link { margin-top: 12rpx; color: #69b4e7; font-size: 22rpx; text-align: right; }
+.chip-list { display: flex; flex-wrap: wrap; gap: 12rpx; }
+.chip { padding: 12rpx 22rpx; border: 1rpx solid #e3eef5; border-radius: 32rpx; color: #8197aa; font-size: 21rpx; }
+.chip-selected { border-color: #87cefa; background: #e7f6ff; color: #4e9fd0; }
+.empty-hint { padding: 12rpx 0; color: #9ab0c4; font-size: 22rpx; }
+.water-input-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14rpx; }
+.water-input { display: flex; min-width: 0; flex-direction: column; gap: 10rpx; }
+.water-input input { width: 100%; min-height: 68rpx; padding: 0 8rpx; border: 1rpx solid #e0ecf5; border-radius: 12rpx; background: #fbfdff; color: #506980; font-size: 24rpx; text-align: center; }
+.water-input text { color: #91a8bb; font-size: 19rpx; text-align: center; }
+.photo-picker-row { display: flex; flex-wrap: wrap; gap: 14rpx; }
+.photo-preview, .add-photo { position: relative; display: grid; place-items: center; width: 124rpx; aspect-ratio: 1; border: 1rpx dashed #acd8f2; border-radius: 16rpx; background: #f8fcff; color: #66b5e9; }
+.photo-preview image { width: 100%; height: 100%; border-radius: 14rpx; }
+.photo-preview button { position: absolute; top: -8rpx; right: -8rpx; width: 38rpx; aspect-ratio: 1; border-radius: 50%; background: #e36e75; color: #ffffff; line-height: 36rpx; }
+.add-photo { align-content: center; font-size: 42rpx; line-height: 1; }
+.add-photo text { margin-top: 8rpx; font-size: 19rpx; }

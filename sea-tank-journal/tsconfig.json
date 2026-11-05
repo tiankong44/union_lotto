@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "strict": false,
+    "skipLibCheck": true,
+    "target": "ES2020",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "types": ["miniprogram-api-typings"]
+  },
+  "include": ["app.js", "pages/**/*.js", "services/**/*.js", "components/**/*.js", "config/**/*.js"]
+}

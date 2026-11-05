@@ -1,0 +1,37 @@
+<view class="page-shell home-page">
+  <page-header title="海缸日记"></page-header>
+  <view class="greeting">
+    <text class="greeting-time">{{greeting}}</text>
+    <text class="greeting-copy">今天也记得记录哦</text>
+  </view>
+  <view class="home-shortcuts">
+    <button bindtap="openLogs"><text>▤</text>我的日志</button>
+    <button bindtap="openPhotos"><text>▧</text>影像记录</button>
+    <button bindtap="openSettings"><text>⚙</text>设置</button>
+  </view>
+
+  <view wx:if="{{loading}}" class="loading-line">正在读取鱼缸记录…</view>
+  <block wx:elif="{{tanks.length}}">
+    <tank-card wx:for="{{tanks}}" wx:key="id" tank="{{item}}"></tank-card>
+  </block>
+  <empty-state wx:else icon="◉" title="还没有鱼缸" description="点击右下角 + 新增一个吧"></empty-state>
+
+  <view wx:if="{{errorMessage}}" class="inline-error">{{errorMessage}}</view>
+  <button class="fab" bindtap="toggleMenu" aria-label="新增">+</button>
+  <van-popup show="{{menuOpen}}" position="bottom" round bind:close="closeMenu">
+    <view class="action-menu">
+      <button class="action-row" bindtap="openTankForm"><text class="action-dot">●</text>新增鱼缸</button>
+      <button class="action-row" bindtap="openQuickLog"><text class="action-dot">●</text>快速记日志</button>
+    </view>
+  </van-popup>
+  <van-popup show="{{tankFormOpen}}" position="bottom" round bind:close="closeTankForm">
+    <view class="form-sheet">
+      <view class="sheet-title">新增鱼缸</view>
+      <van-field label="鱼缸名称" value="{{tankForm.name}}" placeholder="例如：90L 主缸" data-field="name" bind:change="onTankFieldChange"></van-field>
+      <van-field label="开缸日期" value="{{tankForm.startedAt}}" placeholder="YYYY-MM-DD" data-field="startedAt" bind:change="onTankFieldChange"></van-field>
+      <van-field label="容量（L）" value="{{tankForm.capacityLiter}}" type="digit" placeholder="请输入容量" data-field="capacityLiter" bind:change="onTankFieldChange"></van-field>
+      <van-field label="系统类型" value="{{tankForm.systemType}}" placeholder="例如：柏林系统" data-field="systemType" bind:change="onTankFieldChange"></van-field>
+      <van-button type="primary" block round loading="{{savingTank}}" bind:click="saveTank">保存鱼缸</van-button>
+    </view>
+  </van-popup>
+</view>

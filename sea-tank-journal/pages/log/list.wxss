@@ -1,0 +1,16 @@
+.filter-strip { display: flex; margin: 0 -28rpx 24rpx; padding: 0 28rpx; white-space: nowrap; }
+.filter-chip { display: inline-flex; align-items: center; justify-content: center; min-height: 56rpx; margin-right: 12rpx; padding: 0 20rpx; border: 1rpx solid #e0ecf5; border-radius: 32rpx; background: #ffffff; color: #7a8fa6; font-size: 21rpx; }
+.filter-chip.selected { border-color: #87cefa; background: #e8f6ff; color: #4c9ecb; }
+.month-group { margin-bottom: 20rpx; }
+.month-title { display: block; margin: 22rpx 0 12rpx; color: #58aee3; font-size: 24rpx; font-weight: 700; }
+.log-row { display: flex; align-items: center; gap: 14rpx; margin-bottom: 12rpx; padding: 16rpx; }
+.type-icon { display: grid; place-items: center; width: 64rpx; aspect-ratio: 1; flex: none; border-radius: 16rpx; background: #e7f6ff; color: #5aaee3; font-size: 30rpx; }
+.type-WATER_CHANGE { background: #e8f6ee; color: #57a984; }
+.type-FEEDING { background: #fff4df; color: #df9e43; }
+.type-MEDICATION { background: #ffecef; color: #e97883; }
+.type-OBSERVATION { background: #f2eafd; color: #9471b6; }
+.log-copy { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 7rpx; }
+.log-title { overflow: hidden; color: #32495d; font-size: 23rpx; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.log-description { overflow: hidden; color: #8ba0b3; font-size: 19rpx; text-overflow: ellipsis; white-space: nowrap; }
+.log-time { color: #a3b5c5; font-size: 18rpx; white-space: nowrap; }
+.fab { position: fixed; right: 48rpx; bottom: calc(48rpx + env(safe-area-inset-bottom)); display: grid; place-items: center; width: 104rpx; aspect-ratio: 1; border-radius: 50%; background: linear-gradient(135deg, #87cefa, #6bb8f0); color: #ffffff; font-size: 58rpx; }

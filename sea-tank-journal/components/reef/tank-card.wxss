@@ -1,0 +1,36 @@
+.tank-card {
+  margin-bottom: 20rpx;
+  padding: 28rpx;
+}
+
+.tank-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.tank-name {
+  overflow: hidden;
+  color: #2c3e50;
+  font-size: 30rpx;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tank-meta {
+  display: flex;
+  gap: 24rpx;
+  margin-top: 22rpx;
+  color: #61788f;
+  font-size: 25rpx;
+}
+
+.tank-last-record {
+  margin-top: 20rpx;
+  padding-top: 18rpx;
+  border-top: 1rpx dashed #e5f1f9;
+  color: #9ab0c4;
+  font-size: 22rpx;
+}

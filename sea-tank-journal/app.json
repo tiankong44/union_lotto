@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/home/home",
+    "pages/tank/detail",
+    "pages/biology/detail",
+    "pages/log/add",
+    "pages/water/trend",
+    "pages/equipment/list",
+    "pages/log/list",
+    "pages/settings/index",
+    "pages/photos/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "海缸日记",
+    "navigationBarBackgroundColor": "#f8fbfd",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f5f7fa",
+    "navigationStyle": "custom"
+  },
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-switch": "@vant/weapp/switch/index",
+    "van-tag": "@vant/weapp/tag/index",
+    "van-uploader": "@vant/weapp/uploader/index",
+    "page-header": "/components/layout/page-header",
+    "empty-state": "/components/common/empty-state",
+    "tank-card": "/components/reef/tank-card"
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "style": "v2"
+}

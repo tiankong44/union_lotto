@@ -1,0 +1,28 @@
+<view class="page-shell">
+  <page-header title="设备管理" show-back="{{true}}"></page-header>
+  <scroll-view class="filter-strip" scroll-x enhanced show-scrollbar="false">
+    <button wx:for="{{categories}}" wx:key="value" class="filter-chip {{selectedCategory === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectCategory">{{item.label}}</button>
+  </scroll-view>
+  <view wx:for="{{equipment}}" wx:key="id" class="equipment-card card">
+    <view class="equipment-icon">{{item.icon || '⌁'}}</view>
+    <view class="equipment-info"><text class="equipment-name">{{item.name}}</text><text class="equipment-model">{{item.model || '型号待补充'}}</text><text class="equipment-runtime">每日 {{item.dailyHours || 0}} 小时 · 已运行 {{item.daysRunning || 0}} 天</text><text class="equipment-runtime">维护周期 {{item.maintenanceIntervalDays || '待设置'}} 天</text></view>
+    <view class="equipment-side"><text class="equipment-status status-{{item.status}}">{{item.statusLabel}}</text><text class="edit-link" data-id="{{item.id}}" bindtap="editMaintenance">维护</text></view>
+  </view>
+  <empty-state wx:if="{{!equipment.length}}" icon="⌁" title="还没有设备" description="添加灯光、过滤或温控设备"></empty-state>
+  <button class="fab" bindtap="openForm" aria-label="新增设备">+</button>
+  <van-popup show="{{formOpen}}" position="bottom" round bind:close="closeForm">
+    <view class="form-sheet">
+      <view class="sheet-title">{{form.title || '新增设备'}}</view>
+      <van-field label="设备名称" value="{{form.name}}" data-field="name" bind:change="onFieldChange" placeholder="请输入名称"></van-field>
+      <van-field label="型号" value="{{form.model}}" data-field="model" bind:change="onFieldChange" placeholder="选填"></van-field>
+      <view class="form-select-row"><text>鱼缸</text><picker mode="selector" range="{{tankNames}}" bindchange="onFormTankChange"><text>{{form.tankName || '不绑定鱼缸'}}</text></picker></view>
+      <view class="form-select-row"><text>分类</text><picker mode="selector" range="{{equipmentCategoryLabels}}" bindchange="onCategoryChange"><text>{{form.categoryLabel}}</text></picker></view>
+      <view class="form-select-row"><text>状态</text><picker mode="selector" range="{{equipmentStatusLabels}}" bindchange="onStatusChange"><text>{{form.statusLabel}}</text></picker></view>
+      <van-field label="每日运行（小时）" type="digit" value="{{form.dailyHours}}" data-field="dailyHours" bind:change="onFieldChange" placeholder="0"></van-field>
+      <van-field label="开始运行日期" value="{{form.startedAt}}" data-field="startedAt" bind:change="onFieldChange" placeholder="YYYY-MM-DD"></van-field>
+      <van-field label="维护周期（天）" type="digit" value="{{form.maintenanceIntervalDays}}" data-field="maintenanceIntervalDays" bind:change="onFieldChange" placeholder="例如 30"></van-field>
+      <van-field label="上次维护日期" value="{{form.lastMaintainedAt}}" data-field="lastMaintainedAt" bind:change="onFieldChange" placeholder="YYYY-MM-DD"></van-field>
+      <van-button type="primary" block round loading="{{saving}}" bind:click="saveEquipment">保存设备</van-button>
+    </view>
+  </van-popup>
+</view>
