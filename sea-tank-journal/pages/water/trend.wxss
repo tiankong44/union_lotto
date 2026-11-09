@@ -1,18 +1,58 @@
-.tank-switch, .metric-switch { display: flex; margin: 0 -28rpx 18rpx; padding: 0 28rpx; white-space: nowrap; }
-.tank-chip, .metric-chip { display: inline-flex; align-items: center; justify-content: center; min-height: 58rpx; margin-right: 14rpx; padding: 0 24rpx; border: 1rpx solid #deedf7; border-radius: 36rpx; background: #ffffff; color: #7a8fa6; font-size: 22rpx; }
-.tank-chip.selected, .metric-chip.selected { border-color: #85c9f3; background: #eaf7ff; color: #5aaee3; }
-.stat-grid { display: flex; gap: 12rpx; }
-.stat-card { display: flex; min-width: 0; width: 0; flex: 1; flex-direction: column; align-items: center; gap: 8rpx; padding: 20rpx 8rpx; color: #9ab0c4; font-size: 19rpx; text-align: center; }
-.stat-card strong { color: #56aee8; font-size: 31rpx; }
-.stat-card strong.trend-STABLE { color: #54ad72; }
-.stat-card strong.trend-UP, .stat-card strong.trend-DOWN { color: #e1a44a; }
-.chart-card { margin-top: 20rpx; padding: 24rpx; }
-.chart-heading { display: flex; flex-direction: column; gap: 8rpx; font-size: 26rpx; font-weight: 700; }
-.chart-heading text + text { color: #9ab0c4; font-size: 20rpx; font-weight: 400; }
-.chart-canvas { display: block; width: 100%; height: 380rpx; margin-top: 14rpx; }
-.range-tabs { display: flex; justify-content: flex-start; gap: 10rpx; }
-.range-button { padding: 10rpx 18rpx; border-radius: 24rpx; background: #f0f8fd; color: #88a3b9; font-size: 20rpx; }
-.range-button.active { background: #dff2ff; color: #4c9ecb; }
-.alert-row { display: flex; align-items: center; gap: 14rpx; margin-bottom: 12rpx; padding: 18rpx; color: #71869b; font-size: 22rpx; }
-.alert-dot { width: 14rpx; height: 14rpx; flex: none; border-radius: 50%; background: #f3bd54; }
-.alert-HIGH { background: #ec7777; }
+/* 鱼缸切换保持横向滚动，避免窄屏挤压选项。 */
+.tank-switch { display: flex; margin: 0 -28rpx 18rpx; padding: 0 28rpx; white-space: nowrap; }
+.tank-chip { display: inline-flex; align-items: center; justify-content: center; min-height: 58rpx; margin-right: 14rpx; padding: 0 24rpx; border: 1rpx solid #deedf7; border-radius: 36rpx; background: #ffffff; color: #7a8fa6; font-size: 22rpx; }
+.tank-chip.selected { border-color: #85c9f3; background: #eaf7ff; color: #4a94bf; }
+
+/* 范围切换和数据反馈占据页面宽度，不依赖固定容器尺寸。 */
+.range-panel { margin-bottom: 10rpx; }
+.range-heading { display: block; margin-bottom: 12rpx; color: #60798d; font-size: 22rpx; font-weight: 600; }
+.range-tabs { display: flex; gap: 10rpx; }
+.range-button { min-width: 0; min-height: 56rpx; flex: 1; border-radius: 14rpx; background: #edf3f5; color: #70818d; font-size: 21rpx; }
+.range-button.active { background: #dceef4; color: #286d87; font-weight: 600; }
+.page-state { padding: 9vh 0; color: #71869b; text-align: center; }
+.empty-panel { display: flex; min-height: 52vh; flex-direction: column; align-items: center; justify-content: center; }
+.empty-action, .retry-button { min-height: 60rpx; margin-top: 20rpx; padding: 0 26rpx; border-radius: 16rpx; background: #2f83b8; color: #ffffff; font-size: 22rpx; }
+.error-panel { display: flex; align-items: center; justify-content: space-between; gap: 18rpx; padding: 22rpx; color: #8b5550; font-size: 22rpx; }
+.retry-button { flex: none; margin-top: 0; background: #bd634f; }
+
+/* 参数卡片用两列布局，长标签与数值在窄屏内收缩换行。 */
+.metric-section-heading { margin-top: 28rpx; }
+.section-caption { color: #8495a1; font-size: 21rpx; font-weight: 400; }
+.metric-grid { display: flex; flex-wrap: wrap; gap: 14rpx; }
+.metric-card { display: flex; width: calc(50% - 7rpx); min-width: 0; flex-direction: column; align-items: stretch; padding: 18rpx; border: 1rpx solid #e7edf0; border-radius: 14rpx; background: #ffffff; text-align: left; transition: border-color 160ms ease, transform 160ms ease; }
+.metric-card:active { transform: scale(0.985); }
+.metric-card.selected { border-color: #75b4c4; box-shadow: 0 5rpx 16rpx rgba(49, 117, 139, 0.12); }
+.metric-heading, .metric-name, .metric-value-row, .metric-footer { display: flex; align-items: center; justify-content: space-between; min-width: 0; }
+.metric-name { justify-content: flex-start; gap: 10rpx; color: #304b60; font-size: 24rpx; font-weight: 700; }
+.metric-dot { width: 12rpx; height: 12rpx; flex: none; border-radius: 50%; }
+.metric-unit { color: #8495a1; font-size: 19rpx; }
+.metric-value-row { align-items: flex-end; gap: 10rpx; margin-top: 18rpx; }
+.metric-current, .metric-average { display: flex; min-width: 0; flex-direction: column; gap: 4rpx; }
+.metric-current text, .metric-average text:first-child { color: #8495a1; font-size: 18rpx; }
+.metric-current strong { color: #304b60; font-size: 30rpx; line-height: 1.2; overflow-wrap: anywhere; }
+.metric-average { align-items: flex-end; text-align: right; }
+.metric-average text:last-child { color: #60798d; font-size: 21rpx; overflow-wrap: anywhere; }
+.mini-chart { display: flex; height: 5vh; align-items: flex-end; gap: 5rpx; margin-top: 14rpx; overflow: hidden; }
+.mini-bar { min-width: 0; flex: 1; border-radius: 4rpx 4rpx 0 0; opacity: 0.72; }
+.mini-chart-empty { display: flex; height: 5vh; align-items: center; margin-top: 14rpx; color: #93a0a9; font-size: 19rpx; }
+.metric-footer { gap: 8rpx; margin-top: 12rpx; color: #8495a1; font-size: 18rpx; }
+.trend-label { color: #526a78; }
+.trend-UP, .trend-DOWN, .trend-STABLE { color: #526a78; }
+.trend-INSUFFICIENT { color: #8495a1; }
+
+/* 详细折线的高度随视口变化，横向日期端点帮助定位所选历史范围。 */
+.chart-card { margin-top: 20rpx; padding: 22rpx; }
+.chart-heading { display: flex; align-items: center; justify-content: space-between; gap: 14rpx; }
+.chart-heading > view { display: flex; min-width: 0; align-items: baseline; gap: 10rpx; }
+.chart-title { color: #304b60; font-size: 25rpx; font-weight: 700; }
+.chart-unit, .chart-count { color: #8495a1; font-size: 19rpx; }
+.chart-count { flex: none; }
+.chart-range-labels { display: flex; justify-content: space-between; margin-top: 16rpx; color: #8a9aa4; font-size: 18rpx; }
+.chart-canvas { display: block; width: 100%; height: 31vh; margin-top: 8rpx; }
+.chart-empty { display: flex; min-height: 20vh; align-items: center; justify-content: center; color: #8a9aa4; font-size: 21rpx; text-align: center; }
+
+/* 提醒继续使用用户设定范围，详情行不改变提醒级别语义。 */
+.alert-heading { margin-top: 28rpx; }
+.alert-row { display: flex; align-items: flex-start; gap: 14rpx; margin-bottom: 12rpx; padding: 18rpx; color: #60798d; font-size: 21rpx; line-height: 1.5; }
+.alert-dot { width: 14rpx; height: 14rpx; flex: none; margin-top: 6rpx; border-radius: 50%; background: #c59535; }
+.alert-HIGH { background: #bd634f; }

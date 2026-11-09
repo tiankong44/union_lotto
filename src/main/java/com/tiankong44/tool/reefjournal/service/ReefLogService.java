@@ -5,8 +5,10 @@ import com.tiankong44.tool.reefjournal.dto.ReefLogDto;
 import com.tiankong44.tool.reefjournal.dto.ReefLogRequest;
 import com.tiankong44.tool.reefjournal.dto.ReefPageResponse;
 import com.tiankong44.tool.reefjournal.dto.ReefTrendResponse;
+import com.tiankong44.tool.reefjournal.dto.ReefWaterDashboardDto;
 import com.tiankong44.tool.reefjournal.dto.ReefWaterPointDto;
 import com.tiankong44.tool.reefjournal.dto.ReefWaterRangeDto;
+import com.tiankong44.tool.reefjournal.dto.ReefWaterSeriesDto;
 import com.tiankong44.tool.reefjournal.dto.ReefWaterStatsDto;
 import com.tiankong44.tool.reefjournal.dto.ReefWaterValues;
 import com.tiankong44.tool.reefjournal.exception.ReefJournalException;
@@ -41,13 +43,22 @@ import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TYPE_WATER_CH
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TYPE_FEEDING;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TYPE_MEDICATION;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TYPE_OBSERVATION;
+import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TREND_KEY_DOWN;
+import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TREND_KEY_INSUFFICIENT;
+import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TREND_KEY_STABLE;
+import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TREND_KEY_UP;
+import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TREND_LABEL_DOWN;
+import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TREND_LABEL_INSUFFICIENT;
+import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TREND_LABEL_STABLE;
+import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TREND_LABEL_UP;
+import static com.tiankong44.tool.reefjournal.ReefJournalConstants.WATER_DASHBOARD_SAMPLE_POINTS;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.ZERO;
 
 /**
  * 保存海缸日志并生成基于用户范围的水质趋势和提醒。
  *
  * @Author zhanghao_SMEICS
- * @Date 2026-11-05
+ * @Date 2026-11-09
  */
 @Service
 public class ReefLogService {
@@ -197,6 +208,35 @@ public class ReefLogService {
     }
 
     /**
+     * 一次读取鱼缸各项水质趋势摘要，并为当前选中参数返回完整采样点。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-09
+     * @param userId 认证上下文中的用户编号
+     * @param tankId 鱼缸编号
+     * @param metric 当前详细趋势的水质参数编码
+     * @param days 统计天数，零表示全部
+     * @return 六项参数摘要、当前趋势点及用户自设范围提醒
+     */
+    public ReefWaterDashboardDto dashboard(Long userId, Long tankId, String metric, Integer days) {
+        // 先确认鱼缸归属，避免趋势查询跨用户读取。
+        tankService.ensureOwned(userId, tankId);
+        // 通过固定列白名单校验当前选中的参数编码。
+        metricColumn(metric);
+        int rangeDays = days == null ? 30 : Math.max(days, ZERO);
+        LocalDate startDate = rangeDays == ZERO ? null : ReefDateTimeSupport.now().toLocalDate().minusDays(rangeDays);
+        // 一次读取时间范围内的检测记录，供六项参数在内存中整合。
+        List<ReefLogDto> records = dashboardRecords(userId, tankId, startDate);
+        ReefWaterDashboardDto response = new ReefWaterDashboardDto();
+        response.setMetric(metric);
+        // 按固定参数清单生成摘要，完整点集只保留当前选中的一项。
+        response.setSeries(buildDashboardSeries(records, metric, response));
+        // 继续使用鱼缸自行设置的范围生成提醒，不增加默认判断标准。
+        response.setAlerts(buildAlerts(userId, tankId));
+        return response;
+    }
+
+    /**
      * 保存新日志主体并返回数据库编号。
      *
      * @Author zhanghao_SMEICS
@@ -305,7 +345,7 @@ public class ReefLogService {
      * 按白名单列名和日期范围读取图表采样点。
      *
      * @Author zhanghao_SMEICS
-     * @Date 2026-11-05
+     * @Date 2026-11-09
      * @param userId 当前用户编号
      * @param tankId 鱼缸编号
      * @param column 已由固定白名单解析的数据库列名
@@ -322,43 +362,149 @@ public class ReefLogService {
             sql += " AND recorded_at >= ?";
             parameters.add(startDate.atStartOfDay());
         }
-        sql += " ORDER BY recorded_at ASC";
+        sql += " ORDER BY recorded_at ASC, id ASC";
+        // 按记录时间和日志编号稳定排序，确保趋势比较顺序明确。
         return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(ReefWaterPointDto.class), parameters.toArray());
+    }
+
+    /**
+     * 查询当前用户鱼缸的水质检测字段，避免为每项参数重复访问数据库。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-09
+     * @param userId 当前用户编号
+     * @param tankId 鱼缸编号
+     * @param startDate 可选开始日期
+     * @return 按记录时间及日志编号升序排列的水质检测记录
+     */
+    private List<ReefLogDto> dashboardRecords(Long userId, Long tankId, LocalDate startDate) {
+        String sql = "SELECT DATE_FORMAT(recorded_at, '%Y-%m-%d %H:%i:%s') recorded_at, "
+                + "CAST(salinity AS CHAR) salinity, CAST(temperature AS CHAR) temperature, "
+                + "CAST(ph AS CHAR) ph, CAST(no2 AS CHAR) no2, CAST(no3 AS CHAR) no3, CAST(po4 AS CHAR) po4 "
+                + "FROM reef_log WHERE user_id = ? AND tank_id = ? AND type = ?";
+        List<Object> parameters = new ArrayList<>();
+        parameters.add(userId);
+        parameters.add(tankId);
+        parameters.add(TYPE_WATER_TEST);
+        if (startDate != null) {
+            sql += " AND recorded_at >= ?";
+            parameters.add(startDate.atStartOfDay());
+        }
+        sql += " ORDER BY recorded_at ASC, id ASC";
+        // 只选择趋势所需字段，减少历史日志描述等无关数据传输。
+        return jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(ReefLogDto.class), parameters.toArray());
+    }
+
+    /**
+     * 为六项水质参数计算摘要，并保存当前参数的完整趋势点。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-09
+     * @param records 当前鱼缸和时间范围内的检测记录
+     * @param selectedMetric 当前详细趋势参数
+     * @param response 用于写入选中参数完整采样点的响应对象
+     * @return 各水质参数的统计摘要和均匀抽样点
+     */
+    private List<ReefWaterSeriesDto> buildDashboardSeries(List<ReefLogDto> records, String selectedMetric,
+                                                          ReefWaterDashboardDto response) {
+        String[] metrics = {METRIC_SALINITY, METRIC_TEMPERATURE, METRIC_PH, METRIC_NO2, METRIC_NO3, METRIC_PO4};
+        List<ReefWaterSeriesDto> series = new ArrayList<>();
+        for (String metric : metrics) {
+            // 从同一批水质日志中装配当前指标的有效采样点。
+            List<ReefWaterPointDto> points = dashboardPoints(records, metric);
+            ReefWaterSeriesDto item = new ReefWaterSeriesDto();
+            // 组装供概览卡片展示的计数、摘要和均匀抽样点。
+            item.setMetric(metric);
+            item.setSampleCount(points.size());
+            item.setStats(buildStats(points));
+            item.setSamplePoints(sampleWaterPoints(points));
+            // 详细折线只返回当前选中参数的完整历史点。
+            if (metric.equals(selectedMetric)) response.setPoints(points);
+            series.add(item);
+        }
+        return series;
+    }
+
+    /**
+     * 将日志记录转换为指定参数的有效趋势点。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-09
+     * @param records 已按时间升序排列的检测日志
+     * @param metric 水质参数编码
+     * @return 忽略未填写参数后的趋势点
+     */
+    private List<ReefWaterPointDto> dashboardPoints(List<ReefLogDto> records, String metric) {
+        List<ReefWaterPointDto> points = new ArrayList<>();
+        for (ReefLogDto record : records) {
+            // 只保留当前参数有填写的检测记录。
+            String value = valueForMetric(record, metric);
+            if (value != null) points.add(new ReefWaterPointDto(record.getRecordedAt(), value));
+        }
+        return points;
+    }
+
+    /**
+     * 从完整历史点中均匀抽取总览小图数据，保留范围起点与终点。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-09
+     * @param points 当前参数的完整历史点
+     * @return 不超过固定点数的均匀抽样列表
+     */
+    private List<ReefWaterPointDto> sampleWaterPoints(List<ReefWaterPointDto> points) {
+        if (points.size() <= WATER_DASHBOARD_SAMPLE_POINTS) return new ArrayList<>(points);
+        List<ReefWaterPointDto> samples = new ArrayList<>();
+        for (int index = ZERO; index < WATER_DASHBOARD_SAMPLE_POINTS; index++) {
+            int sourceIndex = (int) Math.round(index * (points.size() - ONE)
+                    / (double) (WATER_DASHBOARD_SAMPLE_POINTS - ONE));
+            samples.add(points.get(sourceIndex));
+        }
+        return samples;
     }
 
     /**
      * 根据用户记录计算当前值、七日均值和相邻采样趋势方向。
      *
      * @Author zhanghao_SMEICS
-     * @Date 2026-11-05
+     * @Date 2026-11-09
      * @param points 当前筛选范围内的采样点
      * @return 趋势统计摘要
      */
     private ReefWaterStatsDto buildStats(List<ReefWaterPointDto> points) {
         ReefWaterStatsDto stats = new ReefWaterStatsDto();
+        // 没有检测点时保留空摘要，交由前端显示无记录状态。
         if (points.isEmpty()) return stats;
+        // 按时间升序列表的末项作为当前参数最新值。
         stats.setCurrentValue(points.get(points.size() - ONE).getValue());
         List<ReefWaterPointDto> lastSevenDays = new ArrayList<>();
+        // 统计窗口统一使用上海本地时间。
         LocalDateTime threshold = ReefDateTimeSupport.now().minusDays(7);
         for (ReefWaterPointDto point : points) {
+            // 只纳入七日窗口内的有效水质测量。
             if (!ReefDateTimeSupport.parseDateTime(point.getRecordedAt()).isBefore(threshold)) lastSevenDays.add(point);
         }
         if (!lastSevenDays.isEmpty()) {
             double average = lastSevenDays.stream().mapToDouble(item -> Double.parseDouble(item.getValue())).average().orElse(ZERO);
             stats.setAverage7Days(String.valueOf(average));
         }
-        stats.setTrendKey("STABLE");
-        stats.setTrendLabel("稳定");
-        if (points.size() > ONE) {
-            int comparison = new java.math.BigDecimal(points.get(points.size() - ONE).getValue())
-                    .compareTo(new java.math.BigDecimal(points.get(points.size() - 2).getValue()));
-            if (comparison > ZERO) {
-                stats.setTrendKey("UP");
-                stats.setTrendLabel("上升");
-            } else if (comparison < ZERO) {
-                stats.setTrendKey("DOWN");
-                stats.setTrendLabel("下降");
-            }
+        if (points.size() <= ONE) {
+            // 只有一条测量值时不把单点描述成上升、下降或稳定。
+            stats.setTrendKey(TREND_KEY_INSUFFICIENT);
+            stats.setTrendLabel(TREND_LABEL_INSUFFICIENT);
+            return stats;
+        }
+        stats.setTrendKey(TREND_KEY_STABLE);
+        stats.setTrendLabel(TREND_LABEL_STABLE);
+        // 仅比较所选时间范围内最近两次有值记录。
+        int comparison = new java.math.BigDecimal(points.get(points.size() - ONE).getValue())
+                .compareTo(new java.math.BigDecimal(points.get(points.size() - 2).getValue()));
+        if (comparison > ZERO) {
+            stats.setTrendKey(TREND_KEY_UP);
+            stats.setTrendLabel(TREND_LABEL_UP);
+        } else if (comparison < ZERO) {
+            stats.setTrendKey(TREND_KEY_DOWN);
+            stats.setTrendLabel(TREND_LABEL_DOWN);
         }
         return stats;
     }
@@ -453,12 +599,13 @@ public class ReefLogService {
      * 将趋势指标编码映射到固定 SQL 列名白名单。
      *
      * @Author zhanghao_SMEICS
-     * @Date 2026-11-05
+     * @Date 2026-11-09
      * @param metric 客户端指标编码
      * @return 白名单中的数据库列名
      */
     private String metricColumn(String metric) {
         if (METRIC_SALINITY.equals(metric)) return "salinity";
+        if (METRIC_TEMPERATURE.equals(metric)) return "temperature";
         if (METRIC_PH.equals(metric)) return "ph";
         if (METRIC_NO3.equals(metric)) return "no3";
         if (METRIC_NO2.equals(metric)) return "no2";

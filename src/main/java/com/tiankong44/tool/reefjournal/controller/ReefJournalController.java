@@ -21,6 +21,7 @@ import com.tiankong44.tool.reefjournal.dto.ReefReminderSettingsDto;
 import com.tiankong44.tool.reefjournal.dto.ReefTankDto;
 import com.tiankong44.tool.reefjournal.dto.ReefTankSaveRequest;
 import com.tiankong44.tool.reefjournal.dto.ReefTrendResponse;
+import com.tiankong44.tool.reefjournal.dto.ReefWaterDashboardDto;
 import com.tiankong44.tool.reefjournal.dto.ReefWaterRangeRequest;
 import com.tiankong44.tool.reefjournal.dto.ReefLoginRequest;
 import com.tiankong44.tool.reefjournal.dto.ReefLoginResponse;
@@ -58,7 +59,7 @@ import java.util.List;
  * 水境日记小程序接口控制器，只负责协议接入和响应返回。
  *
  * @Author zhanghao_SMEICS
- * @Date 2026-11-05
+ * @Date 2026-11-09
  */
 @RestController
 @Validated
@@ -376,6 +377,26 @@ public class ReefJournalController {
                                                 @RequestParam(required = false) Integer days) {
         // 读取指定鱼缸趋势并应用其用户自设范围。
         return BaseRes.success(logService.trend(userId, tankService.parseId(tankId), metric, days));
+    }
+
+    /**
+     * 查询鱼缸多项水质历史总览和当前参数的详细趋势。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-09
+     * @param userId 已认证用户编号
+     * @param tankId 鱼缸字符串编号
+     * @param metric 当前详细趋势参数编码
+     * @param days 统计天数，零表示全部
+     * @return 六项参数总览、当前趋势采样点及用户自设范围提醒
+     */
+    @GetMapping("/water/dashboard")
+    public BaseRes<ReefWaterDashboardDto> waterDashboard(@RequestAttribute(ReefJournalConstants.REQUEST_USER_ID) Long userId,
+                                                         @RequestParam String tankId,
+                                                         @RequestParam String metric,
+                                                         @RequestParam(required = false) Integer days) {
+        // 按认证用户、鱼缸、参数和范围读取聚合趋势数据。
+        return BaseRes.success(logService.dashboard(userId, tankService.parseId(tankId), metric, days));
     }
 
     /**

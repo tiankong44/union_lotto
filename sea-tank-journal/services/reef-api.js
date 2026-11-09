@@ -25,7 +25,12 @@ module.exports = {
   saveLog: (data) => request('/logs', json('POST', data)),
   getLog: (id) => request(`/logs/${id}`),
   deleteLog: (id) => request(`/logs/${id}`, { method: 'DELETE' }),
-  getWaterTrend: (tankId, metric, days) => request(`/water/trend?tankId=${tankId}&metric=${metric}&days=${days}`),
+  /**
+   * 查询按鱼缸和日期范围整理的水质历史总览及当前参数趋势。
+   * @Author zhanghao_SMEICS
+   * @Date 2026-11-09
+   */
+  getWaterDashboard: (tankId, metric, days) => request(`/water/dashboard?tankId=${encodeURIComponent(tankId)}&metric=${encodeURIComponent(metric)}&days=${days}`),
   listEquipment: (category = '', pageNum = 1, pageSize = 50, tankId = '') => request(`/equipment?pageNum=${pageNum}&pageSize=${pageSize}&category=${encodeURIComponent(category)}&tankId=${encodeURIComponent(tankId)}`),
   saveEquipment: (data) => request('/equipment', json('POST', data)),
   getEquipment: (id) => request(`/equipment/${id}`),

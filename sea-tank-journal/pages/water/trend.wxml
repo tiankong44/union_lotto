@@ -1,23 +1,80 @@
+<!-- 按鱼缸和时间范围展示水质总览、单项趋势及用户自设范围提醒。 -->
 <view class="page-shell">
-  <scroll-view class="tank-switch" scroll-x enhanced show-scrollbar="false">
-    <button wx:for="{{tanks}}" wx:key="id" class="tank-chip {{selectedTankId === item.id ? 'selected' : ''}}" data-id="{{item.id}}" bindtap="selectTank">{{item.name}}</button>
-  </scroll-view>
-  <scroll-view class="metric-switch" scroll-x enhanced show-scrollbar="false">
-    <button wx:for="{{metrics}}" wx:key="key" class="metric-chip {{selectedMetric === item.key ? 'selected' : ''}}" data-key="{{item.key}}" bindtap="selectMetric">{{item.label}}</button>
-  </scroll-view>
-  <view class="stat-grid">
-    <view class="stat-card card"><text>当前值</text><strong>{{stats.currentValue || '—'}}</strong><text>{{currentMetric.unit}}</text></view>
-    <view class="stat-card card"><text>7 日均值</text><strong>{{stats.average7Days || '—'}}</strong><text>{{currentMetric.unit}}</text></view>
-    <view class="stat-card card"><text>趋势</text><strong class="trend-{{stats.trendKey}}">{{stats.trendLabel || '—'}}</strong><text>近段变化</text></view>
+  <view wx:if="{{isTankLoading}}" class="page-state">正在读取鱼缸列表…</view>
+
+  <view wx:elif="{{!tanks.length && !loadError}}" class="empty-panel">
+    <empty-state icon="◌" title="还没有鱼缸" description="先添加鱼缸资料，再记录水质检测。"></empty-state>
+    <button class="empty-action" bindtap="createTank">新增鱼缸</button>
   </view>
-  <view class="chart-card card">
-    <view class="chart-heading"><text>{{currentMetric.label}}变化趋势</text><text>近 {{rangeDaysLabel}} · {{currentMetric.unit}}</text></view>
-    <canvas canvas-id="trendChart" class="chart-canvas"></canvas>
-    <view class="range-tabs">
-      <button wx:for="{{ranges}}" wx:key="days" class="range-button {{selectedDays === item.days ? 'active' : ''}}" data-days="{{item.days}}" bindtap="selectRange">{{item.label}}</button>
+
+  <view wx:else>
+    <view wx:if="{{loadError}}" class="error-panel card">
+      <text>{{loadError}}</text>
+      <button class="retry-button" bindtap="retry">重试</button>
     </view>
+
+    <block wx:else>
+      <scroll-view class="tank-switch" scroll-x enhanced show-scrollbar="false">
+        <button wx:for="{{tanks}}" wx:key="id" class="tank-chip {{selectedTankId === item.id ? 'selected' : ''}}" data-id="{{item.id}}" bindtap="selectTank">{{item.name}}</button>
+      </scroll-view>
+
+      <view class="range-panel">
+        <text class="range-heading">历史范围</text>
+        <view class="range-tabs">
+          <button wx:for="{{ranges}}" wx:key="days" class="range-button {{selectedDays === item.days ? 'active' : ''}}" data-days="{{item.days}}" bindtap="selectRange">{{item.label}}</button>
+        </view>
+      </view>
+
+      <view wx:if="{{isDashboardLoading}}" class="page-state">正在更新水质趋势…</view>
+
+      <block wx:elif="{{series.length}}">
+        <view class="section-heading metric-section-heading">
+          <text>参数趋势</text>
+          <text class="section-caption">{{rangeDaysLabel}}</text>
+        </view>
+
+        <view class="metric-grid">
+          <button wx:for="{{series}}" wx:for-item="metric" wx:key="key" class="metric-card card {{selectedMetric === metric.key ? 'selected' : ''}}" data-key="{{metric.key}}" bindtap="selectMetric">
+            <view class="metric-heading">
+              <view class="metric-name"><view class="metric-dot" style="background-color: {{metric.accent}}"></view><text>{{metric.label}}</text></view>
+              <text class="metric-unit">{{metric.unit}}</text>
+            </view>
+            <view class="metric-value-row">
+              <view class="metric-current"><text>最新</text><strong>{{metric.currentValue || '—'}}</strong></view>
+              <view class="metric-average"><text>近 7 天均值</text><text>{{metric.average7Days || '—'}}</text></view>
+            </view>
+            <view wx:if="{{metric.sparkline.length}}" class="mini-chart">
+              <view wx:for="{{metric.sparkline}}" wx:for-item="bar" wx:key="index" class="mini-bar" style="height: {{bar.height}}%; background-color: {{metric.accent}}"></view>
+            </view>
+            <view wx:else class="mini-chart-empty">暂无检测记录</view>
+            <view class="metric-footer">
+              <text class="trend-label trend-{{metric.trendKey}}">{{metric.trendLabel || (metric.sampleCount ? '记录不足' : '暂无记录')}}</text>
+              <text>{{metric.sampleCount}} 次</text>
+            </view>
+          </button>
+        </view>
+
+        <view class="chart-card card">
+          <view class="chart-heading">
+            <view><text class="chart-title">{{currentMetric.label}}历史变化</text><text class="chart-unit">{{currentMetric.unit}}</text></view>
+            <text class="chart-count">{{selectedPointCount}} 次检测</text>
+          </view>
+          <view wx:if="{{points.length}}" class="chart-range-labels">
+            <text>{{chartStartLabel}}</text>
+            <text>{{chartEndLabel}}</text>
+          </view>
+          <canvas wx:if="{{points.length}}" canvas-id="trendChart" class="chart-canvas"></canvas>
+          <view wx:elif="{{isDashboardLoading}}" class="chart-empty">正在读取这项参数的记录…</view>
+          <view wx:else class="chart-empty">所选范围内还没有这项参数的检测记录</view>
+        </view>
+
+        <view class="section-heading alert-heading"><text>范围提醒</text></view>
+        <view wx:for="{{alerts}}" wx:key="id" class="alert-row card">
+          <view class="alert-dot alert-{{item.level}}"></view>
+          <text>{{item.message}}</text>
+        </view>
+        <empty-state wx:if="{{!alerts.length}}" icon="✓" title="当前没有超出自设范围的提醒" description="提醒依据鱼缸详情中设置的水质参数上下限。"></empty-state>
+      </block>
+    </block>
   </view>
-  <view class="section-heading"><text>异常提醒</text></view>
-  <view wx:for="{{alerts}}" wx:key="id" class="alert-row card"><view class="alert-dot alert-{{item.level}}"></view><text>{{item.message}}</text></view>
-  <empty-state wx:if="{{!alerts.length}}" icon="✓" title="暂时没有超出范围的水质记录" description="提醒根据每个鱼缸自行设置的参数范围生成"></empty-state>
 </view>

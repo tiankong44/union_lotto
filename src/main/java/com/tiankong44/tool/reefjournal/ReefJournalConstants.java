@@ -4,7 +4,7 @@ package com.tiankong44.tool.reefjournal;
  * 水境日记模块集中维护的业务常量。
  *
  * @Author zhanghao_SMEICS
- * @Date 2026-11-05
+ * @Date 2026-11-09
  */
 public final class ReefJournalConstants {
     public static final String REQUEST_USER_ID = "reefUserId";
@@ -40,6 +40,24 @@ public final class ReefJournalConstants {
     public static final String METRIC_NO2 = "no2";
     public static final String METRIC_NO3 = "no3";
     public static final String METRIC_PO4 = "po4";
+    /** 历史记录不足两条时使用的趋势状态编码。 */
+    public static final String TREND_KEY_INSUFFICIENT = "INSUFFICIENT";
+    /** 最近两次记录值相同时使用的趋势状态编码。 */
+    public static final String TREND_KEY_STABLE = "STABLE";
+    /** 最近一次记录值高于前一次时使用的趋势状态编码。 */
+    public static final String TREND_KEY_UP = "UP";
+    /** 最近一次记录值低于前一次时使用的趋势状态编码。 */
+    public static final String TREND_KEY_DOWN = "DOWN";
+    /** 样本数不足时展示的趋势标签。 */
+    public static final String TREND_LABEL_INSUFFICIENT = "记录不足";
+    /** 两次记录值相同时展示的趋势标签。 */
+    public static final String TREND_LABEL_STABLE = "稳定";
+    /** 最近一次记录值较高时展示的趋势标签。 */
+    public static final String TREND_LABEL_UP = "上升";
+    /** 最近一次记录值较低时展示的趋势标签。 */
+    public static final String TREND_LABEL_DOWN = "下降";
+    /** 总览小图最多返回的均匀抽样点数。 */
+    public static final int WATER_DASHBOARD_SAMPLE_POINTS = 12;
     public static final String BIOLOGY_STATUS_NORMAL = "NORMAL";
     public static final String BIOLOGY_STATUS_QUARANTINE = "QUARANTINE";
     public static final String BIOLOGY_STATUS_ISOLATED = "ISOLATED";
