@@ -1,16 +1,21 @@
 /**
  * 影像记录场景，按分类和上海本地日期分组加载用户照片。
  * @Author zhanghao_SMEICS
- * @Date 2026-11-05
+ * @Date 2026-11-12
  */
 const reefApi = require('../../services/reef-api')
 const { shanghaiDateTimeParts } = require('../../services/date-time')
 const { syncTabBar } = require('../../services/tab-bar')
 
+const CATEGORIES = [
+  { value: '', label: '全部' }, { value: 'TANK', label: '鱼缸' }, { value: 'FISH', label: '鱼' },
+  { value: 'CORAL', label: '珊瑚' }, { value: 'EQUIPMENT', label: '设备' }, { value: 'PLANT', label: '植物' },
+  { value: 'OTHER', label: '其他生物' }
+]
+
 Page({
   data: {
-    categories: [{ value: '', label: '全部' }, { value: 'TANK', label: '鱼缸' }, { value: 'FISH', label: '鱼' }, { value: 'CORAL', label: '珊瑚' }, { value: 'EQUIPMENT', label: '设备' }, { value: 'PLANT', label: '植物' }, { value: 'OTHER', label: '其他生物' }],
-    selectedCategory: '', recent: [], older: [], pageNum: 0, hasMore: true, loading: false, loadVersion: 0
+    categories: CATEGORIES, selectedCategory: '', selectedCategoryLabel: '全部', recent: [], older: [], pageNum: 0, hasMore: true, loading: false, loadVersion: 0
   },
 
   onShow() {
@@ -47,8 +52,11 @@ Page({
     }
   },
 
+  /** 接收通用筛选面板的分类选择，并按原有分类参数刷新影像列表。 */
   selectCategory(event) {
-    this.setData({ selectedCategory: event.currentTarget.dataset.value })
+    const selectedCategory = event.detail?.value ?? ''
+    const selected = CATEGORIES.find((item) => item.value === selectedCategory) || CATEGORIES[0]
+    this.setData({ selectedCategory, selectedCategoryLabel: selected.label })
     this.loadPhotos(true)
   },
 

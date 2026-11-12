@@ -1,7 +1,6 @@
 <view class="page-shell has-tabbar">
-  <scroll-view class="category-strip" scroll-x enhanced show-scrollbar="false">
-    <button wx:for="{{categories}}" wx:key="value" class="category-chip {{selectedCategory === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectCategory">{{item.label}}</button>
-  </scroll-view>
+  <!-- 复用通用分类筛选面板，当前分类与影像请求仍由本页维护。 -->
+  <searchable-filter title="影像分类" value="{{selectedCategory}}" label="{{selectedCategoryLabel}}" options="{{categories}}" search-placeholder="搜索影像分类" bind:change="selectCategory" />
   <view wx:if="{{recent.length}}">
     <text class="group-title">最近 30 天</text>
     <view class="photo-grid">
@@ -14,6 +13,6 @@
       <view wx:for="{{older}}" wx:key="id" class="photo-tile" data-id="{{item.id}}" bindtap="previewPhoto"><image src="{{item.contentUrl}}" mode="aspectFill"></image><view class="photo-caption"><text>{{item.title || '影像记录'}}</text><text>{{item.dateLabel}}</text></view></view>
     </view>
   </view>
-  <empty-state wx:if="{{!recent.length && !older.length}}" icon="▧" title="还没有影像记录" description="添加鱼缸、生物或设备照片"></empty-state>
+  <empty-state wx:if="{{!recent.length && !older.length && !loading}}" icon="▧" title="{{selectedCategory ? '没有符合条件的影像' : '还没有影像记录'}}" description="{{selectedCategory ? '调整筛选条件后再看看' : '添加鱼缸、生物或设备照片'}}"></empty-state>
   <button class="fab" bindtap="addPhoto" aria-label="添加照片">+</button>
 </view>

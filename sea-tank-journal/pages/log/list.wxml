@@ -1,8 +1,7 @@
 <view class="page-shell has-tabbar">
   <view wx:if="{{selectedTankId}}" class="tank-filter"><text>鱼缸：{{selectedTankName}}</text><button bindtap="clearTankFilter">清除</button></view>
-  <scroll-view class="filter-strip" scroll-x enhanced show-scrollbar="false">
-    <button wx:for="{{filters}}" wx:key="value" class="filter-chip {{selectedType === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectFilter">{{item.label}}</button>
-  </scroll-view>
+  <!-- 复用通用类型筛选面板，列表请求和当前类型仍由本页维护。 -->
+  <searchable-filter title="记录类型" value="{{selectedType}}" label="{{selectedTypeLabel}}" options="{{filters}}" search-placeholder="搜索日志类型" bind:change="selectFilter" />
   <view wx:for="{{groups}}" wx:key="month" class="month-group">
     <text class="month-title">{{item.month}}</text>
     <view wx:for="{{item.items}}" wx:key="id" class="log-row card" data-id="{{item.id}}" bindtap="openLog">
@@ -11,6 +10,6 @@
       <text class="log-time">{{item.timeLabel}}</text>
     </view>
   </view>
-  <empty-state wx:if="{{!groups.length}}" icon="▤" title="还没有日志" description="记录一次水质、换水或日常观察"></empty-state>
+  <empty-state wx:if="{{!groups.length && !loading}}" icon="▤" title="{{selectedType || selectedTankId ? '没有符合条件的日志' : '还没有日志'}}" description="{{selectedType || selectedTankId ? '调整筛选条件后再看看' : '记录一次水质、换水或日常观察'}}"></empty-state>
   <button wx:if="{{!selectedTankArchived}}" class="fab" bindtap="addLog" aria-label="新增日志">+</button>
 </view>

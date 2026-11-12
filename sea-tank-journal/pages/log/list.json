@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "我的日志"
+  "navigationBarTitleText": "我的日志",
+  "usingComponents": {
+    "searchable-filter": "/components/common/searchable-filter"
+  }
 }

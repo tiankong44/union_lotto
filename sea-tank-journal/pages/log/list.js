@@ -1,7 +1,7 @@
 /**
- * 日志列表场景，按日志类型筛选并按月份分组展示。
+ * 日志列表场景，支持搜索日志类型筛选并按月份分组展示。
  * @Author zhanghao_SMEICS
- * @Date 2026-11-05
+ * @Date 2026-11-12
  */
 const reefApi = require('../../services/reef-api')
 const { syncTabBar } = require('../../services/tab-bar')
@@ -10,7 +10,7 @@ const { LOG_TYPES } = require('../../services/aquarium-catalog')
 const FILTERS = [{ value: '', label: '全部' }, ...LOG_TYPES]
 
 Page({
-  data: { filters: FILTERS, selectedType: '', selectedTankId: '', selectedTankName: '', selectedTankArchived: false, groups: [], logs: [], pageNum: 0, hasMore: true, loading: false, loadVersion: 0 },
+  data: { filters: FILTERS, selectedType: '', selectedTypeLabel: '全部', selectedTankId: '', selectedTankName: '', selectedTankArchived: false, groups: [], logs: [], pageNum: 0, hasMore: true, loading: false, loadVersion: 0 },
   onShow() {
     // 将全局导航选中项同步到日志页。
     syncTabBar(this, 1)
@@ -60,8 +60,14 @@ Page({
     return { WATER_TEST: '◉', WATER_CHANGE: '↻', FEEDING: '✦', MEDICATION: '＋', OBSERVATION: '◎' }[type] || '◉'
   },
 
+  /** 选择日志类型后关闭面板，并按原有接口参数重新加载列表。 */
   selectFilter(event) {
-    this.setData({ selectedType: event.currentTarget.dataset.value })
+    const selectedType = event.detail?.value ?? ''
+    const selectedFilter = FILTERS.find((item) => item.value === selectedType) || FILTERS[0]
+    this.setData({
+      selectedType,
+      selectedTypeLabel: selectedFilter.label,
+    })
     this.loadLogs(true)
   },
 

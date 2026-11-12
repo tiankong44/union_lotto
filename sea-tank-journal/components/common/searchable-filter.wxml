@@ -1,0 +1,30 @@
+<!-- 通用分类筛选入口，避免多个业务页面重复维护搜索和弹层交互。 -->
+<view class="type-filter">
+  <text class="filter-label">{{title}}</text>
+  <button class="filter-trigger" bindtap="openFilter" aria-label="打开筛选">
+    <text class="filter-current">{{label}}</text>
+    <van-icon name="arrow-down" />
+  </button>
+</view>
+<van-popup show="{{open}}" position="bottom" round bind:close="closeFilter">
+  <view class="filter-sheet">
+    <view class="filter-sheet-header">
+      <text class="filter-sheet-title">{{title}}</text>
+      <button class="filter-close" bindtap="closeFilter" aria-label="关闭筛选"><van-icon name="cross" /></button>
+    </view>
+    <view class="filter-search">
+      <van-icon name="search" />
+      <input class="filter-search-input" value="{{keyword}}" placeholder="{{searchPlaceholder}}" confirm-type="search" bindinput="searchOptions" />
+      <button wx:if="{{keyword}}" class="filter-search-clear" bindtap="clearSearch" aria-label="清空搜索"><van-icon name="cross" /></button>
+    </view>
+    <scroll-view wx:if="{{visibleOptions.length}}" class="filter-options" scroll-y enhanced show-scrollbar="false">
+      <view class="filter-option-grid">
+        <button wx:for="{{visibleOptions}}" wx:key="value" class="filter-option {{value === item.value ? 'selected' : ''}}" data-value="{{item.value}}" bindtap="selectOption">
+          <text class="filter-option-label">{{item.label}}</text>
+          <van-icon wx:if="{{value === item.value}}" name="success" />
+        </button>
+      </view>
+    </scroll-view>
+    <view wx:else class="filter-empty">没有找到匹配的类型</view>
+  </view>
+</van-popup>
