@@ -29,7 +29,7 @@ server:
     max-swallow-size: 100MB
 spring:
   profiles:
-    active: prod
+    active: out
   application:
     name: lotto
 

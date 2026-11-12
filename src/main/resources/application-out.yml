@@ -11,10 +11,18 @@ spring:
       max-lifetime: 1800000
       connection-timeout: 30000
 
+#  redis:
+#    cluster:
+#      nodes: 127.0.0.01:6379
+#    password: root
   redis:
-    cluster:
-      nodes: 192.168.2.103:7001
-    password: zh34864486
+    host: 127.0.0.1
+    # 端口，默认为6379
+    port: 6379
+    # 数据库索引
+    database: 0
+    # 密码
+    password: root
   config:
     activate:
       on-profile: out
