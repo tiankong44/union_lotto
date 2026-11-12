@@ -11,7 +11,9 @@
   </view>
   <view class="section-heading"><text>数据与通用</text></view>
   <view class="settings-card card">
-    <button class="setting-action" bindtap="exportData"><text class="action-icon">⇩</text><text>导出数据</text><text class="action-end">›</text></button>
+    <button class="setting-action" disabled="{{backupBusy}}" bindtap="exportData"><text class="action-icon">⇩</text><text>导出完整备份</text><text class="action-end">›</text></button>
+    <button class="setting-action" disabled="{{backupBusy}}" bindtap="restoreData"><text class="action-icon">⇧</text><text>恢复备份（新增记录）</text><text class="action-end">›</text></button>
+    <text wx:if="{{backupProgress}}" class="setting-note">{{backupProgress}}</text>
     <button class="setting-action" bindtap="clearCache"><text class="action-icon">◌</text><text>清空缓存</text><text class="action-end">{{cacheSize}}</text></button>
     <view class="setting-action"><text class="action-icon">ⓘ</text><text>关于水境日记</text><text class="action-end">v1.0.0</text></view>
   </view>

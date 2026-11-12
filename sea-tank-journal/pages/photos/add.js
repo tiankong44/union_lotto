@@ -8,12 +8,13 @@ const { shanghaiDateTimeParts } = require('../../services/date-time')
 
 const CATEGORIES = [
   { value: 'TANK', label: '鱼缸' }, { value: 'FISH', label: '鱼' }, { value: 'CORAL', label: '珊瑚' },
-  { value: 'EQUIPMENT', label: '设备' }, { value: 'PLANT', label: '植物' }
+  { value: 'EQUIPMENT', label: '设备' }, { value: 'PLANT', label: '植物' }, { value: 'OTHER', label: '其他生物' }
 ]
 const REFERENCE_TYPES = [
   { value: '', label: '不关联' }, { value: 'TANK', label: '鱼缸' }, { value: 'BIOLOGY', label: '生物' },
-  { value: 'EQUIPMENT', label: '设备' }, { value: 'LOG', label: '日志' }
+  { value: 'EQUIPMENT', label: '设备' }, { value: 'LOG', label: '日志' }, { value: 'BIOLOGY_EVENT', label: '生物事件' }
 ]
+const NEW_REFERENCE_TYPES = REFERENCE_TYPES.filter((item) => item.value !== 'BIOLOGY_EVENT')
 
 Page({
   data: {
@@ -29,8 +30,8 @@ Page({
     referenceNames: [],
     referenceIndex: 0,
     categories: CATEGORIES,
-    referenceTypes: REFERENCE_TYPES,
-    referenceTypeLabels: REFERENCE_TYPES.map((item) => item.label),
+    referenceTypes: NEW_REFERENCE_TYPES,
+    referenceTypeLabels: NEW_REFERENCE_TYPES.map((item) => item.label),
     referenceTypeIndex: 0,
     recordDate: '',
     recordTime: '',
@@ -42,6 +43,8 @@ Page({
     this.setData({
       photoId: query.id || '',
       editing: Boolean(query.id),
+      referenceTypes: query.id ? REFERENCE_TYPES : NEW_REFERENCE_TYPES,
+      referenceTypeLabels: (query.id ? REFERENCE_TYPES : NEW_REFERENCE_TYPES).map((item) => item.label),
       recordDate: now.date,
       recordTime: now.time.slice(0, 5)
     })
@@ -75,7 +78,8 @@ Page({
     try {
       const photo = await reefApi.getPhoto(id)
       const recordedAt = String(photo?.recordedAt || '').replace('T', ' ')
-      const referenceTypeIndex = Math.max(REFERENCE_TYPES.findIndex((item) => item.value === (photo?.referenceType || '')), 0)
+      const referenceTypes = this.data.referenceTypes
+      const referenceTypeIndex = Math.max(referenceTypes.findIndex((item) => item.value === (photo?.referenceType || '')), 0)
       const biology = photo?.referenceType === 'BIOLOGY' && photo?.referenceId ? await reefApi.getBiology(photo.referenceId) : null
       const referenceType = photo?.referenceType || ''
       const selectedTankId = referenceType === 'TANK' ? photo?.referenceId : biology?.tankId || ''
@@ -89,7 +93,7 @@ Page({
         tankPickerIndex,
         'form.category': photo?.category || 'TANK',
         'form.referenceType': referenceType,
-        'form.referenceTypeLabel': REFERENCE_TYPES[referenceTypeIndex]?.label || '不关联',
+        'form.referenceTypeLabel': referenceTypes[referenceTypeIndex]?.label || '不关联',
         'form.referenceId': photo?.referenceId || '',
         'form.title': photo?.title || '',
         'form.note': photo?.note || '',
@@ -136,8 +140,8 @@ Page({
    */
   async onReferenceTypeChange(event) {
     const referenceTypeIndex = Number(event.detail.value)
-    const referenceType = REFERENCE_TYPES[referenceTypeIndex]?.value || ''
-    this.setData({ referenceTypeIndex, referenceIndex: 0, 'form.referenceType': referenceType, 'form.referenceTypeLabel': REFERENCE_TYPES[referenceTypeIndex]?.label || '不关联', 'form.referenceId': '', 'form.referenceName': '', referenceItems: [], referenceNames: [] })
+    const referenceType = this.data.referenceTypes[referenceTypeIndex]?.value || ''
+    this.setData({ referenceTypeIndex, referenceIndex: 0, 'form.referenceType': referenceType, 'form.referenceTypeLabel': this.data.referenceTypes[referenceTypeIndex]?.label || '不关联', 'form.referenceId': '', 'form.referenceName': '', referenceItems: [], referenceNames: [] })
     await this.loadReferenceItems(referenceType)
   },
 
@@ -148,6 +152,11 @@ Page({
    */
   async loadReferenceItems(referenceType) {
     if (!referenceType) return
+    // 编辑已有事件照片时保留原关联；事件照片通过生物时间轴添加。
+    if (referenceType === 'BIOLOGY_EVENT') {
+      this.setData({ 'form.referenceName': this.data.form.referenceId ? '当前关联的生物事件' : '' })
+      return
+    }
     try {
       let result = []
       if (referenceType === 'TANK') result = this.data.tanks

@@ -23,6 +23,14 @@ public class ReefTankSaveRequest {
     private BigDecimal capacityLiter;
     @Size(max = 64, message = "系统类型不能超过64个字符")
     private String systemType;
+    /** 用户选择的水体、饲养主题和检测指标。 */
+    @Size(max = 24, message = "水体类型不能超过24个字符")
+    private String waterType;
+    @Size(max = 255, message = "饲养主题不能超过255个字符")
+    private String themes;
+    @Size(max = 1000, message = "水质指标不能超过1000个字符")
+    private String enabledMetrics;
+    private Boolean archived;
     @Size(max = 1000, message = "备注不能超过1000个字符")
     private String note;
 }

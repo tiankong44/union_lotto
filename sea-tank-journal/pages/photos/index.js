@@ -9,7 +9,7 @@ const { syncTabBar } = require('../../services/tab-bar')
 
 Page({
   data: {
-    categories: [{ value: '', label: '全部' }, { value: 'TANK', label: '鱼缸' }, { value: 'FISH', label: '鱼' }, { value: 'CORAL', label: '珊瑚' }, { value: 'EQUIPMENT', label: '设备' }, { value: 'PLANT', label: '植物' }],
+    categories: [{ value: '', label: '全部' }, { value: 'TANK', label: '鱼缸' }, { value: 'FISH', label: '鱼' }, { value: 'CORAL', label: '珊瑚' }, { value: 'EQUIPMENT', label: '设备' }, { value: 'PLANT', label: '植物' }, { value: 'OTHER', label: '其他生物' }],
     selectedCategory: '', recent: [], older: [], pageNum: 0, hasMore: true, loading: false, loadVersion: 0
   },
 

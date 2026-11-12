@@ -6,10 +6,12 @@
 const reefApi = require('../../services/reef-api')
 const { shanghaiDateTimeParts } = require('../../services/date-time')
 const { syncTabBar, setTabBarHidden } = require('../../services/tab-bar')
+const { describeTank } = require('../../services/aquarium-catalog')
 
 Page({
   data: {
     tanks: [],
+    allTanks: [], showArchived: false, archivedCount: 0,
     greeting: '你好',
     loading: true,
     errorMessage: '',
@@ -31,12 +33,20 @@ Page({
     this.setData({ loading: true, errorMessage: '' })
     try {
       const result = await reefApi.getDashboard()
-      this.setData({ tanks: result?.tanks ?? [] })
+      const allTanks = (result?.tanks ?? []).map(describeTank)
+      this.setData({ allTanks, tanks: allTanks.filter((tank) => Boolean(tank.archived) === this.data.showArchived),
+        archivedCount: allTanks.filter((tank) => tank.archived).length })
     } catch (error) {
-      this.setData({ tanks: [], errorMessage: error.message || '鱼缸信息暂时无法读取' })
+      this.setData({ allTanks: [], tanks: [], archivedCount: 0, errorMessage: error.message || '鱼缸信息暂时无法读取' })
     } finally {
       this.setData({ loading: false })
     }
+  },
+
+  /** 在使用中和已归档鱼缸之间切换，归档记录仍可打开恢复。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  toggleArchived() {
+    const showArchived = !this.data.showArchived
+    this.setData({ showArchived, tanks: this.data.allTanks.filter((tank) => Boolean(tank.archived) === showArchived) })
   },
 
   toggleMenu() {

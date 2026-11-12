@@ -5,32 +5,18 @@
  */
 const reefApi = require('../../services/reef-api')
 const { shanghaiDateTimeParts } = require('../../services/date-time')
-
-const LOG_TYPES = [
-  { value: 'WATER_TEST', label: '水质检测' },
-  { value: 'WATER_CHANGE', label: '换水' },
-  { value: 'FEEDING', label: '喂食' },
-  { value: 'MEDICATION', label: '用药' },
-  { value: 'OBSERVATION', label: '观察' }
-]
+const { LOG_TYPES, METRICS, LEGACY_METRICS, splitSelection } = require('../../services/aquarium-catalog')
 
 Page({
   data: {
     logTypes: LOG_TYPES.map((item) => item.label),
-    tanks: [], tankNames: [], biology: [], selectedPhotos: [], saving: false, savedLogId: '', editingLogId: '', editingBiologyIds: [],
+    tanks: [], tankNames: [], biology: [], selectedPhotos: [], saving: false, savedLogId: '', editingLogId: '', editingBiologyIds: [], historicalBiology: [],
     recordDate: '', recordTime: '',
-    waterFields: [
-      { key: 'salinity', label: '盐度', placeholder: '1.025' },
-      { key: 'temperature', label: '水温℃', placeholder: '26.5' },
-      { key: 'ph', label: 'pH', placeholder: '8.2' },
-      { key: 'no2', label: 'NO₂ mg/L', placeholder: '0.02' },
-      { key: 'no3', label: 'NO₃ mg/L', placeholder: '2.5' },
-      { key: 'po4', label: 'PO₄ mg/L', placeholder: '0.03' }
-    ],
+    waterFields: [], waterMethods: {},
     form: {
       type: 'WATER_TEST', typeLabel: '水质检测', tankId: '', tankName: '',
-      recordedAt: '', note: '', changePercent: '',
-      water: { salinity: '', temperature: '', ph: '', no2: '', no3: '', po4: '' }
+      recordedAt: '', note: '', changePercent: '', activityItem: '', activityAmount: '', activityUnit: '',
+      waterSource: '', waterVolumeLiter: '', lightHours: '', water: {}
     }
   },
 
@@ -53,14 +39,18 @@ Page({
   async loadTanks(selectedId) {
     try {
       const result = await reefApi.listTanks()
-      const tanks = result?.list ?? result ?? []
+      const allTanks = result?.list ?? result ?? []
+      const tanks = this.data.editingLogId ? allTanks : allTanks.filter((item) => !item.archived)
       this.setData({ tanks, tankNames: tanks.map((item) => item.name) })
       if (selectedId) {
         const index = tanks.findIndex((item) => item.id === selectedId)
         if (index >= 0) this.setData({ 'form.tankId': tanks[index].id, 'form.tankName': tanks[index].name })
       }
       if (!this.data.form.tankId && tanks.length && !this.data.editingLogId) this.setData({ 'form.tankId': tanks[0].id, 'form.tankName': tanks[0].name })
-      if (this.data.form.tankId) this.loadBiology()
+      if (this.data.form.tankId) {
+        this.updateWaterFields()
+        this.loadBiology()
+      }
     } catch (error) {
       wx.showToast({ title: error.message, icon: 'none' })
     }
@@ -79,22 +69,27 @@ Page({
       const recordTime = recordedAt.slice(11, 16)
       const tank = this.data.tanks.find((item) => item.id === log?.tankId)
       const selectedType = LOG_TYPES.find((item) => item.value === log?.type) || LOG_TYPES[0]
+      const water = {}
+      const waterMethods = {}
+      LEGACY_METRICS.forEach((key) => { water[key] = log?.[key] ?? '' })
+      ;(log?.measurements ?? []).forEach((item) => { water[item.metric] = item.value ?? ''; waterMethods[item.metric] = item.method ?? '' })
       this.setData({
         recordDate: recordDate || this.data.recordDate,
         recordTime: recordTime || this.data.recordTime,
         editingBiologyIds: log?.biologyIds ?? [],
+        historicalBiology: log?.biology ?? [], waterMethods,
         'form.type': selectedType.value,
         'form.typeLabel': selectedType.label,
         'form.tankId': log?.tankId || '',
         'form.tankName': tank?.name || log?.tankName || '',
         'form.recordedAt': log?.recordedAt || this.data.form.recordedAt,
         'form.note': log?.note || '',
-        'form.changePercent': log?.changePercent || '',
-        'form.water': {
-          salinity: log?.salinity || '', temperature: log?.temperature || '', ph: log?.ph || '',
-          no2: log?.no2 || '', no3: log?.no3 || '', po4: log?.po4 || ''
-        }
+        'form.changePercent': log?.changePercent ?? '', 'form.activityItem': log?.activityItem ?? '',
+        'form.activityAmount': log?.activityAmount ?? '', 'form.activityUnit': log?.activityUnit ?? '',
+        'form.waterSource': log?.waterSource ?? '', 'form.waterVolumeLiter': log?.waterVolumeLiter ?? '',
+        'form.lightHours': log?.lightHours ?? '', 'form.water': water
       })
+      this.updateWaterFields()
       // 用现有日志关联编号标记生物多选状态。
       if (this.data.form.tankId) await this.loadBiology()
     } catch (error) {
@@ -106,7 +101,9 @@ Page({
     try {
       const result = await reefApi.listBiology(this.data.form.tankId)
       const biology = result?.list ?? result ?? []
-      this.setData({ biology: biology.map((item) => ({ ...item, selected: this.data.editingBiologyIds.includes(item.id) })) })
+      // 原日志关联的生物即使后来转缸，也继续显示在编辑选项中。
+      const historical = this.data.historicalBiology.filter((item) => !biology.some((row) => row.id === item.id))
+      this.setData({ biology: biology.concat(historical).map((item) => ({ ...item, selected: this.data.editingBiologyIds.includes(item.id) })) })
     } catch (error) {
       wx.showToast({ title: error.message, icon: 'none' })
     }
@@ -119,7 +116,8 @@ Page({
 
   onTankChange(event) {
     const tank = this.data.tanks[Number(event.detail.value)]
-    this.setData({ 'form.tankId': tank.id, 'form.tankName': tank.name, biology: [], editingBiologyIds: [] })
+    this.setData({ 'form.tankId': tank.id, 'form.tankName': tank.name, biology: [], editingBiologyIds: [], historicalBiology: [] })
+    this.updateWaterFields()
     this.loadBiology()
   },
 
@@ -145,9 +143,21 @@ Page({
     this.setData({ [`form.water.${event.currentTarget.dataset.key}`]: event.detail.value })
   },
 
+  /** 根据鱼缸所选指标展示字段，编辑历史日志时保留已有测量项。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  updateWaterFields() {
+    const tank = this.data.tanks.find((item) => item.id === this.data.form.tankId)
+    const selected = tank?.enabledMetrics == null ? LEGACY_METRICS : splitSelection(tank.enabledMetrics)
+    const water = this.data.form.water
+    const fields = METRICS.filter((item) => selected.includes(item.key) || (water[item.key] !== undefined && water[item.key] !== ''))
+    this.setData({ waterFields: fields })
+  },
+
+  /** 保存某项测量使用的工具或方法。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  onWaterMethodInput(event) { this.setData({ [`waterMethods.${event.currentTarget.dataset.key}`]: event.detail.value }) },
+
   choosePhotos() {
     wx.chooseMedia({ count: 9 - this.data.selectedPhotos.length, mediaType: ['image'], sourceType: ['album', 'camera'], success: (result) => {
-      this.setData({ selectedPhotos: this.data.selectedPhotos.concat(result.tempFiles.map((file) => ({ path: file.tempFilePath, name: '海缸照片' }))) })
+          this.setData({ selectedPhotos: this.data.selectedPhotos.concat(result.tempFiles.map((file) => ({ path: file.tempFilePath, name: '鱼缸照片' }))) })
     } })
   },
 
@@ -175,11 +185,17 @@ Page({
         recordedAt: form.recordedAt,
         note: form.note,
         biologyIds: this.data.biology.filter((item) => item.selected).map((item) => item.id),
-        changePercent: Number(form.changePercent) || null,
-        water: this.normalizeWaterValues(form.water)
+        changePercent: form.changePercent === '' ? null : Number(form.changePercent),
+        activityDetailsProvided: true, activityItem: form.activityItem, activityUnit: form.activityUnit,
+        activityAmount: form.activityAmount === '' ? null : Number(form.activityAmount), waterSource: form.waterSource,
+        waterVolumeLiter: form.waterVolumeLiter === '' ? null : Number(form.waterVolumeLiter),
+        lightHours: form.lightHours === '' ? null : Number(form.lightHours),
+        water: this.normalizeWaterValues(form.water),
+        measurements: form.type === 'WATER_TEST' ? METRICS.filter((item) => form.water[item.key] !== undefined && form.water[item.key] !== '')
+          .map((item) => ({ metric: item.key, value: String(form.water[item.key]), unit: item.unit, method: this.data.waterMethods[item.key] ?? '' })) : []
       }
       let logId = this.data.savedLogId || this.data.editingLogId
-      if (!logId) {
+      if (!this.data.savedLogId) {
         const saved = await reefApi.saveLog(payload)
         logId = saved.id
         this.setData({ savedLogId: logId })
@@ -208,7 +224,7 @@ Page({
 
   normalizeWaterValues(values) {
     const normalized = {}
-    Object.keys(values).forEach((key) => { normalized[key] = values[key] === '' ? null : Number(values[key]) })
+    LEGACY_METRICS.forEach((key) => { normalized[key] = values[key] === '' || values[key] == null ? null : Number(values[key]) })
     return normalized
   }
 })

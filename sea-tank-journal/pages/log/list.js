@@ -5,20 +5,18 @@
  */
 const reefApi = require('../../services/reef-api')
 const { syncTabBar } = require('../../services/tab-bar')
+const { LOG_TYPES } = require('../../services/aquarium-catalog')
 
-const FILTERS = [
-  { value: '', label: '全部' }, { value: 'WATER_TEST', label: '水质' }, { value: 'WATER_CHANGE', label: '换水' },
-  { value: 'FEEDING', label: '喂食' }, { value: 'MEDICATION', label: '用药' }, { value: 'OBSERVATION', label: '观察' }
-]
+const FILTERS = [{ value: '', label: '全部' }, ...LOG_TYPES]
 
 Page({
-  data: { filters: FILTERS, selectedType: '', selectedTankId: '', selectedTankName: '', groups: [], logs: [], pageNum: 0, hasMore: true, loading: false, loadVersion: 0 },
+  data: { filters: FILTERS, selectedType: '', selectedTankId: '', selectedTankName: '', selectedTankArchived: false, groups: [], logs: [], pageNum: 0, hasMore: true, loading: false, loadVersion: 0 },
   onShow() {
     // 将全局导航选中项同步到日志页。
     syncTabBar(this, 1)
     const app = getApp()
     if (app.globalData.pendingLogTank) {
-      this.setData({ selectedTankId: app.globalData.pendingLogTank.id, selectedTankName: app.globalData.pendingLogTank.name })
+      this.setData({ selectedTankId: app.globalData.pendingLogTank.id, selectedTankName: app.globalData.pendingLogTank.name, selectedTankArchived: Boolean(app.globalData.pendingLogTank.archived) })
       app.globalData.pendingLogTank = null
     }
     this.loadLogs()
@@ -68,7 +66,7 @@ Page({
   },
 
   clearTankFilter() {
-    this.setData({ selectedTankId: '', selectedTankName: '' })
+    this.setData({ selectedTankId: '', selectedTankName: '', selectedTankArchived: false })
     this.loadLogs(true)
   },
 

@@ -4,17 +4,13 @@
  * @Date 2026-11-05
  */
 const reefApi = require('../../services/reef-api')
+const { describeTank } = require('../../services/aquarium-catalog')
 
 Page({
   data: {
-    tankId: '', tank: { name: '' }, tankCoverUrl: '', biology: [], biologyPageNum: 1, biologyHasMore: false, biologyLoading: false, logs: [], equipment: [], waterRanges: [],
+    tankId: '', tank: { name: '', archived: false, tankTypeSummary: '', systemType: '' }, tankCoverUrl: '', biology: [], biologyPageNum: 1, biologyHasMore: false, biologyLoading: false, logs: [], equipment: [], waterRanges: [],
     tabs: [{ key: 'biology', label: '生物' }, { key: 'logs', label: '日志' }, { key: 'water', label: '水质' }, { key: 'equipment', label: '设备' }],
-    biologyCategories: [{ value: 'FISH', label: '鱼' }, { value: 'CORAL', label: '珊瑚' }, { value: 'PLANT', label: '植物' }, { value: 'OTHER', label: '其他' }],
-    biologyStatuses: [{ value: 'NORMAL', label: '正常' }, { value: 'QUARANTINE', label: '检疫中' }, { value: 'ISOLATED', label: '隔离中' }, { value: 'SICK', label: '生病' }, { value: 'DEAD', label: '阵亡' }],
-    biologyCategoryLabels: ['鱼', '珊瑚', '植物', '其他'],
-    biologyStatusLabels: ['正常', '检疫中', '隔离中', '生病', '阵亡'],
-    activeTab: 'biology', biologyFormOpen: false, savingBiology: false, rangeFormOpen: false, savingRanges: false,
-    biologyForm: { name: '', scientificName: '', addedAt: '', bodyLengthCm: '', source: '', category: 'FISH', categoryLabel: '鱼', status: 'NORMAL', statusLabel: '正常' },
+    activeTab: 'biology', rangeFormOpen: false, savingRanges: false,
     rangeFields: [
       { metric: 'salinity', label: '盐度', unit: '比重', min: '', max: '' },
       { metric: 'temperature', label: '水温', unit: '℃', min: '', max: '' },
@@ -27,8 +23,12 @@ Page({
 
   onLoad(query) {
     this.setData({ tankId: query.id || '' })
-    this.loadTank()
   },
+
+  onShow() { if (this.data.tankId) this.loadTank() },
+
+  /** 打开鱼缸编辑表单，归档状态也可在此恢复。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  editTank() { wx.navigateTo({ url: `/pages/tank/add?id=${this.data.tankId}` }) },
 
   onReachBottom() {
     if (this.data.activeTab === 'biology' && this.data.biologyHasMore) this.loadMoreBiology()
@@ -50,7 +50,7 @@ Page({
       })
       const biologyRows = biology?.list ?? biology ?? []
       this.setData({
-        tank: tank || {}, tankCoverUrl: (photoResult?.list ?? photoResult ?? [])[0]?.contentUrl || '', biology: biologyRows, biologyPageNum: 1, biologyHasMore: biologyRows.length === 50,
+        tank: describeTank(tank || {}), tankCoverUrl: (photoResult?.list ?? photoResult ?? [])[0]?.contentUrl || '', biology: biologyRows, biologyPageNum: 1, biologyHasMore: biologyRows.length === 50,
         logs: logs?.list ?? logs ?? [], equipment: equipment?.list ?? equipment ?? [], waterRanges, rangeFields
       })
     } catch (error) {
@@ -79,54 +79,12 @@ Page({
     wx.navigateTo({ url: `/pages/biology/detail?id=${event.currentTarget.dataset.id}` })
   },
 
-  openBiologyForm() { this.setData({ biologyFormOpen: true }) },
-  closeBiologyForm() { this.setData({ biologyFormOpen: false }) },
-  onBiologyFieldChange(event) { this.setData({ [`biologyForm.${event.currentTarget.dataset.field}`]: event.detail }) },
-
-  onBiologyCategoryChange(event) {
-    const selected = this.data.biologyCategories[Number(event.detail.value)]
-    this.setData({ 'biologyForm.category': selected.value, 'biologyForm.categoryLabel': selected.label })
-  },
-
-  onBiologyStatusChange(event) {
-    const selected = this.data.biologyStatuses[Number(event.detail.value)]
-    this.setData({ 'biologyForm.status': selected.value, 'biologyForm.statusLabel': selected.label })
-  },
-
-  async saveBiology() {
-    if (!this.data.biologyForm.name.trim() || !this.data.biologyForm.addedAt.trim()) {
-      wx.showToast({ title: '请填写名称和入缸日期', icon: 'none' })
-      return
-    }
-    this.setData({ savingBiology: true })
-    try {
-      const form = this.data.biologyForm
-      await reefApi.saveBiology({
-        name: form.name,
-        scientificName: form.scientificName,
-        category: form.category,
-        addedAt: form.addedAt,
-        bodyLengthCm: Number(form.bodyLengthCm) || null,
-        source: form.source,
-        status: form.status,
-        tankId: this.data.tankId
-      })
-      this.setData({
-        biologyFormOpen: false,
-        biologyForm: { name: '', scientificName: '', addedAt: '', bodyLengthCm: '', source: '', category: 'FISH', categoryLabel: '鱼', status: 'NORMAL', statusLabel: '正常' }
-      })
-      await this.loadTank()
-      wx.showToast({ title: '生物已保存', icon: 'success' })
-    } catch (error) {
-      wx.showToast({ title: error.message, icon: 'none' })
-    } finally {
-      this.setData({ savingBiology: false })
-    }
-  },
+  /** 共用生物新增与编辑表单。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  openBiologyForm() { wx.navigateTo({ url: `/pages/biology/edit?tankId=${this.data.tankId}` }) },
 
   openLogList() {
     const app = getApp()
-    app.globalData.pendingLogTank = { id: this.data.tankId, name: this.data.tank.name || '' }
+    app.globalData.pendingLogTank = { id: this.data.tankId, name: this.data.tank.name || '', archived: Boolean(this.data.tank.archived) }
     // 日志页属于底部 Tab，通过原生切换并带入当前鱼缸筛选。
     wx.switchTab({ url: '/pages/log/list' })
   },

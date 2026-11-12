@@ -33,6 +33,7 @@ public class ReefExportService {
     private final ReefEquipmentService equipmentService;
     private final ReefPhotoService photoService;
     private final ReefReminderService reminderService;
+    private final ReefBackupExportDataService backupExportDataService;
 
     /**
      * 创建只导出当前用户数据的 JSON 组装服务。
@@ -47,13 +48,15 @@ public class ReefExportService {
      * @param reminderService 提醒配置查询服务
      */
     public ReefExportService(ReefTankService tankService, ReefBiologyService biologyService, ReefLogService logService,
-                             ReefEquipmentService equipmentService, ReefPhotoService photoService, ReefReminderService reminderService) {
+                             ReefEquipmentService equipmentService, ReefPhotoService photoService, ReefReminderService reminderService,
+                             ReefBackupExportDataService backupExportDataService) {
         this.tankService = tankService;
         this.biologyService = biologyService;
         this.logService = logService;
         this.equipmentService = equipmentService;
         this.photoService = photoService;
         this.reminderService = reminderService;
+        this.backupExportDataService = backupExportDataService;
     }
 
     /**
@@ -67,6 +70,7 @@ public class ReefExportService {
     public ReefExportResponse export(Long userId) {
         ReefExportResponse result = new ReefExportResponse();
         result.setExportedAt(ReefDateTimeSupport.formatDateTime(ReefDateTimeSupport.now()));
+        result.setBackupId(java.util.UUID.randomUUID().toString());
         List<ReefTankDto> tanks = readTanks(userId);
         result.setTanks(tanks);
         result.setBiology(readBiology(userId, tanks));
@@ -74,6 +78,7 @@ public class ReefExportService {
         result.setLogs(readLogs(userId));
         result.setEquipment(readEquipment(userId));
         result.setPhotos(readPhotos(userId));
+        result.setWaterRanges(backupExportDataService.ranges(userId));
         result.setReminders(reminderService.get(userId));
         return result;
     }
@@ -136,6 +141,8 @@ public class ReefExportService {
         int pageNum = ONE;
         while (true) {
             ReefPageResponse<ReefLogDto> page = logService.list(userId, null, null, pageNum, MAX_PAGE_SIZE);
+            // 同一页批量补齐关联及测量值，保留可恢复的数据关系。
+            backupExportDataService.populateLogs(userId, page.getList());
             result.addAll(page.getList());
             if (result.size() >= Long.parseLong(page.getTotal()) || page.getList().isEmpty()) break;
             pageNum++;

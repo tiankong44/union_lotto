@@ -18,6 +18,10 @@ CREATE TABLE reef_tank (
     started_at DATE NOT NULL COMMENT '开缸日期',
     capacity_liter DECIMAL(10,2) NULL COMMENT '鱼缸容量升数',
     system_type VARCHAR(64) NULL COMMENT '系统类型',
+    water_type VARCHAR(24) NULL COMMENT '用户选择的水体类型',
+    themes VARCHAR(255) NULL COMMENT '用户选择的饲养主题编码',
+    enabled_metrics VARCHAR(1000) NULL COMMENT '用户选择的水质指标编码',
+    archived TINYINT NOT NULL DEFAULT 0 COMMENT '是否归档，归档后保留历史记录',
     note VARCHAR(1000) NULL COMMENT '鱼缸备注',
     created_at DATETIME NOT NULL COMMENT '创建时间',
     updated_at DATETIME NOT NULL COMMENT '更新时间',
@@ -49,9 +53,14 @@ CREATE TABLE reef_biology (
     scientific_name VARCHAR(128) NULL COMMENT '学名',
     category VARCHAR(32) NOT NULL COMMENT '生物分类',
     added_at DATE NOT NULL COMMENT '入缸日期',
+    current_tank_since DATE NULL COMMENT '进入当前鱼缸的日期',
     body_length_cm DECIMAL(8,2) NULL COMMENT '体长厘米',
     source VARCHAR(128) NULL COMMENT '生物来源',
     status VARCHAR(24) NOT NULL COMMENT '用户维护的生物状态',
+    tracking_mode VARCHAR(16) NOT NULL DEFAULT 'SINGLE' COMMENT '个体或批次记录方式',
+    quantity INT NOT NULL DEFAULT 1 COMMENT '当前数量',
+    position_note VARCHAR(255) NULL COMMENT '缸内位置',
+    note VARCHAR(1000) NULL COMMENT '生物或植物补充说明',
     created_at DATETIME NOT NULL COMMENT '创建时间',
     updated_at DATETIME NOT NULL COMMENT '更新时间',
     PRIMARY KEY (id),
@@ -67,6 +76,11 @@ CREATE TABLE reef_biology_event (
     title VARCHAR(128) NOT NULL COMMENT '事件标题',
     description VARCHAR(1000) NULL COMMENT '事件描述',
     status VARCHAR(24) NULL COMMENT '事件对应状态',
+    event_type VARCHAR(32) NULL COMMENT '用户选择的事件类型',
+    from_tank_id BIGINT NULL COMMENT '事件发生前的鱼缸编号',
+    to_tank_id BIGINT NULL COMMENT '转缸目标鱼缸编号',
+    related_biology_id BIGINT NULL COMMENT '拆分转缸形成的关联生物编号',
+    quantity INT NULL COMMENT '事件记录的数量',
     created_at DATETIME NOT NULL COMMENT '创建时间',
     PRIMARY KEY (id),
     KEY idx_reef_biology_event (user_id, biology_id, event_at)
@@ -83,6 +97,12 @@ CREATE TABLE reef_log (
     recorded_at DATETIME NOT NULL COMMENT '记录时间',
     note VARCHAR(2000) NULL COMMENT '日志备注',
     change_percent DECIMAL(6,2) NULL COMMENT '换水比例百分数',
+    activity_item VARCHAR(128) NULL COMMENT '饲料、肥料、补剂或维护项目',
+    activity_amount DECIMAL(16,4) NULL COMMENT '本次用量或处理量',
+    activity_unit VARCHAR(32) NULL COMMENT '本次用量单位',
+    water_source VARCHAR(128) NULL COMMENT '补水或换水来源',
+    water_volume_liter DECIMAL(12,3) NULL COMMENT '补水或换水升数',
+    light_hours DECIMAL(6,2) NULL COMMENT '记录的光照时长小时',
     salinity DECIMAL(12,4) NULL COMMENT '盐度比重',
     temperature DECIMAL(8,3) NULL COMMENT '水温摄氏度',
     ph DECIMAL(8,4) NULL COMMENT '酸碱度',
@@ -95,6 +115,44 @@ CREATE TABLE reef_log (
     KEY idx_reef_log_user_time (user_id, recorded_at),
     KEY idx_reef_log_tank_type_time (user_id, tank_id, type, recorded_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='海缸日志';
+
+-- 保存每次检测的水质指标、单位和测量方式；旧六项字段继续用于兼容历史记录。
+CREATE TABLE reef_water_measurement (
+    id BIGINT NOT NULL AUTO_INCREMENT COMMENT '水质测量主键',
+    user_id BIGINT NOT NULL COMMENT '所属用户编号',
+    tank_id BIGINT NOT NULL COMMENT '检测时所属鱼缸编号',
+    log_id BIGINT NOT NULL COMMENT '所属检测日志编号',
+    recorded_at DATETIME NOT NULL COMMENT '测量时间',
+    metric VARCHAR(48) NOT NULL COMMENT '水质指标编码',
+    measured_value DECIMAL(16,6) NOT NULL COMMENT '用户填写的测量值',
+    unit VARCHAR(32) NOT NULL COMMENT '测量值单位',
+    method VARCHAR(128) NULL COMMENT '测量工具或方法',
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_reef_measurement_log_metric (user_id, log_id, metric),
+    KEY idx_reef_measurement_trend (user_id, tank_id, metric, recorded_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='鱼缸水质测量明细';
+
+-- 保存备份恢复批次和原编号映射，重复恢复同一备份不会重复创建数据。
+CREATE TABLE reef_backup_restore (
+    id BIGINT NOT NULL AUTO_INCREMENT COMMENT '恢复批次主键',
+    user_id BIGINT NOT NULL COMMENT '执行恢复的用户编号',
+    backup_key VARCHAR(64) NOT NULL COMMENT '备份随机编号',
+    created_at DATETIME NOT NULL COMMENT '恢复时间',
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_reef_backup_restore (user_id, backup_key)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='鱼缸备份恢复批次';
+
+-- 保存备份中旧编号到当前用户新编号的映射，供照片逐张恢复使用。
+CREATE TABLE reef_backup_mapping (
+    id BIGINT NOT NULL AUTO_INCREMENT COMMENT '映射主键',
+    user_id BIGINT NOT NULL COMMENT '所属用户编号',
+    backup_key VARCHAR(64) NOT NULL COMMENT '备份随机编号',
+    entity_type VARCHAR(24) NOT NULL COMMENT '记录类别',
+    original_id VARCHAR(32) NOT NULL COMMENT '备份内原编号',
+    restored_id BIGINT NOT NULL COMMENT '恢复后的记录编号',
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_reef_backup_mapping (user_id, backup_key, entity_type, original_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='鱼缸备份恢复编号映射';
 
 -- 保存日志与生物的多对多关联。
 CREATE TABLE reef_log_biology (

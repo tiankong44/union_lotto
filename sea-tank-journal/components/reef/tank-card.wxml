@@ -1,9 +1,10 @@
 <view class="tank-card card" bindtap="openTank">
   <view class="tank-card-head">
-    <view class="tank-name">{{tank.name}}</view>
+    <view class="tank-name">{{tank.name}}{{tank.archived ? ' · 已归档' : ''}}</view>
     <van-tag round color="#e7f5ff" text-color="#56aee8">开缸 {{tank.daysOpen || 0}} 天</van-tag>
   </view>
   <view class="tank-meta">
+    <text>{{tank.tankTypeSummary}}</text>
     <text>{{tank.biologyCount || 0}} 个生物</text>
     <text>{{tank.equipmentCount || 0}} 台设备</text>
   </view>

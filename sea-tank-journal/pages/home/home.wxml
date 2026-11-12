@@ -1,14 +1,16 @@
 <view class="page-shell home-page has-tabbar">
   <view class="greeting">
     <text class="greeting-time">{{greeting}}</text>
-    <text class="greeting-copy">今天也记得记录海缸状态</text>
+    <text class="greeting-copy">记录鱼缸和缸内生物的变化</text>
   </view>
+
+  <button wx:if="{{archivedCount || showArchived}}" class="archive-toggle" bindtap="toggleArchived">{{showArchived ? '查看使用中的鱼缸' : '查看已归档鱼缸'}}（{{archivedCount}}）</button>
 
   <view wx:if="{{loading}}" class="loading-line">正在读取鱼缸记录…</view>
   <block wx:elif="{{tanks.length}}">
     <tank-card wx:for="{{tanks}}" wx:key="id" tank="{{item}}"></tank-card>
   </block>
-  <empty-state wx:else icon="◉" title="还没有鱼缸" description="点击右下角 + 新增一个吧"></empty-state>
+  <empty-state wx:else icon="◉" title="{{showArchived ? '还没有归档鱼缸' : '还没有使用中的鱼缸'}}" description="{{showArchived ? '归档的鱼缸会显示在这里' : '点击右下角 + 新增鱼缸'}}"></empty-state>
 
   <view wx:if="{{errorMessage}}" class="inline-error">{{errorMessage}}</view>
   <button class="fab" bindtap="toggleMenu" aria-label="新增">+</button>

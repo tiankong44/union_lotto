@@ -289,6 +289,19 @@ public class ReefJournalController {
     }
 
     /**
+     * 新增生物事件并返回该事件，供照片关联。
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-12
+     */
+    @PostMapping("/biology/{biologyId}/events/entry")
+    public BaseRes<ReefBiologyEventDto> createBiologyEvent(@RequestAttribute(ReefJournalConstants.REQUEST_USER_ID) Long userId,
+                                                           @PathVariable String biologyId,
+                                                           @RequestBody @Valid ReefBiologyEventSaveRequest request) {
+        // 保存当前用户生物事件并返回其编号。
+        return BaseRes.success(biologyService.createEvent(userId, tankService.parseId(biologyId), request));
+    }
+
+    /**
      * 按类型和鱼缸分页读取日志。
      *
      * @Author zhanghao_SMEICS

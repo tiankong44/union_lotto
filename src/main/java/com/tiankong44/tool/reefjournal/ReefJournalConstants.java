@@ -63,6 +63,11 @@ public final class ReefJournalConstants {
     public static final String BIOLOGY_STATUS_ISOLATED = "ISOLATED";
     public static final String BIOLOGY_STATUS_SICK = "SICK";
     public static final String BIOLOGY_STATUS_DEAD = "DEAD";
+    public static final String BIOLOGY_STATUS_OBSERVING = "OBSERVING";
+    public static final String BIOLOGY_STATUS_GROWING = "GROWING";
+    public static final String BIOLOGY_STATUS_POOR = "POOR";
+    public static final String BIOLOGY_STATUS_CLOSED = "CLOSED";
+    public static final String BIOLOGY_STATUS_FADED = "FADED";
     public static final String CATEGORY_FISH = "FISH";
     public static final String CATEGORY_CORAL = "CORAL";
     public static final String CATEGORY_PLANT = "PLANT";
@@ -75,6 +80,7 @@ public final class ReefJournalConstants {
     public static final String PHOTO_CATEGORY_CORAL = "CORAL";
     public static final String PHOTO_CATEGORY_EQUIPMENT = "EQUIPMENT";
     public static final String PHOTO_CATEGORY_PLANT = "PLANT";
+    public static final String PHOTO_CATEGORY_OTHER = "OTHER";
     public static final String PHOTO_REFERENCE_BIOLOGY = "BIOLOGY";
     public static final String PHOTO_REFERENCE_LOG = "LOG";
     public static final int DEFAULT_PAGE_NUMBER = 1;

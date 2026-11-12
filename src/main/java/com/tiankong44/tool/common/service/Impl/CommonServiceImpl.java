@@ -54,7 +54,13 @@ public class CommonServiceImpl implements CommonService {
             String fileKey = UUID.randomUUID().toString().replace("-", "");
             CloudFile cloudFile = new CloudFile();
             cloudFile.setFileKey(fileKey);
-            cloudFile.setOriginalName(uploadFile.getOriginalFilename());
+            String originalName = uploadFile.getOriginalFilename();
+            if (originalName != null) {
+                originalName = originalName.replace('\\', '/');
+                originalName = originalName.substring(originalName.lastIndexOf('/') + 1).replaceAll("[\\p{Cntrl}]", "").trim();
+                if (originalName.length() > 255) originalName = originalName.substring(0, 255);
+            }
+            cloudFile.setOriginalName(originalName == null || originalName.isEmpty() ? "图片" : originalName);
             cloudFile.setContentType(contentType);
             cloudFile.setFileSize((long) content.length);
             cloudFile.setFileMd5(DigestUtil.md5Hex(content));

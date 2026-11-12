@@ -21,4 +21,8 @@ public class ReefBiologyEventSaveRequest {
     @Size(max = 1000, message = "事件描述不能超过1000个字符")
     private String description;
     private String status;
+    /** 事件类型、目标鱼缸和事件数量均为用户记录。 */
+    private String eventType;
+    private String toTankId;
+    private Integer quantity;
 }

@@ -4,6 +4,7 @@
     "pages/home/home",
     "pages/tank/detail",
     "pages/biology/detail",
+    "pages/biology/edit",
     "pages/log/add",
     "pages/water/trend",
     "pages/equipment/list",

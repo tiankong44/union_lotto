@@ -12,5 +12,5 @@
     </view>
   </view>
   <empty-state wx:if="{{!groups.length}}" icon="▤" title="还没有日志" description="记录一次水质、换水或日常观察"></empty-state>
-  <button class="fab" bindtap="addLog" aria-label="新增日志">+</button>
+  <button wx:if="{{!selectedTankArchived}}" class="fab" bindtap="addLog" aria-label="新增日志">+</button>
 </view>

@@ -16,10 +16,16 @@ public class ReefBiologyDto {
     private String scientificName;
     private String category;
     private String addedAt;
+    private String currentTankSince;
     private String bodyLengthCm;
     private String source;
     private String status;
     private String statusKey;
     private String statusLabel;
+    /** 个体或批次的当前数量及补充资料。 */
+    private String trackingMode;
+    private Integer quantity;
+    private String positionNote;
+    private String note;
     private Integer daysInTank;
 }

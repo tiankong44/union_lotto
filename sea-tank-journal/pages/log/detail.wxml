@@ -11,7 +11,18 @@
     <view wx:if="{{waterValues.length}}" class="detail-section">
       <text class="section-title">水质参数</text>
       <view class="water-grid card">
-        <view wx:for="{{waterValues}}" wx:key="label" class="water-value"><text>{{item.label}}</text><text>{{item.value}} {{item.unit}}</text></view>
+        <view wx:for="{{waterValues}}" wx:key="label" class="water-value"><text>{{item.label}}</text><text>{{item.value}} {{item.unit}}</text><text wx:if="{{item.method}}">{{item.method}}</text></view>
+      </view>
+    </view>
+
+    <view wx:if="{{log.activityItem || log.activityAmount || log.waterSource || log.waterVolumeLiter || log.lightHours}}" class="detail-section">
+      <text class="section-title">记录明细</text>
+      <view class="note-card card">
+        <view wx:if="{{log.activityItem}}">项目：{{log.activityItem}}</view>
+        <view wx:if="{{log.activityAmount}}">用量：{{log.activityAmount}} {{log.activityUnit}}</view>
+        <view wx:if="{{log.waterSource}}">水源：{{log.waterSource}}</view>
+        <view wx:if="{{log.waterVolumeLiter}}">水量：{{log.waterVolumeLiter}} L</view>
+        <view wx:if="{{log.lightHours}}">光照：{{log.lightHours}} 小时</view>
       </view>
     </view>
 

@@ -66,3 +66,4 @@
   color: #87cefa;
   font-size: 20rpx;
 }
+.archive-toggle { width: 100%; padding: 0.8em 0; color: #4e9fd0; font-size: 24rpx; text-align: right; }

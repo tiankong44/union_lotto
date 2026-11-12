@@ -7,8 +7,12 @@ const reefApi = require('../../services/reef-api')
 
 Page({
   data: {
-    categories: [{ value: '', label: '全部' }, { value: 'LIGHT', label: '灯光' }, { value: 'FILTER', label: '过滤' }, { value: 'TEMPERATURE', label: '温控' }, { value: 'OTHER', label: '其他' }],
-    equipmentCategories: [{ value: 'LIGHT', label: '灯光' }, { value: 'FILTER', label: '过滤' }, { value: 'TEMPERATURE', label: '温控' }, { value: 'OTHER', label: '其他' }],
+    categories: [{ value: '', label: '全部' }, { value: 'LIGHT', label: '灯光' }, { value: 'FILTER', label: '过滤' }, { value: 'TEMPERATURE', label: '温控' },
+      { value: 'CO2', label: '二氧化碳' }, { value: 'PUMP', label: '水泵' }, { value: 'SKIMMER', label: '蛋分' }, { value: 'DOSING', label: '滴定' },
+      { value: 'AUTO_TOP_OFF', label: '自动补水' }, { value: 'OTHER', label: '其他' }],
+    equipmentCategories: [{ value: 'LIGHT', label: '灯光' }, { value: 'FILTER', label: '过滤' }, { value: 'TEMPERATURE', label: '温控' },
+      { value: 'CO2', label: '二氧化碳' }, { value: 'PUMP', label: '水泵' }, { value: 'SKIMMER', label: '蛋分' }, { value: 'DOSING', label: '滴定' },
+      { value: 'AUTO_TOP_OFF', label: '自动补水' }, { value: 'OTHER', label: '其他' }],
     equipmentCategoryLabels: ['灯光', '过滤', '温控', '其他'],
     equipmentStatuses: [{ value: 'RUNNING', label: '运行中' }, { value: 'DIRTY', label: '待清洗' }, { value: 'STANDBY', label: '待机' }],
     equipmentStatusLabels: ['运行中', '待清洗', '待机'],

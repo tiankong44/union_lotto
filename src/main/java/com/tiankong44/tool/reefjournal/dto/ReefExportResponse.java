@@ -14,11 +14,14 @@ import java.util.List;
 @Data
 public class ReefExportResponse {
     private String exportedAt;
+    /** 每次备份的随机编号用于恢复时避免重复创建。 */
+    private String backupId;
     private List<ReefTankDto> tanks = new ArrayList<>();
     private List<ReefBiologyDto> biology = new ArrayList<>();
     private List<ReefBiologyEventDto> biologyEvents = new ArrayList<>();
     private List<ReefLogDto> logs = new ArrayList<>();
     private List<ReefEquipmentDto> equipment = new ArrayList<>();
     private List<ReefPhotoDto> photos = new ArrayList<>();
+    private List<ReefBackupRangeDto> waterRanges = new ArrayList<>();
     private ReefReminderSettingsDto reminders;
 }

@@ -4,10 +4,9 @@
  * @Date 2026-11-05
  */
 const reefApi = require('../../services/reef-api')
+const { LOG_TYPES, METRICS, LEGACY_METRICS } = require('../../services/aquarium-catalog')
 
-const LOG_LABELS = {
-  WATER_TEST: '水质检测', WATER_CHANGE: '换水', FEEDING: '喂食', MEDICATION: '用药', OBSERVATION: '观察'
-}
+const LOG_LABELS = Object.fromEntries(LOG_TYPES.map((item) => [item.value, item.label]))
 
 Page({
   data: {
@@ -38,27 +37,22 @@ Page({
     this.setData({ loading: true })
     try {
       const log = await reefApi.getLog(this.data.logId)
-      const [tank, biologyResult, photoResult] = await Promise.all([
+      const [tank, photoResult] = await Promise.all([
         reefApi.getTank(log?.tankId || ''),
-        reefApi.listBiology(log?.tankId || '', 1, 100),
         reefApi.listPhotos('', 1, 100, 'LOG', this.data.logId)
       ])
-      const biologyRows = biologyResult?.list ?? biologyResult ?? []
-      const biologyIds = log?.biologyIds ?? []
+      const biologyRows = log?.biology ?? []
       const photos = photoResult?.list ?? photoResult ?? []
-      const waterValues = [
-        { label: '盐度', value: log?.salinity, unit: '比重' },
-        { label: '水温', value: log?.temperature, unit: '℃' },
-        { label: 'pH', value: log?.ph, unit: '' },
-        { label: 'NO₂', value: log?.no2, unit: 'mg/L' },
-        { label: 'NO₃', value: log?.no3, unit: 'mg/L' },
-        { label: 'PO₄', value: log?.po4, unit: 'mg/L' }
-      ].filter((item) => item.value !== null && item.value !== undefined && item.value !== '')
+      const measurements = log?.measurements ?? []
+      const waterValues = METRICS.map((item) => {
+        const measured = measurements.find((value) => value.metric === item.key)
+        return { label: item.label, unit: item.unit, value: measured?.value ?? (LEGACY_METRICS.includes(item.key) ? log?.[item.key] : null), method: measured?.method ?? '' }
+      }).filter((item) => item.value !== null && item.value !== undefined && item.value !== '')
       this.setData({
         log: { ...log, tankName: tank?.name || '' },
         typeLabel: LOG_LABELS[log?.type] || '日志',
         waterValues,
-        biology: biologyRows.filter((item) => biologyIds.includes(item.id)),
+        biology: biologyRows,
         photos
       })
     } catch (error) {

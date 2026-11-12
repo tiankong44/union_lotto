@@ -5,8 +5,8 @@
  */
 const reefApi = require('../../services/reef-api')
 
-const CATEGORY_LABELS = { TANK: '鱼缸', FISH: '鱼', CORAL: '珊瑚', EQUIPMENT: '设备', PLANT: '植物' }
-const REFERENCE_LABELS = { TANK: '鱼缸', BIOLOGY: '生物', EQUIPMENT: '设备', LOG: '日志' }
+const CATEGORY_LABELS = { TANK: '鱼缸', FISH: '鱼', CORAL: '珊瑚', EQUIPMENT: '设备', PLANT: '植物', OTHER: '其他生物' }
+const REFERENCE_LABELS = { TANK: '鱼缸', BIOLOGY: '生物', BIOLOGY_EVENT: '生物事件', EQUIPMENT: '设备', LOG: '日志' }
 
 Page({
   data: { photoId: '', photo: {}, categoryLabel: '', referenceLabel: '不关联', referenceName: '不关联', loading: true, deleting: false },

@@ -21,6 +21,7 @@ module.exports = {
   getBiology: (id) => request(`/biology/${id}`),
   listBiologyEvents: (biologyId) => request(`/biology/${biologyId}/events`),
   saveBiologyEvent: (biologyId, data) => request(`/biology/${biologyId}/events`, json('POST', data)),
+  createBiologyEvent: (biologyId, data) => request(`/biology/${biologyId}/events/entry`, json('POST', data)),
   listLogs: (filters = {}) => request(`/logs?pageNum=${filters.pageNum || 1}&pageSize=${filters.pageSize || 50}&type=${encodeURIComponent(filters.type || '')}&tankId=${encodeURIComponent(filters.tankId || '')}`),
   saveLog: (data) => request('/logs', json('POST', data)),
   getLog: (id) => request(`/logs/${id}`),
@@ -75,5 +76,23 @@ module.exports = {
   getReminders: () => request('/reminders'),
   saveReminders: (data) => request('/reminders', json('PUT', data)),
   saveSubscriptionConsent: (data) => request('/reminders/consent', json('POST', data)),
-  exportData: () => request('/export')
+  exportData: () => request('/export'),
+  createBackupSession: () => request('/backup/session', { method: 'POST' }),
+  restoreBackupBatch: (data) => request('/backup/restore', json('POST', data)),
+  restoreBackupPhoto: async (backupId, filePath, metadata) => {
+    const { ensureLogin } = require('./auth')
+    const token = await ensureLogin()
+    return new Promise((resolve, reject) => wx.uploadFile({
+      url: `${API_BASE_URL}/tabs/reef-journal/backup/${encodeURIComponent(backupId)}/photos`, filePath, name: 'file', formData: metadata,
+      header: token ? { Authorization: `Bearer ${token}` } : {},
+      success(response) {
+        try {
+          const body = JSON.parse(response.data || '{}')
+          if (response.statusCode < 200 || response.statusCode >= 300 || body.code !== 0) return reject(new Error(body.message || '备份照片没有恢复'))
+          resolve(body.data)
+        } catch (error) { reject(new Error('备份照片恢复结果无法读取')) }
+      },
+      fail() { reject(new Error('备份照片上传中断，请检查网络后重试')) }
+    }))
+  }
 }

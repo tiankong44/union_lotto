@@ -80,6 +80,8 @@
 .status-ISOLATED { background: #fff3e0; color: #ff9800; }
 .status-SICK { background: #ffebee; color: #f44336; }
 .status-DEAD { background: #f0f0f0; color: #9e9e9e; }
+.status-GROWING { background: #e8f8e8; color: #4caf50; }
+.status-OBSERVING, .status-POOR, .status-CLOSED, .status-FADED { background: #fff8e1; color: #a87826; }
 
 .range-card { color: #6c8196; font-size: 23rpx; }
 .range-input-row { display: flex; align-items: center; gap: 12rpx; min-height: 76rpx; color: #61788f; font-size: 23rpx; }

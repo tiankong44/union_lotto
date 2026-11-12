@@ -23,12 +23,28 @@
   <view wx:if="{{form.type === 'WATER_TEST'}}" class="form-card card">
     <text class="form-label">水质参数</text>
     <view class="water-input-grid">
-      <view wx:for="{{waterFields}}" wx:key="key" class="water-input"><input type="digit" value="{{form.water[item.key]}}" placeholder="{{item.placeholder}}" data-key="{{item.key}}" bindinput="onWaterInput"/><text>{{item.label}}</text></view>
+      <view wx:for="{{waterFields}}" wx:key="key" class="water-input">
+        <text>{{item.label}} {{item.unit}}</text>
+        <input type="digit" value="{{form.water[item.key]}}" placeholder="未测量" data-key="{{item.key}}" bindinput="onWaterInput" />
+        <input value="{{waterMethods[item.key]}}" placeholder="工具或方法（选填）" data-key="{{item.key}}" bindinput="onWaterMethodInput" />
+      </view>
     </view>
+    <text wx:if="{{!waterFields.length}}" class="empty-hint">请先在鱼缸资料中选择水质指标</text>
   </view>
   <view wx:if="{{form.type === 'WATER_CHANGE'}}" class="form-card card">
     <text class="form-label">换水比例</text>
     <van-field value="{{form.changePercent}}" type="digit" placeholder="例如 10" data-field="changePercent" bind:change="onFieldChange"><view slot="right-icon">%</view></van-field>
+  </view>
+  <view wx:if="{{form.type !== 'WATER_TEST'}}" class="form-card card">
+    <text class="form-label">本次记录明细（选填）</text>
+    <van-field label="项目" value="{{form.activityItem}}" data-field="activityItem" bind:change="onFieldChange" placeholder="例如饲料、肥料、补剂或设备"></van-field>
+    <van-field label="用量" type="digit" value="{{form.activityAmount}}" data-field="activityAmount" bind:change="onFieldChange" placeholder="填写本次用量"></van-field>
+    <van-field label="单位" value="{{form.activityUnit}}" data-field="activityUnit" bind:change="onFieldChange" placeholder="例如 mL、g 或次"></van-field>
+    <block wx:if="{{form.type === 'WATER_CHANGE' || form.type === 'TOP_OFF' || form.type === 'SALT_MIX'}}">
+      <van-field label="水源" value="{{form.waterSource}}" data-field="waterSource" bind:change="onFieldChange" placeholder="选填"></van-field>
+      <van-field label="水量（L）" type="digit" value="{{form.waterVolumeLiter}}" data-field="waterVolumeLiter" bind:change="onFieldChange" placeholder="选填"></van-field>
+    </block>
+    <van-field wx:if="{{form.type === 'LIGHTING'}}" label="光照（小时）" type="digit" value="{{form.lightHours}}" data-field="lightHours" bind:change="onFieldChange" placeholder="选填"></van-field>
   </view>
   <view class="form-card card">
     <text class="form-label">备注</text>

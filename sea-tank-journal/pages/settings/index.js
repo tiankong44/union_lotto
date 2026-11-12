@@ -5,6 +5,7 @@
  */
 const reefApi = require('../../services/reef-api')
 const { syncTabBar } = require('../../services/tab-bar')
+const { exportBackup, restoreBackup } = require('../../services/backup')
 
 const REMINDER_DEFAULTS = [
   { type: 'WATER_CHANGE', label: '换水提醒', frequency: '每 14 天', icon: '↻', enabled: true },
@@ -14,7 +15,7 @@ const REMINDER_DEFAULTS = [
 ]
 
 Page({
-  data: { reminders: REMINDER_DEFAULTS, sendTime: '', cacheSize: '读取中…' },
+  data: { reminders: REMINDER_DEFAULTS, sendTime: '', cacheSize: '读取中…', backupBusy: false, backupProgress: '' },
   onShow() {
     // 将全局导航选中项同步到“我的”页。
     syncTabBar(this, 3)
@@ -86,19 +87,27 @@ Page({
   },
 
   async exportData() {
+    if (this.data.backupBusy) return
+    this.setData({ backupBusy: true, backupProgress: '正在准备备份…' })
     try {
-      const data = await reefApi.exportData()
-      const filePath = `${wx.env.USER_DATA_PATH}/reef-journal-export.json`
-      wx.getFileSystemManager().writeFile({
-        filePath,
-        data: JSON.stringify(data, null, 2),
-        encoding: 'utf8',
-        success: () => wx.shareFileMessage({ filePath, fileName: '水境日记备份.json', fail: () => wx.showToast({ title: '文件已生成，但当前页面暂不支持分享', icon: 'none' }) }),
-        fail: () => wx.showToast({ title: '备份文件暂时无法生成', icon: 'none' })
-      })
+      // 导出记录和原照片，全部完成后再交由用户选择保存位置。
+      const filePath = await exportBackup((message) => this.setData({ backupProgress: message }))
+      wx.shareFileMessage({ filePath, fileName: '水境日记完整备份.json', fail: () => wx.showToast({ title: '备份已生成，当前页面暂不支持分享', icon: 'none' }) })
     } catch (error) {
-      wx.showToast({ title: error.message, icon: 'none' })
-    }
+      wx.showToast({ title: error?.message ?? '备份没有生成，请重试', icon: 'none' })
+    } finally { this.setData({ backupBusy: false, backupProgress: '' }) }
+  },
+
+  /** 恢复到当前账号；相同备份可重复选择以继续未完成的照片。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  async restoreData() {
+    if (this.data.backupBusy) return
+    this.setData({ backupBusy: true, backupProgress: '请选择备份文件…' })
+    try {
+      await restoreBackup((message) => this.setData({ backupProgress: message }))
+      wx.showToast({ title: '备份已恢复', icon: 'success' })
+    } catch (error) {
+      wx.showModal({ title: '备份尚未全部恢复', content: `${error?.message ?? '请重试'}。已恢复的记录会保留，可再次选择同一备份继续。`, showCancel: false })
+    } finally { this.setData({ backupBusy: false, backupProgress: '' }) }
   },
 
   clearCache() {

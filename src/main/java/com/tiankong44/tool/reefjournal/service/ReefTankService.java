@@ -37,6 +37,9 @@ import static com.tiankong44.tool.reefjournal.ReefJournalConstants.METRIC_TEMPER
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.ONE;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TIME_ZONE;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.ZERO;
+import static com.tiankong44.tool.reefjournal.ReefAquariumConstants.WATER_TYPES;
+import static com.tiankong44.tool.reefjournal.ReefAquariumConstants.TANK_THEMES;
+import static com.tiankong44.tool.reefjournal.ReefAquariumConstants.WATER_METRIC_UNITS;
 
 /**
  * 维护鱼缸资料、首页摘要及用户设定的水质范围。
@@ -70,7 +73,7 @@ public class ReefTankService {
     public ReefDashboardResponse dashboard(Long userId) {
         List<ReefTankDto> tanks = jdbcTemplate.query(tankSelect() + " WHERE user_id = ? ORDER BY id DESC",
                 BeanPropertyRowMapper.newInstance(ReefTankDto.class), userId);
-        Map<Long, Integer> biologyCounts = groupedCounts("SELECT tank_id, COUNT(*) total FROM reef_biology WHERE user_id = ? GROUP BY tank_id", userId);
+        Map<Long, Integer> biologyCounts = groupedCounts("SELECT tank_id, SUM(quantity) total FROM reef_biology WHERE user_id = ? GROUP BY tank_id", userId);
         Map<Long, Integer> equipmentCounts = groupedCounts("SELECT tank_id, COUNT(*) total FROM reef_equipment WHERE user_id = ? AND tank_id IS NOT NULL GROUP BY tank_id", userId);
         Map<Long, String> latestRecords = latestRecordSummaries(userId);
         List<ReefTankDto> result = new ArrayList<>();
@@ -135,13 +138,15 @@ public class ReefTankService {
      */
     @Transactional
     public ReefTankDto save(Long userId, ReefTankSaveRequest request) {
+        // 校验用户选择的水体、主题和水质指标，不推断历史类型。
+        validateTankOptions(request);
         LocalDate startedAt = ReefDateTimeSupport.parseDate(request.getStartedAt());
         if (request.getId() == null || request.getId().trim().isEmpty()) {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             // 写入新鱼缸及用户备注，并读取数据库生成的主键。
             jdbcTemplate.update((Connection connection) -> {
                 PreparedStatement statement = connection.prepareStatement(
-                        "INSERT INTO reef_tank (user_id, name, started_at, capacity_liter, system_type, note, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())",
+                        "INSERT INTO reef_tank (user_id, name, started_at, capacity_liter, system_type, note, water_type, themes, enabled_metrics, archived, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())",
                         Statement.RETURN_GENERATED_KEYS);
                 statement.setLong(ONE, userId);
                 statement.setString(2, request.getName().trim());
@@ -149,6 +154,10 @@ public class ReefTankService {
                 statement.setBigDecimal(4, request.getCapacityLiter());
                 statement.setString(5, request.getSystemType());
                 statement.setString(6, request.getNote());
+                statement.setString(7, request.getWaterType());
+                statement.setString(8, request.getThemes());
+                statement.setString(9, request.getEnabledMetrics());
+                statement.setBoolean(10, Boolean.TRUE.equals(request.getArchived()));
                 return statement;
             }, keyHolder);
             Number id = keyHolder.getKey();
@@ -158,9 +167,32 @@ public class ReefTankService {
         Long tankId = parseId(request.getId());
         ensureOwned(userId, tankId);
         // 更新当前用户鱼缸资料并保留页面录入的备注。
-        jdbcTemplate.update("UPDATE reef_tank SET name = ?, started_at = ?, capacity_liter = ?, system_type = ?, note = ?, updated_at = NOW() WHERE user_id = ? AND id = ?",
-                request.getName().trim(), startedAt, request.getCapacityLiter(), request.getSystemType(), request.getNote(), userId, tankId);
+        jdbcTemplate.update("UPDATE reef_tank SET name = ?, started_at = ?, capacity_liter = ?, system_type = ?, note = ?, water_type = COALESCE(?, water_type), themes = COALESCE(?, themes), enabled_metrics = COALESCE(?, enabled_metrics), archived = COALESCE(?, archived), updated_at = NOW() WHERE user_id = ? AND id = ?",
+                request.getName().trim(), startedAt, request.getCapacityLiter(), request.getSystemType(), request.getNote(),
+                request.getWaterType(), request.getThemes(), request.getEnabledMetrics(), request.getArchived(), userId, tankId);
         return get(userId, tankId);
+    }
+
+    /**
+     * 校验鱼缸可选编码，允许旧资料保留未设置状态。
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-12
+     * @param request 用户提交的鱼缸资料
+     */
+    private void validateTankOptions(ReefTankSaveRequest request) {
+        if (request.getWaterType() != null && !request.getWaterType().isEmpty() && !WATER_TYPES.contains(request.getWaterType())) {
+            throw new ReefJournalException("请选择有效的水体类型");
+        }
+        if (request.getThemes() != null && !request.getThemes().isEmpty()) {
+            for (String theme : request.getThemes().split(",")) {
+                if (!TANK_THEMES.contains(theme)) throw new ReefJournalException("饲养主题不受支持");
+            }
+        }
+        if (request.getEnabledMetrics() != null && !request.getEnabledMetrics().isEmpty()) {
+            for (String metric : request.getEnabledMetrics().split(",")) {
+                if (!WATER_METRIC_UNITS.containsKey(metric)) throw new ReefJournalException("水质指标不受支持");
+            }
+        }
     }
 
     /**
@@ -257,7 +289,7 @@ public class ReefTankService {
      * @return 只包含鱼缸响应字段的查询前缀
      */
     private String tankSelect() {
-        return "SELECT CAST(id AS CHAR) id, name, DATE_FORMAT(started_at, '%Y-%m-%d') started_at, CAST(capacity_liter AS CHAR) capacity_liter, system_type, note FROM reef_tank";
+        return "SELECT CAST(id AS CHAR) id, name, DATE_FORMAT(started_at, '%Y-%m-%d') started_at, CAST(capacity_liter AS CHAR) capacity_liter, system_type, water_type, themes, enabled_metrics, archived, note FROM reef_tank";
     }
 
     /**

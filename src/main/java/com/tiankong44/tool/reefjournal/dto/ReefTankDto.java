@@ -18,6 +18,11 @@ public class ReefTankDto {
     private String startedAt;
     private String capacityLiter;
     private String systemType;
+    /** 水体类型和饲养主题均由用户维护，旧资料可为空。 */
+    private String waterType;
+    private String themes;
+    private String enabledMetrics;
+    private Boolean archived;
     private String note;
     private Integer daysOpen;
     private Integer biologyCount;

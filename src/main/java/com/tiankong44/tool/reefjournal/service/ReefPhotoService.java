@@ -226,7 +226,8 @@ public class ReefPhotoService {
      * @param category 用户提交的照片分类
      */
     private void validateCategory(String category) {
-        if (!Arrays.asList(PHOTO_CATEGORY_TANK, PHOTO_CATEGORY_FISH, PHOTO_CATEGORY_CORAL, PHOTO_CATEGORY_EQUIPMENT, PHOTO_CATEGORY_PLANT).contains(category)) {
+        if (!Arrays.asList(PHOTO_CATEGORY_TANK, PHOTO_CATEGORY_FISH, PHOTO_CATEGORY_CORAL, PHOTO_CATEGORY_EQUIPMENT, PHOTO_CATEGORY_PLANT,
+                com.tiankong44.tool.reefjournal.ReefJournalConstants.PHOTO_CATEGORY_OTHER).contains(category)) {
             throw new ReefJournalException("照片分类不受支持");
         }
     }
@@ -258,6 +259,7 @@ public class ReefPhotoService {
      * @return 固定表名白名单项
      */
     private String referenceTable(String referenceType) {
+        if (com.tiankong44.tool.reefjournal.ReefAquariumConstants.PHOTO_REFERENCE_EVENT.equals(referenceType)) return "reef_biology_event";
         if (PHOTO_CATEGORY_TANK.equals(referenceType)) return "reef_tank";
         if (PHOTO_REFERENCE_BIOLOGY.equals(referenceType)) return "reef_biology";
         if (PHOTO_CATEGORY_EQUIPMENT.equals(referenceType)) return "reef_equipment";

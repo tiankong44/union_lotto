@@ -75,6 +75,10 @@
         </view>
         <empty-state wx:if="{{!alerts.length}}" icon="✓" title="当前没有超出自设范围的提醒" description="提醒依据鱼缸详情中设置的水质参数上下限。"></empty-state>
       </block>
+      <view wx:else class="empty-panel">
+        <empty-state icon="◉" title="还没有选择水质项目" description="在鱼缸资料中选择需要记录的检测项。"></empty-state>
+        <button class="empty-action" bindtap="editTankMetrics">选择水质项目</button>
+      </view>
     </block>
   </view>
 </view>

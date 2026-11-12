@@ -1,6 +1,7 @@
 package com.tiankong44.tool.reefjournal.service;
 
 import com.tiankong44.tool.reefjournal.dto.ReefAlertDto;
+import com.tiankong44.tool.reefjournal.dto.ReefBiologyDto;
 import com.tiankong44.tool.reefjournal.dto.ReefLogDto;
 import com.tiankong44.tool.reefjournal.dto.ReefLogRequest;
 import com.tiankong44.tool.reefjournal.dto.ReefPageResponse;
@@ -11,6 +12,7 @@ import com.tiankong44.tool.reefjournal.dto.ReefWaterRangeDto;
 import com.tiankong44.tool.reefjournal.dto.ReefWaterSeriesDto;
 import com.tiankong44.tool.reefjournal.dto.ReefWaterStatsDto;
 import com.tiankong44.tool.reefjournal.dto.ReefWaterValues;
+import com.tiankong44.tool.reefjournal.dto.ReefWaterHistoryDto;
 import com.tiankong44.tool.reefjournal.exception.ReefJournalException;
 import com.tiankong44.tool.reefjournal.support.ReefDateTimeSupport;
 import com.tiankong44.tool.reefjournal.support.ReefPageSupport;
@@ -28,6 +30,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.StringJoiner;
 
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.METRIC_NO2;
@@ -53,6 +57,8 @@ import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TREND_LABEL_S
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.TREND_LABEL_UP;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.WATER_DASHBOARD_SAMPLE_POINTS;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.ZERO;
+import static com.tiankong44.tool.reefjournal.ReefAquariumConstants.WATER_METRIC_UNITS;
+import static com.tiankong44.tool.reefjournal.ReefAquariumConstants.ACTIVITY_TYPES;
 
 /**
  * 保存海缸日志并生成基于用户范围的水质趋势和提醒。
@@ -64,6 +70,7 @@ import static com.tiankong44.tool.reefjournal.ReefJournalConstants.ZERO;
 public class ReefLogService {
     private final JdbcTemplate jdbcTemplate;
     private final ReefTankService tankService;
+    private final ReefWaterMeasurementService measurementService;
 
     /**
      * 创建复用鱼缸归属能力的日志服务。
@@ -73,9 +80,10 @@ public class ReefLogService {
      * @param jdbcTemplate Spring 管理的数据库访问器
      * @param tankService 鱼缸归属服务
      */
-    public ReefLogService(JdbcTemplate jdbcTemplate, ReefTankService tankService) {
+    public ReefLogService(JdbcTemplate jdbcTemplate, ReefTankService tankService, ReefWaterMeasurementService measurementService) {
         this.jdbcTemplate = jdbcTemplate;
         this.tankService = tankService;
+        this.measurementService = measurementService;
     }
 
     /**
@@ -126,11 +134,16 @@ public class ReefLogService {
         validateLogType(request.getType());
         Long tankId = tankService.parseId(request.getTankId());
         tankService.ensureOwned(userId, tankId);
-        List<Long> biologyIds = verifyBiologyIds(userId, tankId, request.getBiologyIds());
+        List<Long> biologyIds = verifyBiologyIds(userId, tankId, request.getBiologyIds(), request.getId());
         LocalDateTime recordedAt = ReefDateTimeSupport.parseDateTime(request.getRecordedAt());
         Long logId = isBlank(request.getId())
                 ? insertLog(userId, tankId, request, recordedAt)
                 : updateLog(userId, tankId, request, recordedAt);
+        // 仅新客户端显式提交维护明细时覆盖，允许清空且兼容旧客户端。
+        if (Boolean.TRUE.equals(request.getActivityDetailsProvided())) saveActivityDetails(userId, logId, request);
+        // 与日志主体一并保存逐项测量，其他日志类型不保留水质测量明细。
+        measurementService.save(userId, tankId, logId, recordedAt,
+                TYPE_WATER_TEST.equals(request.getType()) ? request.getMeasurements() : java.util.Collections.emptyList());
         jdbcTemplate.update("DELETE FROM reef_log_biology WHERE user_id = ? AND log_id = ?", userId, logId);
         for (Long biologyId : biologyIds) {
             jdbcTemplate.update("INSERT INTO reef_log_biology (user_id, log_id, biology_id) VALUES (?, ?, ?)", userId, logId, biologyId);
@@ -155,6 +168,17 @@ public class ReefLogService {
         // 读取详情页展示和编辑所需的生物关联编号。
         log.setBiologyIds(jdbcTemplate.query("SELECT CAST(biology_id AS CHAR) FROM reef_log_biology WHERE user_id = ? AND log_id = ? ORDER BY id",
                 (resultSet, rowNumber) -> resultSet.getString(1), userId, logId));
+        // 按已有日志关联读取生物摘要，转缸后也不丢失历史引用。
+        if (!log.getBiologyIds().isEmpty()) {
+            StringJoiner placeholders = new StringJoiner(",");
+            List<Object> values = new ArrayList<>();
+            values.add(userId);
+            for (String id : log.getBiologyIds()) { placeholders.add("?"); values.add(tankService.parseId(id)); }
+            log.setBiology(jdbcTemplate.query("SELECT CAST(id AS CHAR) id, CAST(tank_id AS CHAR) tank_id, name FROM reef_biology WHERE user_id = ? AND id IN (" + placeholders + ")",
+                    BeanPropertyRowMapper.newInstance(ReefBiologyDto.class), values.toArray()));
+        }
+        // 补充当前日志的水质测量单位和方法。
+        log.setMeasurements(measurementService.forLog(userId, logId));
         return log;
     }
 
@@ -179,6 +203,7 @@ public class ReefLogService {
         }
         // 清理日志与生物的关系后，再删除当前用户的日志主体。
         jdbcTemplate.update("DELETE FROM reef_log_biology WHERE user_id = ? AND log_id = ?", userId, logId);
+        measurementService.deleteForLog(userId, logId);
         int deletedCount = jdbcTemplate.update("DELETE FROM reef_log WHERE user_id = ? AND id = ?", userId, logId);
         if (deletedCount != ONE) throw new ReefJournalException("日志没有删除，请刷新后重试");
     }
@@ -196,10 +221,12 @@ public class ReefLogService {
      */
     public ReefTrendResponse trend(Long userId, Long tankId, String metric, Integer days) {
         tankService.ensureOwned(userId, tankId);
-        String column = metricColumn(metric);
+        if (!WATER_METRIC_UNITS.containsKey(metric)) throw new ReefJournalException("该水质参数暂不支持趋势查询");
         int rangeDays = days == null ? 30 : Math.max(days, ZERO);
         LocalDate startDate = rangeDays == ZERO ? null : ReefDateTimeSupport.now().toLocalDate().minusDays(rangeDays);
-        List<ReefWaterPointDto> points = trendPoints(userId, tankId, column, startDate);
+        List<ReefWaterPointDto> points = isLegacyMetric(metric)
+                ? trendPoints(userId, tankId, metricColumn(metric), startDate)
+                : extendedPoints(measurementService.history(userId, tankId, startDate)).getOrDefault(metric, new ArrayList<>());
         ReefTrendResponse response = new ReefTrendResponse();
         response.setPoints(points);
         response.setStats(buildStats(points));
@@ -216,21 +243,22 @@ public class ReefLogService {
      * @param tankId 鱼缸编号
      * @param metric 当前详细趋势的水质参数编码
      * @param days 统计天数，零表示全部
-     * @return 六项参数摘要、当前趋势点及用户自设范围提醒
+     * @return 可用参数摘要、当前趋势点及原用户自设范围提醒
      */
     public ReefWaterDashboardDto dashboard(Long userId, Long tankId, String metric, Integer days) {
         // 先确认鱼缸归属，避免趋势查询跨用户读取。
         tankService.ensureOwned(userId, tankId);
         // 通过固定列白名单校验当前选中的参数编码。
-        metricColumn(metric);
+        if (!WATER_METRIC_UNITS.containsKey(metric)) throw new ReefJournalException("该水质参数暂不支持趋势查询");
         int rangeDays = days == null ? 30 : Math.max(days, ZERO);
         LocalDate startDate = rangeDays == ZERO ? null : ReefDateTimeSupport.now().toLocalDate().minusDays(rangeDays);
-        // 一次读取时间范围内的检测记录，供六项参数在内存中整合。
+        // 一次读取时间范围内的检测记录，供基础参数在内存中整合。
         List<ReefLogDto> records = dashboardRecords(userId, tankId, startDate);
         ReefWaterDashboardDto response = new ReefWaterDashboardDto();
         response.setMetric(metric);
-        // 按固定参数清单生成摘要，完整点集只保留当前选中的一项。
-        response.setSeries(buildDashboardSeries(records, metric, response));
+        // 按当前可用参数生成摘要，完整点集只保留当前选中的一项。
+        Map<String, List<ReefWaterPointDto>> extended = extendedPoints(measurementService.history(userId, tankId, startDate));
+        response.setSeries(buildDashboardSeries(records, extended, metric, response));
         // 继续使用鱼缸自行设置的范围生成提醒，不增加默认判断标准。
         response.setAlerts(buildAlerts(userId, tankId));
         return response;
@@ -322,7 +350,7 @@ public class ReefLogService {
      * @param rawIds 客户端生物编号集合
      * @return 去重后的有效生物编号
      */
-    private List<Long> verifyBiologyIds(Long userId, Long tankId, List<String> rawIds) {
+    private List<Long> verifyBiologyIds(Long userId, Long tankId, List<String> rawIds, String rawLogId) {
         List<Long> ids = new ArrayList<>();
         if (rawIds == null || rawIds.isEmpty()) return ids;
         for (String rawId : rawIds) ids.add(tankService.parseId(rawId));
@@ -331,14 +359,31 @@ public class ReefLogService {
         for (int index = ZERO; index < ids.size(); index++) placeholders.add("?");
         List<Object> parameters = new ArrayList<>();
         parameters.add(userId);
-        parameters.add(tankId);
         parameters.addAll(ids);
-        Integer owned = jdbcTemplate.queryForObject("SELECT COUNT(DISTINCT id) FROM reef_biology WHERE user_id = ? AND tank_id = ? AND id IN (" + placeholders + ")",
+        Integer owned = jdbcTemplate.queryForObject("SELECT COUNT(DISTINCT id) FROM reef_biology WHERE user_id = ? AND id IN (" + placeholders + ")",
                 Integer.class, parameters.toArray());
         if (owned == null || owned != ids.stream().distinct().count()) {
-            throw new ReefJournalException("关联的生物记录不属于当前鱼缸或账号");
+            throw new ReefJournalException("关联的生物记录不属于当前账号");
         }
+        // 只允许当前缸生物或该日志转缸前已经关联的生物，保留历史引用。
+        List<Long> available = jdbcTemplate.query("SELECT id FROM reef_biology WHERE user_id = ? AND tank_id = ? AND id IN (" + placeholders + ")",
+                (row, index) -> row.getLong(1), prependTankParameters(userId, tankId, ids));
+        if (!isBlank(rawLogId)) {
+            Long logId = tankService.parseId(rawLogId);
+            available.addAll(jdbcTemplate.query("SELECT biology_id FROM reef_log_biology WHERE user_id = ? AND log_id = ?",
+                    (row, index) -> row.getLong(1), userId, logId));
+        }
+        if (!available.containsAll(ids)) throw new ReefJournalException("关联的生物不属于当前鱼缸或原日志");
         return ids.stream().distinct().collect(java.util.stream.Collectors.toList());
+    }
+
+    /** 组装归属校验的参数化查询入参。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+    private Object[] prependTankParameters(Long userId, Long tankId, List<Long> ids) {
+        List<Object> values = new ArrayList<>();
+        values.add(userId);
+        values.add(tankId);
+        values.addAll(ids);
+        return values.toArray();
     }
 
     /**
@@ -396,7 +441,7 @@ public class ReefLogService {
     }
 
     /**
-     * 为六项水质参数计算摘要，并保存当前参数的完整趋势点。
+     * 为水质参数计算摘要，并保存当前参数的完整趋势点。
      *
      * @Author zhanghao_SMEICS
      * @Date 2026-11-09
@@ -405,13 +450,13 @@ public class ReefLogService {
      * @param response 用于写入选中参数完整采样点的响应对象
      * @return 各水质参数的统计摘要和均匀抽样点
      */
-    private List<ReefWaterSeriesDto> buildDashboardSeries(List<ReefLogDto> records, String selectedMetric,
+    private List<ReefWaterSeriesDto> buildDashboardSeries(List<ReefLogDto> records, Map<String, List<ReefWaterPointDto>> extended, String selectedMetric,
                                                           ReefWaterDashboardDto response) {
-        String[] metrics = {METRIC_SALINITY, METRIC_TEMPERATURE, METRIC_PH, METRIC_NO2, METRIC_NO3, METRIC_PO4};
         List<ReefWaterSeriesDto> series = new ArrayList<>();
-        for (String metric : metrics) {
+        for (String metric : WATER_METRIC_UNITS.keySet()) {
             // 从同一批水质日志中装配当前指标的有效采样点。
-            List<ReefWaterPointDto> points = dashboardPoints(records, metric);
+            List<ReefWaterPointDto> points = isLegacyMetric(metric) ? dashboardPoints(records, metric)
+                    : extended.getOrDefault(metric, new ArrayList<>());
             ReefWaterSeriesDto item = new ReefWaterSeriesDto();
             // 组装供概览卡片展示的计数、摘要和均匀抽样点。
             item.setMetric(metric);
@@ -423,6 +468,21 @@ public class ReefLogService {
             series.add(item);
         }
         return series;
+    }
+
+    /** 将新指标的测量历史按编码分组，旧六项继续从原日志字段读取。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+    private Map<String, List<ReefWaterPointDto>> extendedPoints(List<ReefWaterHistoryDto> history) {
+        Map<String, List<ReefWaterPointDto>> result = new HashMap<>();
+        for (ReefWaterHistoryDto item : history) {
+            if (!isLegacyMetric(item.getMetric())) result.computeIfAbsent(item.getMetric(), key -> new ArrayList<>())
+                    .add(new ReefWaterPointDto(item.getRecordedAt(), item.getValue()));
+        }
+        return result;
+    }
+
+    /** 判断指标是否使用兼容历史记录的六个原有字段。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+    private boolean isLegacyMetric(String metric) {
+        return java.util.Arrays.asList(METRIC_SALINITY, METRIC_TEMPERATURE, METRIC_PH, METRIC_NO2, METRIC_NO3, METRIC_PO4).contains(metric);
     }
 
     /**
@@ -621,7 +681,7 @@ public class ReefLogService {
      * @return 参数化查询前缀
      */
     private String logSelect() {
-        return "SELECT CAST(id AS CHAR) id, CAST(tank_id AS CHAR) tank_id, type, title, description, DATE_FORMAT(recorded_at, '%Y-%m-%d %H:%i:%s') recorded_at, note, CAST(change_percent AS CHAR) change_percent, CAST(salinity AS CHAR) salinity, CAST(temperature AS CHAR) temperature, CAST(ph AS CHAR) ph, CAST(no2 AS CHAR) no2, CAST(no3 AS CHAR) no3, CAST(po4 AS CHAR) po4 FROM reef_log";
+        return "SELECT CAST(id AS CHAR) id, CAST(tank_id AS CHAR) tank_id, type, title, description, DATE_FORMAT(recorded_at, '%Y-%m-%d %H:%i:%s') recorded_at, note, CAST(change_percent AS CHAR) change_percent, activity_item, CAST(activity_amount AS CHAR) activity_amount, activity_unit, water_source, CAST(water_volume_liter AS CHAR) water_volume_liter, CAST(light_hours AS CHAR) light_hours, CAST(salinity AS CHAR) salinity, CAST(temperature AS CHAR) temperature, CAST(ph AS CHAR) ph, CAST(no2 AS CHAR) no2, CAST(no3 AS CHAR) no3, CAST(po4 AS CHAR) po4 FROM reef_log";
     }
 
     /**
@@ -646,8 +706,20 @@ public class ReefLogService {
     private void validateLogType(String type) {
         if (!TYPE_WATER_TEST.equals(type) && !TYPE_WATER_CHANGE.equals(type)
                 && !TYPE_FEEDING.equals(type) && !TYPE_MEDICATION.equals(type)
-                && !TYPE_OBSERVATION.equals(type)) {
+                && !TYPE_OBSERVATION.equals(type) && !ACTIVITY_TYPES.contains(type)) {
             throw new ReefJournalException("日志类型不受支持");
         }
+    }
+
+    /** 保存维护项目的用量、水源和光照时长。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+    private void saveActivityDetails(Long userId, Long logId, ReefLogRequest request) {
+        if (request.getActivityAmount() != null && request.getActivityAmount().signum() < ZERO
+                || request.getWaterVolumeLiter() != null && request.getWaterVolumeLiter().signum() < ZERO
+                || request.getLightHours() != null && (request.getLightHours().signum() < ZERO || request.getLightHours().compareTo(new java.math.BigDecimal("24")) > ZERO)) {
+            throw new ReefJournalException("请检查用量、水量和光照时长");
+        }
+        jdbcTemplate.update("UPDATE reef_log SET activity_item = ?, activity_amount = ?, activity_unit = ?, water_source = ?, water_volume_liter = ?, light_hours = ? WHERE user_id = ? AND id = ?",
+                request.getActivityItem(), request.getActivityAmount(), request.getActivityUnit(), request.getWaterSource(),
+                request.getWaterVolumeLiter(), request.getLightHours(), userId, logId);
     }
 }

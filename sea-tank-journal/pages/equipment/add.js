@@ -16,9 +16,14 @@ Page({
       { value: 'LIGHT', label: '灯光' },
       { value: 'FILTER', label: '过滤' },
       { value: 'TEMPERATURE', label: '温控' },
+      { value: 'CO2', label: '二氧化碳' },
+      { value: 'PUMP', label: '水泵' },
+      { value: 'SKIMMER', label: '蛋分' },
+      { value: 'DOSING', label: '滴定' },
+      { value: 'AUTO_TOP_OFF', label: '自动补水' },
       { value: 'OTHER', label: '其他' }
     ],
-    categoryLabels: ['灯光', '过滤', '温控', '其他'],
+    categoryLabels: ['灯光', '过滤', '温控', '二氧化碳', '水泵', '蛋分', '滴定', '自动补水', '其他'],
     form: { name: '', model: '', category: 'LIGHT', categoryLabel: '灯光', powerWatt: '', startedAt: '', maintenanceIntervalDays: '', tankId: '', tankName: '' }
   },
 
@@ -36,7 +41,8 @@ Page({
   async loadTanks() {
     try {
       const result = await reefApi.listTanks()
-      const tanks = result?.list ?? result ?? []
+      const allTanks = result?.list ?? result ?? []
+      const tanks = allTanks.filter((item) => !item.archived)
       const selectedTank = tanks.find((tank) => tank.id === this.data.form.tankId)
       const tankPickerIndex = selectedTank ? tanks.findIndex((tank) => tank.id === selectedTank.id) + 1 : 0
       this.setData({ tanks, tankNames: ['不绑定鱼缸', ...tanks.map((tank) => tank.name)], tankPickerIndex, 'form.tankName': selectedTank?.name || '' })

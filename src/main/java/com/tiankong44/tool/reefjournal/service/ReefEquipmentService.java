@@ -24,6 +24,7 @@ import java.util.Arrays;
 
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.ONE;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.ZERO;
+import static com.tiankong44.tool.reefjournal.ReefAquariumConstants.EQUIPMENT_CATEGORIES;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.EQUIPMENT_STATUS_RUNNING;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.EQUIPMENT_STATUS_DIRTY;
 import static com.tiankong44.tool.reefjournal.ReefJournalConstants.EQUIPMENT_STATUS_STANDBY;
@@ -153,7 +154,7 @@ public class ReefEquipmentService {
      */
     private void validateCategory(String category) {
         if (category == null || category.trim().isEmpty()) return;
-        if (!Arrays.asList("LIGHT", "FILTER", "TEMPERATURE", "OTHER").contains(category)) {
+        if (!EQUIPMENT_CATEGORIES.contains(category)) {
             throw new ReefJournalException("设备分类不受支持");
         }
     }

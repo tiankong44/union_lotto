@@ -1,0 +1,5 @@
+/* 表单区域随屏幕宽度伸缩，字段标签与选项保持清晰间距。 */
+.edit-page { display: flex; flex-direction: column; gap: 1em; }
+.form-card { padding: 1em; }
+.form-row { display: flex; justify-content: space-between; align-items: center; gap: 1em; padding: 1em; color: #637e91; }
+.form-row picker { flex: 1; text-align: right; color: #30495e; }

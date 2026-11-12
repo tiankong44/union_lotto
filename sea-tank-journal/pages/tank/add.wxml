@@ -1,6 +1,6 @@
 <!-- 单页表单承载鱼缸基础资料，保存成功后回到鱼缸列表。 -->
 <view class="page-shell form-page">
-  <view class="form-nav"><button class="cancel-action" bindtap="cancel">取消</button><text>新增鱼缸</text><view></view></view>
+  <view class="form-nav"><button class="cancel-action" bindtap="cancel">取消</button><text>{{tankId ? '编辑鱼缸' : '新增鱼缸'}}</text><view></view></view>
   <view class="form-card card">
     <text class="form-label">鱼缸名称</text>
     <input class="form-input" value="{{form.name}}" data-field="name" bindinput="onFieldInput" maxlength="128" placeholder="给鱼缸起个名字" />
@@ -11,7 +11,20 @@
   </view>
   <view class="form-card card">
     <text class="form-label">系统类型</text>
-    <input class="form-input" value="{{form.systemType}}" data-field="systemType" bindinput="onFieldInput" maxlength="64" placeholder="选填" />
+    <input class="form-input" value="{{form.systemType}}" data-field="systemType" bindinput="onFieldInput" maxlength="64" placeholder="可填写原有系统说明" />
+  </view>
+  <view class="form-card card">
+    <text class="form-label">水体类型</text>
+    <picker range="{{waterTypeLabels}}" bindchange="onWaterTypeChange"><view class="select-value">{{waterTypeLabel}}<text>⌄</text></view></picker>
+  </view>
+  <view class="form-card card">
+    <text class="form-label">饲养主题（可多选）</text>
+    <checkbox-group bindchange="onThemesChange"><label wx:for="{{themeOptions}}" wx:key="value" class="choice-item"><checkbox value="{{item.value}}" checked="{{item.checked}}" />{{item.label}}</label></checkbox-group>
+  </view>
+  <view class="form-card card">
+    <view class="form-choice-heading"><text class="form-label">水质检测指标（可多选）</text><button class="text-action" bindtap="useSuggestedMetrics">按缸型选择</button></view>
+    <text class="form-hint">选择需要记录的项目，不会自动设置数值范围。</text>
+    <checkbox-group bindchange="onMetricsChange"><label wx:for="{{metricOptions}}" wx:key="key" class="choice-item"><checkbox value="{{item.key}}" checked="{{item.checked}}" />{{item.label}} {{item.unit}}</label></checkbox-group>
   </view>
   <view class="form-card card">
     <text class="form-label">开缸日期</text>
@@ -23,5 +36,6 @@
     <text class="form-label">备注</text>
     <textarea class="form-textarea" value="{{form.note}}" data-field="note" bindinput="onFieldInput" maxlength="1000" placeholder="记录鱼缸的补充信息" />
   </view>
-  <button class="primary-button submit-button" loading="{{saving}}" disabled="{{saving}}" bindtap="saveTank">保存鱼缸</button>
+  <view wx:if="{{tankId}}" class="form-card card"><text class="form-label">归档鱼缸</text><switch checked="{{form.archived}}" bindchange="onArchivedChange" /><text class="form-hint">归档后保留全部记录，可再次打开编辑恢复。</text></view>
+  <button class="primary-button submit-button" loading="{{saving}}" disabled="{{saving || loading}}" bindtap="saveTank">保存鱼缸</button>
 </view>

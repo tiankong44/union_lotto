@@ -1,19 +1,10 @@
 /**
- * 水质历史看板，展示六项参数概览和选中参数的完整趋势。
+ * 水质历史看板，展示鱼缸所选指标和选中参数的完整趋势。
  * @Author zhanghao_SMEICS
  * @Date 2026-11-09
  */
 const reefApi = require('../../services/reef-api')
-
-/** 按现有水质记录字段组织参数名称、单位和图表识别色。 */
-const METRICS = [
-  { key: 'salinity', label: '盐度', unit: '比重', accent: '#2f83b8' },
-  { key: 'temperature', label: '温度', unit: '°C', accent: '#d8795b' },
-  { key: 'ph', label: 'pH', unit: '', accent: '#62a47b' },
-  { key: 'no2', label: 'NO₂', unit: 'mg/L', accent: '#a181b3' },
-  { key: 'no3', label: 'NO₃', unit: 'mg/L', accent: '#c59535' },
-  { key: 'po4', label: 'PO₄', unit: 'mg/L', accent: '#5f9994' }
-]
+const { METRICS, LEGACY_METRICS, splitSelection } = require('../../services/aquarium-catalog')
 
 /** 支持的趋势统计范围，零表示不限制历史起始日期。 */
 const RANGES = [
@@ -44,15 +35,16 @@ function buildSparkline(points) {
 }
 
 /**
- * 按固定参数清单映射后端概览，缺失参数保留为空数据卡片。
+ * 按鱼缸选择和已有历史映射参数摘要。
  * @Author zhanghao_SMEICS
  * @Date 2026-11-09
  * @param {Array<object>} rawSeries 后端返回的参数汇总
  * @returns {Array<object>} 可直接展示的参数卡片
  */
-function buildMetricCards(rawSeries) {
+function buildMetricCards(rawSeries, tank) {
   const sourceSeries = Array.isArray(rawSeries) ? rawSeries : []
-  return METRICS.map((metric) => {
+  const selected = tank?.enabledMetrics == null ? LEGACY_METRICS : splitSelection(tank.enabledMetrics)
+  return METRICS.filter((metric) => selected.includes(metric.key) || sourceSeries.some((item) => item?.metric === metric.key && item?.sampleCount > 0)).map((metric) => {
     const source = sourceSeries.find((item) => item?.metric === metric.key)
     const stats = source?.stats ?? {}
     const samplePoints = Array.isArray(source?.samplePoints) ? source.samplePoints : []
@@ -142,7 +134,9 @@ Page({
       const requestedTankId = this.data.selectedTankId
       const hasRequestedTank = tanks.some((tank) => tank?.id === requestedTankId)
       const selectedTankId = hasRequestedTank ? requestedTankId : tanks[0]?.id ?? ''
-      this.setData({ tanks, selectedTankId, isTankLoading: false })
+      const selectedTank = tanks.find((tank) => tank.id === selectedTankId)
+      const enabled = selectedTank?.enabledMetrics == null ? LEGACY_METRICS : splitSelection(selectedTank.enabledMetrics)
+      this.setData({ tanks, selectedTankId, selectedMetric: enabled[0] ?? 'temperature', isTankLoading: false })
       if (selectedTankId) {
         // 鱼缸列表确认后读取对应参数的历史看板。
         this.loadDashboard()
@@ -157,7 +151,7 @@ Page({
   },
 
   /**
-   * 一次读取六项参数的摘要和当前指标完整点集，并忽略过期响应。
+   * 一次读取鱼缸已选择指标的摘要和当前指标完整点集，并忽略过期响应。
    * @Author zhanghao_SMEICS
    * @Date 2026-11-09
    */
@@ -174,7 +168,8 @@ Page({
       )
       if (this.data.pageClosed || requestId !== this.data.requestVersion) return
 
-      const series = buildMetricCards(result?.series ?? [])
+      const tank = this.data.tanks.find((item) => item.id === this.data.selectedTankId)
+      const series = buildMetricCards(result?.series ?? [], tank)
       const currentMetric = METRICS.find((item) => item.key === this.data.selectedMetric) ?? METRICS[0]
       const selectedSeries = series.find((item) => item.key === currentMetric.key)
       const points = Array.isArray(result?.points) ? result.points : []
@@ -214,7 +209,9 @@ Page({
   selectTank(event) {
     const selectedTankId = event.currentTarget.dataset.id
     if (!selectedTankId || selectedTankId === this.data.selectedTankId) return
-    this.setData({ selectedTankId })
+    const tank = this.data.tanks.find((item) => item.id === selectedTankId)
+    const enabled = tank?.enabledMetrics == null ? LEGACY_METRICS : splitSelection(tank.enabledMetrics)
+    this.setData({ selectedTankId, selectedMetric: enabled[0] ?? 'temperature' })
     // 重新按目标鱼缸加载范围内的水质趋势。
     this.loadDashboard()
   },
@@ -228,12 +225,12 @@ Page({
     const selectedMetric = event.currentTarget.dataset.key
     if (!METRICS.some((item) => item.key === selectedMetric) || selectedMetric === this.data.selectedMetric) return
     this.setData({ selectedMetric })
-    // 聚合接口返回所选参数完整点集，同时更新六项参数概览。
+    // 聚合接口返回所选参数完整点集，同时更新鱼缸指标概览。
     this.loadDashboard()
   },
 
   /**
-   * 切换日期范围后刷新六项参数及当前参数折线。
+   * 切换日期范围后刷新鱼缸指标及当前参数折线。
    * @Author zhanghao_SMEICS
    * @Date 2026-11-09
    */
@@ -270,6 +267,9 @@ Page({
     // 帮助用户从空状态直接进入鱼缸资料录入。
     wx.navigateTo({ url: '/pages/tank/add' })
   },
+
+  /** 打开鱼缸资料，选择需要记录的检测项目。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  editTankMetrics() { wx.navigateTo({ url: `/pages/tank/add?id=${this.data.selectedTankId}` }) },
 
   /**
    * 按当前历史点和参数色绘制详细折线，过期视图不覆盖新图。

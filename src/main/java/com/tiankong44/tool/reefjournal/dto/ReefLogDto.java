@@ -22,6 +22,14 @@ public class ReefLogDto {
     private String note;
     private String tankName;
     private String changePercent;
+    /** 日常维护明细和逐项水质测量。 */
+    private String activityItem;
+    private String activityAmount;
+    private String activityUnit;
+    private String waterSource;
+    private String waterVolumeLiter;
+    private String lightHours;
+    private List<ReefWaterMeasurementDto> measurements = new ArrayList<>();
     private String salinity;
     private String temperature;
     private String ph;
@@ -29,4 +37,6 @@ public class ReefLogDto {
     private String no3;
     private String po4;
     private List<String> biologyIds = new ArrayList<>();
+    /** 保存时关联的生物摘要，转缸后仍可在历史日志中查看。 */
+    private List<ReefBiologyDto> biology = new ArrayList<>();
 }
