@@ -3,6 +3,8 @@
  * @Author zhanghao_SMEICS
  * @Date 2026-11-05
  */
+const { startTabNavigation, logTabNavigation } = require('../services/tab-bar')
+
 Component({
   data: {
     selected: 0,
@@ -23,8 +25,17 @@ Component({
     switchTab(event) {
       const item = this.data.items[event.currentTarget.dataset.index]
       if (!item || Number(event.currentTarget.dataset.index) === this.data.selected) return
+      // 记录点击时刻，以便和目标页面生命周期耗时对应。
+      startTabNavigation(item.path)
       // 使用微信原生 Tab 切换，保留系统返回栈约定。
-      wx.switchTab({ url: item.path })
+      wx.switchTab({
+        url: item.path,
+        success: () => logTabNavigation(item.path, 'switchTab-success'),
+        fail: (error) => {
+          logTabNavigation(item.path, 'switchTab-fail')
+          console.warn('[tab-perf] switchTab error', error)
+        }
+      })
     }
   }
 })
