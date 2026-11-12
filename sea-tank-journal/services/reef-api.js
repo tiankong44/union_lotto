@@ -11,6 +11,36 @@ const json = (method, data) => ({ method, data })
 
 // 按业务页面导出接口操作，页面不直接拼装服务端路径。
 module.exports = {
+  /** 获取当前登录账号的个人资料。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  getProfile: () => request('/profile'),
+  /** 保存当前登录账号主动维护的个人资料。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  saveProfile: (data) => request('/profile', json('PUT', data)),
+  /** 将用户选中的头像上传至共享云端文件服务。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  uploadAvatar: async (filePath) => {
+    const { ensureLogin } = require('./auth')
+    const token = await ensureLogin()
+    return new Promise((resolve, reject) => wx.uploadFile({
+      url: `${API_BASE_URL}/tabs/common/files`,
+      filePath,
+      name: 'file',
+      header: token ? { Authorization: `Bearer ${token}` } : {},
+      success(response) {
+        try {
+          const body = JSON.parse(response.data || '{}')
+          if (response.statusCode < 200 || response.statusCode >= 300 || body.code !== 0 || !body.data?.fileKey) {
+            reject(new Error(body.message || '头像没有保存，请重新选择'))
+            return
+          }
+          resolve(body.data)
+        } catch (error) {
+          reject(new Error('头像保存结果无法读取，请重试'))
+        }
+      },
+      fail() {
+        reject(new Error('头像上传中断，请检查网络后重试'))
+      }
+    }))
+  },
   getDashboard: () => request('/dashboard'),
   listTanks: (pageNum = 1, pageSize = 20) => request(`/tanks?pageNum=${pageNum}&pageSize=${pageSize}`),
   saveTank: (data) => request('/tanks', json('POST', data)),

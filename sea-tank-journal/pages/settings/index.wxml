@@ -1,4 +1,20 @@
 <view class="page-shell has-tabbar">
+  <!-- 展示并维护当前微信登录账号的昵称和头像。 -->
+  <view class="section-heading"><text>个人资料</text></view>
+  <view class="settings-card profile-card">
+    <button class="profile-avatar-button" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar" disabled="{{profileBusy}}" aria-label="更换头像">
+      <image wx:if="{{profile.avatarUrl}}" class="profile-avatar" src="{{profile.avatarUrl}}" mode="aspectFill" />
+      <view wx:else class="profile-avatar profile-avatar-empty">鱼</view>
+      <text class="profile-avatar-action">更换头像</text>
+    </button>
+    <view class="profile-editor">
+      <view class="profile-fields">
+        <text class="setting-title">昵称</text>
+        <input class="profile-nickname" type="nickname" value="{{profile.nickname}}" placeholder="填写昵称" maxlength="32" bindinput="onNicknameInput" />
+      </view>
+      <button class="profile-save" loading="{{profileBusy}}" disabled="{{profileBusy}}" bindtap="saveProfile">保存资料</button>
+    </view>
+  </view>
   <view class="section-heading"><text>提醒设置</text></view>
   <view class="settings-card card">
     <view class="setting-time-row"><view><text class="setting-title">统一提醒时刻</text><text class="setting-note">按上海时间发送</text></view><picker mode="time" value="{{sendTime}}" bindchange="onSendTimeChange"><text class="time-value">{{sendTime || '请选择'}}</text></picker></view>
@@ -16,5 +32,6 @@
     <text wx:if="{{backupProgress}}" class="setting-note">{{backupProgress}}</text>
     <button class="setting-action" bindtap="clearCache"><text class="action-icon">◌</text><text>清空缓存</text><text class="action-end">{{cacheSize}}</text></button>
     <view class="setting-action"><text class="action-icon">ⓘ</text><text>关于水境日记</text><text class="action-end">v1.0.0</text></view>
+    <button class="setting-action logout-action" disabled="{{backupBusy || profileBusy}}" bindtap="logout"><text class="action-icon logout-icon">↪</text><text>退出登录</text><text class="action-end">›</text></button>
   </view>
 </view>

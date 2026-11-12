@@ -5,6 +5,8 @@
 CREATE TABLE reef_user (
     id BIGINT NOT NULL AUTO_INCREMENT COMMENT '用户主键',
     openid VARCHAR(128) NOT NULL COMMENT '微信小程序用户唯一标识',
+    nickname VARCHAR(64) NULL COMMENT '用户主动填写的昵称',
+    avatar_file_key VARCHAR(64) NULL COMMENT '用户头像的云端文件编号',
     created_at DATETIME NOT NULL COMMENT '创建时间',
     PRIMARY KEY (id),
     UNIQUE KEY uk_reef_user_openid (openid)

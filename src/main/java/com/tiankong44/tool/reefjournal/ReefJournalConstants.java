@@ -7,6 +7,8 @@ package com.tiankong44.tool.reefjournal;
  * @Date 2026-11-09
  */
 public final class ReefJournalConstants {
+    /** 用户头像通过公共云端文件接口读取。 */
+    public static final String PROFILE_AVATAR_CONTENT_PATH = "/tabs/common/files/";
     public static final String REQUEST_USER_ID = "reefUserId";
     public static final String BEARER_PREFIX = "Bearer ";
     public static final String TOKEN_SEPARATOR = ".";

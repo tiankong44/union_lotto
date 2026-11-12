@@ -1,3 +1,15 @@
+/* 头像占用稳定比例，编辑区伸缩填充剩余宽度。 */
+.settings-card.profile-card { display: flex; align-items: center; gap: 24rpx; padding: 26rpx 24rpx; }
+.profile-avatar-button { display: flex; width: 120rpx; flex: none; flex-direction: column; align-items: center; gap: 8rpx; margin: 0; padding: 0; background: transparent; color: #6f8d9a; font-size: 19rpx; line-height: 1.3; }
+.profile-avatar-button::after { border: 0; }
+.profile-avatar { width: 112rpx; height: 112rpx; border-radius: 50%; background: #e7f3f1; }
+.profile-avatar-empty { display: flex; align-items: center; justify-content: center; color: #398b82; font-size: 42rpx; }
+.profile-avatar-action { color: #527c78; }
+.profile-editor { display: flex; min-width: 0; flex: 1; flex-direction: column; align-items: stretch; gap: 16rpx; }
+.profile-fields { display: flex; min-width: 0; width: 100%; flex-direction: column; gap: 12rpx; }
+.profile-nickname { width: 100%; min-height: 64rpx; border-bottom: 1rpx solid #dce8e7; color: #30465a; font-size: 25rpx; }
+.profile-save { width: auto; min-width: 128rpx; flex: none; align-self: flex-end; margin: 0; padding: 12rpx 18rpx; border-radius: 12rpx; background: #398b82; color: #fff; font-size: 21rpx; line-height: 1.4; white-space: nowrap; }
+.profile-save::after { border: 0; }
 .settings-card { padding: 4rpx 24rpx; }
 .setting-time-row, .setting-row { display: flex; align-items: center; min-height: 108rpx; gap: 16rpx; border-bottom: 1rpx solid #f0f5f8; }
 .setting-time-row { justify-content: space-between; }
@@ -11,5 +23,7 @@
 .time-value { color: #60afe0; font-size: 23rpx; }
 .setting-hint { display: block; padding: 0 0 16rpx 70rpx; color: #d09241; font-size: 20rpx; }
 .setting-action { display: flex; align-items: center; gap: 18rpx; width: 100%; min-height: 94rpx; border-bottom: 1rpx solid #f0f5f8; color: #30465a; font-size: 24rpx; text-align: left; }
+.logout-action { color: #a34d58; }
+.logout-icon { background: #fff0f0; color: #b4505d; }
 .action-icon { display: flex; align-items: center; justify-content: center; width: 52rpx; height: 52rpx; flex: none; border-radius: 15rpx; background: #eef8fd; color: #64b7e7; font-size: 28rpx; }
 .action-end { margin-left: auto; color: #9ab0c4; font-size: 20rpx; }

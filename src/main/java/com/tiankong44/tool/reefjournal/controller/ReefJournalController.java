@@ -26,6 +26,8 @@ import com.tiankong44.tool.reefjournal.dto.ReefWaterRangeRequest;
 import com.tiankong44.tool.reefjournal.dto.ReefLoginRequest;
 import com.tiankong44.tool.reefjournal.dto.ReefLoginResponse;
 import com.tiankong44.tool.reefjournal.dto.ReefSubscriptionConsentRequest;
+import com.tiankong44.tool.reefjournal.dto.ReefUserProfileDto;
+import com.tiankong44.tool.reefjournal.dto.ReefUserProfileSaveRequest;
 import com.tiankong44.tool.reefjournal.service.ReefAuthService;
 import com.tiankong44.tool.reefjournal.service.ReefBiologyService;
 import com.tiankong44.tool.reefjournal.service.ReefEquipmentService;
@@ -34,6 +36,7 @@ import com.tiankong44.tool.reefjournal.service.ReefLogService;
 import com.tiankong44.tool.reefjournal.service.ReefPhotoService;
 import com.tiankong44.tool.reefjournal.service.ReefReminderService;
 import com.tiankong44.tool.reefjournal.service.ReefTankService;
+import com.tiankong44.tool.reefjournal.service.ReefUserProfileService;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -74,6 +77,7 @@ public class ReefJournalController {
     private final ReefReminderService reminderService;
     private final ReefExportService exportService;
     private final ReefPhotoTokenService photoTokenService;
+    private final ReefUserProfileService userProfileService;
 
     /**
      * 创建只负责接口协议编排的海缸控制器。
@@ -92,7 +96,7 @@ public class ReefJournalController {
     public ReefJournalController(ReefAuthService authService, ReefTankService tankService, ReefBiologyService biologyService,
                                  ReefLogService logService, ReefEquipmentService equipmentService, ReefPhotoService photoService,
                                  ReefReminderService reminderService, ReefExportService exportService,
-                                 ReefPhotoTokenService photoTokenService) {
+                                 ReefPhotoTokenService photoTokenService, ReefUserProfileService userProfileService) {
         this.authService = authService;
         this.tankService = tankService;
         this.biologyService = biologyService;
@@ -102,6 +106,37 @@ public class ReefJournalController {
         this.reminderService = reminderService;
         this.exportService = exportService;
         this.photoTokenService = photoTokenService;
+        this.userProfileService = userProfileService;
+    }
+
+    /**
+     * 读取当前登录用户的昵称和头像资料。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-12
+     * @param userId 已认证用户编号
+     * @return 当前用户资料
+     */
+    @GetMapping("/profile")
+    public BaseRes<ReefUserProfileDto> getProfile(@RequestAttribute(ReefJournalConstants.REQUEST_USER_ID) Long userId) {
+        // 仅使用认证拦截器确认的用户编号读取个人资料。
+        return BaseRes.success(userProfileService.getProfile(userId));
+    }
+
+    /**
+     * 保存当前登录用户主动填写的昵称和头像。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-12
+     * @param userId 已认证用户编号
+     * @param request 用户资料保存请求
+     * @return 保存后的当前用户资料
+     */
+    @PutMapping("/profile")
+    public BaseRes<ReefUserProfileDto> saveProfile(@RequestAttribute(ReefJournalConstants.REQUEST_USER_ID) Long userId,
+                                                   @RequestBody @Valid ReefUserProfileSaveRequest request) {
+        // 校验头像文件并更新当前用户资料后返回最新内容。
+        return BaseRes.success(userProfileService.saveProfile(userId, request));
     }
 
     /**
