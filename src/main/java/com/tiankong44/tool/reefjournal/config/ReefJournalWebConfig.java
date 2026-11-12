@@ -40,6 +40,6 @@ public class ReefJournalWebConfig implements WebMvcConfigurer {
         // 将身份校验限制在新模块，不改变其他既有接口的访问方式。
         registry.addInterceptor(authorizationInterceptor)
                 .addPathPatterns("/reef-journal/**")
-                .excludePathPatterns("/reef-journal/auth/login", "/reef-journal/photos/*/content");
+                .excludePathPatterns("/reef-journal/auth/login", "/reef-journal/photos/*/content", "/reef-journal/photos/*/motion-content");
     }
 }

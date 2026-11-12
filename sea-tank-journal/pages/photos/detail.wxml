@@ -2,7 +2,8 @@
 <view class="page-shell photo-detail-page">
   <view wx:if="{{loading}}" class="loading-line">正在读取照片…</view>
   <block wx:elif="{{photo.id}}">
-    <image class="detail-image" src="{{photo.contentUrl}}" mode="aspectFit"></image>
+    <video wx:if="{{photo.motionContentUrl}}" class="detail-image" src="{{photo.motionContentUrl}}" poster="{{photo.contentUrl}}" controls show-center-play-btn object-fit="contain"></video>
+    <image wx:else class="detail-image" src="{{photo.contentUrl}}" mode="aspectFit"></image>
     <view class="photo-info card">
       <text class="photo-title">{{photo.title || '影像记录'}}</text>
       <view class="info-row"><text>分类</text><text>{{categoryLabel}}</text></view>

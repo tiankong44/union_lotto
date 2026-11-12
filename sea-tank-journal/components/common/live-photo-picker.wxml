@@ -1,0 +1,18 @@
+<!-- 静态画面和动态片段分别选择，便于保留 Live Photo 的两部分内容。 -->
+<view class="live-photo-picker">
+  <view class="media-grid">
+    <view class="media-item">
+      <image wx:if="{{imagePath}}" class="media-preview" src="{{imagePath}}" mode="aspectFill"></image>
+      <view wx:else class="media-placeholder">静态画面</view>
+      <button class="media-action" disabled="{{disabled || imageLocked}}" bindtap="chooseImage">{{imagePath ? '重新选择照片' : '选择照片'}}</button>
+      <button wx:if="imagePath" class="media-remove" disabled="{{disabled || imageLocked}}" bindtap="removeImage">移除</button>
+    </view>
+    <view class="media-item">
+      <video wx:if="{{motionPath}}" class="media-preview" src="{{motionPath}}" controls show-center-play-btn object-fit="cover"></video>
+      <view wx:else class="media-placeholder motion-placeholder">动态片段</view>
+      <button class="media-action" disabled="{{disabled}}" bindtap="chooseMotion">{{motionPath ? '重新选择片段' : '选择动态片段'}}</button>
+      <button wx:if="motionPath" class="media-remove" disabled="{{disabled}}" bindtap="removeMotion">移除</button>
+    </view>
+  </view>
+  <text class="media-hint">选择 Live Photo 的静态画面和对应片段；动态片段单个不超过 10 MB。</text>
+</view>

@@ -4,6 +4,7 @@
  * @Date 2026-11-05
  */
 const reefApi = require('../../services/reef-api')
+const reefPhotoMedia = require('../../services/reef-photo-media')
 
 const CATEGORY_LABELS = { TANK: '鱼缸', FISH: '鱼', CORAL: '珊瑚', EQUIPMENT: '设备', PLANT: '植物', OTHER: '其他生物' }
 const REFERENCE_LABELS = { TANK: '鱼缸', BIOLOGY: '生物', BIOLOGY_EVENT: '生物事件', EQUIPMENT: '设备', LOG: '日志' }
@@ -27,7 +28,7 @@ Page({
   async loadPhoto() {
     this.setData({ loading: true })
     try {
-      const photo = await reefApi.getPhoto(this.data.photoId)
+      const photo = reefPhotoMedia.withMotionUrl(await reefApi.getPhoto(this.data.photoId))
       const referenceName = await this.resolveReferenceName(photo?.referenceType, photo?.referenceId)
       this.setData({
         photo: photo || {},

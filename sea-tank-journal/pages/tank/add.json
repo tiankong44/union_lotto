@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "新增鱼缸"
+  "navigationBarTitleText": "新增鱼缸",
+  "usingComponents": {
+    "live-photo-picker": "/components/common/live-photo-picker"
+  }
 }

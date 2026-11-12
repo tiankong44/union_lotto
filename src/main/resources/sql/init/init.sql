@@ -193,6 +193,7 @@ CREATE TABLE reef_photo (
     id BIGINT NOT NULL AUTO_INCREMENT COMMENT '照片主键',
     user_id BIGINT NOT NULL COMMENT '所属用户编号',
     file_key VARCHAR(64) NOT NULL COMMENT '云端文件随机编号',
+    motion_file_key VARCHAR(64) NULL COMMENT '实况照片动态片段云端编号',
     category VARCHAR(32) NOT NULL COMMENT '照片分类',
     title VARCHAR(255) NULL COMMENT '照片名称',
     reference_type VARCHAR(32) NULL COMMENT '关联对象类型',

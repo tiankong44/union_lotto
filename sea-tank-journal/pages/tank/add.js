@@ -4,13 +4,14 @@
  * @Date 2026-11-05
  */
 const reefApi = require('../../services/reef-api')
+const reefPhotoMedia = require('../../services/reef-photo-media')
 const { shanghaiDateTimeParts } = require('../../services/date-time')
 const { WATER_TYPES, THEMES, METRICS, LEGACY_METRICS, suggestedMetrics, splitSelection } = require('../../services/aquarium-catalog')
 const { estimateRectangularTankVolume } = require('../../services/aquarium-volume')
 
 Page({
   data: {
-    saving: false, loading: false, tankId: '',
+    saving: false, loading: false, tankId: '', imagePath: '', motionPath: '', pendingPhotoId: '',
     waterTypeLabels: WATER_TYPES.map((item) => item.label), waterTypeLabel: '待补充',
     themeOptions: THEMES.map((item) => ({ ...item, checked: false })),
     metricOptions: METRICS.map((item) => ({ ...item, checked: LEGACY_METRICS.includes(item.key) })),
@@ -74,6 +75,18 @@ Page({
     this.setData({ [`form.${field}`]: event.detail.value })
   },
 
+  /** 接收通用实况照片选择器返回的静态画面或动态片段。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  onPhotoInput(event) {
+    const field = event.detail?.field
+    const value = event.detail?.value ?? ''
+    if (field === 'imagePath') {
+      if (this.data.pendingPhotoId) return
+      this.setData({ imagePath: value, motionPath: '', pendingPhotoId: '' })
+      return
+    }
+    if (field === 'motionPath') this.setData({ motionPath: value })
+  },
+
   /** 更新鱼缸尺寸和经验扣减输入。 @Author zhanghao_SMEICS @Date 2026-11-12 */
   onVolumeInput(event) {
     const field = event.currentTarget.dataset.field
@@ -116,16 +129,34 @@ Page({
       return
     }
     if (this.data.saving) return
+    if (this.data.motionPath && !this.data.imagePath) {
+      wx.showToast({ title: '先选择静态照片，再添加动态片段', icon: 'none' })
+      return
+    }
     this.setData({ saving: true })
+    let tankSaved = false
     try {
       // 仅将用户填写的容量转换为数值，编号始终按字符串传递。
-      await reefApi.saveTank({ ...form, id: this.data.tankId || undefined, capacityLiter: form.capacityLiter ? Number(form.capacityLiter) : null,
+      const savedTank = await reefApi.saveTank({ ...form, id: this.data.tankId || undefined, capacityLiter: form.capacityLiter ? Number(form.capacityLiter) : null,
         themes: this.data.selectedThemes.join(','), enabledMetrics: this.data.selectedMetrics.join(',') })
+      tankSaved = true
+      const tankId = savedTank?.id ?? this.data.tankId
+      if (this.data.imagePath && !tankId) throw new Error('鱼缸已保存，请重新打开编辑页后添加影像')
+      this.setData({ tankId: tankId || '' })
+      if (this.data.imagePath) {
+        const now = shanghaiDateTimeParts(new Date())
+        // 将静态照片及可选动效关联到已保存的鱼缸记录。
+        await reefPhotoMedia.saveAttachedLivePhoto({ imagePath: this.data.imagePath, motionPath: this.data.motionPath,
+          photoId: this.data.pendingPhotoId, metadata: { title: `${form.name} 实况照片`, category: 'TANK', referenceType: 'TANK',
+            referenceId: tankId, recordedAt: `${now.date} ${now.time}`, note: '' },
+          onPhotoCreated: (photoId) => this.setData({ pendingPhotoId: photoId }) })
+      }
+      this.setData({ imagePath: '', motionPath: '', pendingPhotoId: '' })
       wx.showToast({ title: '鱼缸已保存', icon: 'success' })
       // 返回首页后由首页 onShow 刷新鱼缸列表。
       wx.navigateBack({ delta: 1 })
     } catch (error) {
-      wx.showToast({ title: error?.message || '鱼缸资料没有保存，请检查网络后重试', icon: 'none' })
+      wx.showToast({ title: tankSaved ? '鱼缸已保存，影像可重试' : error?.message || '鱼缸资料没有保存，请检查网络后重试', icon: 'none' })
     } finally {
       this.setData({ saving: false })
     }

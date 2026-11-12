@@ -18,4 +18,5 @@ public class ReefPhotoDto {
     private String recordedAt;
     private String note;
     private String contentUrl;
+    private String motionContentUrl;
 }

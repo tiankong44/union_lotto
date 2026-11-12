@@ -1,0 +1,11 @@
+/* 实况照片两部分在弹性双列中并排预览，窄屏内容自然换行。 */
+.live-photo-picker { display: flex; flex-direction: column; gap: 0.7em; }
+.media-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8em; }
+.media-item { display: flex; min-width: 0; flex-direction: column; gap: 0.45em; }
+.media-preview, .media-placeholder { display: flex; width: 100%; height: 34vw; max-height: 34vw; align-items: center; justify-content: center; overflow: hidden; border-radius: 12rpx; background: #edf5f8; }
+.media-placeholder { color: #8799a6; font-size: 22rpx; }
+.motion-placeholder { background: #f1f4f1; color: #638272; }
+.media-action, .media-remove { min-width: 0; margin: 0; padding: 0.45em 0.2em; border-radius: 10rpx; font-size: 21rpx; line-height: 1.35; }
+.media-action { background: #edf7fb; color: #4386a4; }
+.media-remove { background: transparent; color: #9a6b68; }
+.media-hint { color: #718693; font-size: 20rpx; line-height: 1.5; }

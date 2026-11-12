@@ -4,11 +4,12 @@
  * @Date 2026-11-05
  */
 const reefApi = require('../../services/reef-api')
+const reefPhotoMedia = require('../../services/reef-photo-media')
 const { describeTank } = require('../../services/aquarium-catalog')
 
 Page({
   data: {
-    tankId: '', tank: { name: '', archived: false, tankTypeSummary: '', systemType: '' }, tankCoverUrl: '', biology: [], biologyPageNum: 1, biologyHasMore: false, biologyLoading: false, logs: [], equipment: [], waterRanges: [],
+    tankId: '', tank: { name: '', archived: false, tankTypeSummary: '', systemType: '' }, tankCoverUrl: '', tankCoverMotionUrl: '', biology: [], biologyPageNum: 1, biologyHasMore: false, biologyLoading: false, logs: [], equipment: [], waterRanges: [],
     tabs: [{ key: 'biology', label: '生物' }, { key: 'logs', label: '日志' }, { key: 'water', label: '水质' }, { key: 'equipment', label: '设备' }],
     activeTab: 'biology', rangeFormOpen: false, savingRanges: false,
     rangeFields: [
@@ -49,8 +50,11 @@ Page({
         return saved ? { ...field, min: saved.minimum ?? '', max: saved.maximum ?? '' } : field
       })
       const biologyRows = biology?.list ?? biology ?? []
+      const tankPhotos = (photoResult?.list ?? photoResult ?? []).map(reefPhotoMedia.withMotionUrl)
+      const tankCover = tankPhotos[0] ?? null
       this.setData({
-        tank: describeTank(tank || {}), tankCoverUrl: (photoResult?.list ?? photoResult ?? [])[0]?.contentUrl || '', biology: biologyRows, biologyPageNum: 1, biologyHasMore: biologyRows.length === 50,
+        tank: describeTank(tank || {}), tankCoverUrl: tankCover?.contentUrl ?? '', tankCoverMotionUrl: tankCover?.motionContentUrl ?? '',
+        biology: biologyRows, biologyPageNum: 1, biologyHasMore: biologyRows.length === 50,
         logs: logs?.list ?? logs ?? [], equipment: equipment?.list ?? equipment ?? [], waterRanges, rangeFields
       })
     } catch (error) {

@@ -97,7 +97,8 @@ public class ReefPhotoService {
         // 使用参数化条件读取当前页影像，编号和筛选值不拼入 SQL。
         List<ReefPhotoDto> rows = jdbcTemplate.query(sql, BeanPropertyRowMapper.newInstance(ReefPhotoDto.class), parameters.toArray());
         for (ReefPhotoDto row : rows) {
-            row.setContentUrl(row.getContentUrl() + "?signature=" + photoTokenService.issue(userId, Long.valueOf(row.getId())));
+            // 同一照片签名保护静态画面和对应动态片段。
+            signContentUrls(userId, row);
         }
         return ReefPageSupport.response(pageNum, pageSize, total == null ? ZERO : total, rows);
     }
@@ -152,8 +153,46 @@ public class ReefPhotoService {
                 BeanPropertyRowMapper.newInstance(ReefPhotoDto.class), userId, photoId);
         if (rows.isEmpty()) throw new ReefJournalException("没有找到这张照片，或它不属于当前账号");
         ReefPhotoDto photo = rows.get(ZERO);
-        photo.setContentUrl(photo.getContentUrl() + "?signature=" + photoTokenService.issue(userId, photoId));
+        // 返回静态画面和可选动态片段的短时访问地址。
+        signContentUrls(userId, photo);
         return photo;
+    }
+
+    /**
+     * 将实况照片的动态片段存入共享文件表并绑定到所属照片记录。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-12
+     * @param userId 认证上下文中的用户编号
+     * @param photoId 照片编号
+     * @param file 用户选择的 MOV 或 MP4 动态片段
+     * @return 更新后的照片资料
+     */
+    public ReefPhotoDto uploadMotion(Long userId, Long photoId, MultipartFile file) {
+        String currentMotionKey = photoMotionKey(userId, photoId);
+        if (currentMotionKey != null && !currentMotionKey.trim().isEmpty()) return get(userId, photoId);
+        // 上传前由公共文件服务校验视频类型和单文件大小。
+        BaseRes<CloudFileUploadResponse> uploadResult = commonService.uploadVideo(file);
+        if (uploadResult == null || uploadResult.getCode() != ZERO || uploadResult.getData() == null) {
+            throw new ReefJournalException(uploadResult == null ? "动态片段没有保存，请重试" : uploadResult.getMessage());
+        }
+        String fileKey = uploadResult.getData().getFileKey();
+        int updatedCount;
+        try {
+            // 只允许当前用户为尚未绑定动态片段的照片添加文件。
+            updatedCount = jdbcTemplate.update("UPDATE reef_photo SET motion_file_key = ? WHERE user_id = ? AND id = ? AND motion_file_key IS NULL",
+                    fileKey, userId, photoId);
+        } catch (RuntimeException exception) {
+            // 绑定失败时清理刚写入的共享文件，避免留下无归属文件。
+            commonService.deleteFile(fileKey);
+            throw exception;
+        }
+        if (updatedCount != ONE) {
+            // 并发请求已有其他片段完成绑定时，移除本次未使用的文件。
+            commonService.deleteFile(fileKey);
+            throw new ReefJournalException("动态片段没有绑定，请重新读取照片后重试");
+        }
+        return get(userId, photoId);
     }
 
     /**
@@ -181,7 +220,7 @@ public class ReefPhotoService {
     }
 
     /**
-     * 删除当前用户的影像元数据和对应云端文件内容。
+     * 删除当前用户的影像元数据、静态画面及对应动态片段。
      *
      * @Author zhanghao_SMEICS
      * @Date 2026-11-05
@@ -193,11 +232,15 @@ public class ReefPhotoService {
         List<String> fileKeys = jdbcTemplate.query("SELECT file_key FROM reef_photo WHERE user_id = ? AND id = ? LIMIT 1",
                 (resultSet, rowNumber) -> resultSet.getString(1), userId, photoId);
         if (fileKeys.isEmpty()) throw new ReefJournalException("没有找到这张照片，或它不属于当前账号");
+        String motionFileKey = photoMotionKey(userId, photoId);
         // 先删除用户拥有的照片记录，再删除该记录对应的云端文件。
         int deletedPhotoCount = jdbcTemplate.update("DELETE FROM reef_photo WHERE user_id = ? AND id = ?", userId, photoId);
         if (deletedPhotoCount != ONE) throw new ReefJournalException("照片没有删除，请刷新后重试");
         int deletedFileCount = commonService.deleteFile(fileKeys.get(ZERO));
         if (deletedFileCount != ONE) throw new ReefJournalException("照片记录已找到，但云端文件无法删除");
+        if (motionFileKey != null && !motionFileKey.trim().isEmpty() && commonService.deleteFile(motionFileKey) != ONE) {
+            throw new ReefJournalException("照片已删除，但动态片段文件没有清理");
+        }
     }
 
     /**
@@ -216,6 +259,55 @@ public class ReefPhotoService {
         CloudFile cloudFile = commonService.getFile(fileKeys.get(ZERO));
         if (cloudFile == null) throw new ReefJournalException("照片文件暂时无法读取");
         return cloudFile;
+    }
+
+    /**
+     * 只有照片确属当前用户时才读取对应的动态片段。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-12
+     * @param userId 认证上下文中的用户编号
+     * @param photoId 照片编号
+     * @return 云端视频文件实体
+     */
+    public CloudFile motionContent(Long userId, Long photoId) {
+        String motionFileKey = photoMotionKey(userId, photoId);
+        if (motionFileKey == null || motionFileKey.trim().isEmpty()) throw new ReefJournalException("这张照片没有动态片段");
+        // 通过照片关联的随机文件编号读取共享云端内容。
+        CloudFile cloudFile = commonService.getFile(motionFileKey);
+        if (cloudFile == null) throw new ReefJournalException("动态片段暂时无法读取");
+        return cloudFile;
+    }
+
+    /**
+     * 读取当前用户照片所关联的动态片段文件编号。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-12
+     * @param userId 当前用户编号
+     * @param photoId 照片编号
+     * @return 动态片段文件编号，没有片段时返回空值
+     */
+    private String photoMotionKey(Long userId, Long photoId) {
+        List<String> motionKeys = jdbcTemplate.query("SELECT motion_file_key FROM reef_photo WHERE user_id = ? AND id = ? LIMIT 1",
+                (resultSet, rowNumber) -> resultSet.getString(1), userId, photoId);
+        if (motionKeys.isEmpty()) throw new ReefJournalException("没有找到这张照片，或它不属于当前账号");
+        return motionKeys.get(ZERO);
+    }
+
+    /**
+     * 为静态画面和可选动态片段附加同一张照片的短时签名。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-12
+     * @param userId 当前照片所属用户
+     * @param photo 照片响应资料
+     */
+    private void signContentUrls(Long userId, ReefPhotoDto photo) {
+        // 只为当前用户拥有的照片编号签发有时限的媒体访问凭证。
+        String signature = photoTokenService.issue(userId, Long.valueOf(photo.getId()));
+        photo.setContentUrl(photo.getContentUrl() + "?signature=" + signature);
+        if (photo.getMotionContentUrl() != null) photo.setMotionContentUrl(photo.getMotionContentUrl() + "?signature=" + signature);
     }
 
     /**
@@ -315,6 +407,6 @@ public class ReefPhotoService {
      * @return 参数化查询前缀
      */
     private String photoSelect() {
-        return "SELECT CAST(id AS CHAR) id, title, category, reference_type, reference_id, DATE_FORMAT(recorded_at, '%Y-%m-%d %H:%i:%s') recorded_at, note, CONCAT('/tabs/reef-journal/photos/', CAST(id AS CHAR), '/content') content_url FROM reef_photo";
+        return "SELECT CAST(reef_photo.id AS CHAR) id, title, category, reference_type, reference_id, DATE_FORMAT(recorded_at, '%Y-%m-%d %H:%i:%s') recorded_at, note, CONCAT('/tabs/reef-journal/photos/', CAST(reef_photo.id AS CHAR), '/content') content_url, CASE WHEN motion_file_key IS NULL THEN NULL ELSE CONCAT('/tabs/reef-journal/photos/', CAST(reef_photo.id AS CHAR), '/motion-content') END motion_content_url FROM reef_photo";
     }
 }

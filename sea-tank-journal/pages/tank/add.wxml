@@ -38,6 +38,10 @@
     <picker range="{{waterTypeLabels}}" bindchange="onWaterTypeChange"><view class="select-value">{{waterTypeLabel}}<text>⌄</text></view></picker>
   </view>
   <view class="form-card card">
+    <text class="form-label">鱼缸实况照片</text>
+    <live-photo-picker image-path="{{imagePath}}" motion-path="{{motionPath}}" image-locked="{{pendingPhotoId}}" disabled="{{saving || loading}}" bind:change="onPhotoInput"></live-photo-picker>
+  </view>
+  <view class="form-card card">
     <text class="form-label">饲养主题（可多选）</text>
     <checkbox-group bindchange="onThemesChange"><label wx:for="{{themeOptions}}" wx:key="value" class="choice-item"><checkbox value="{{item.value}}" checked="{{item.checked}}" />{{item.label}}</label></checkbox-group>
   </view>

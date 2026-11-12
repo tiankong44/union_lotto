@@ -4,6 +4,7 @@
  * @Date 2026-11-05
  */
 const reefApi = require('../../services/reef-api')
+const reefPhotoMedia = require('../../services/reef-photo-media')
 
 Page({
   data: {
@@ -28,11 +29,11 @@ Page({
     this.setData({ loading: true })
     try {
       const listResult = await reefApi.listPhotos('', 1, 100)
-      const photos = listResult?.list ?? listResult ?? []
+      const photos = (listResult?.list ?? listResult ?? []).map(reefPhotoMedia.withMotionUrl)
       let currentIndex = photos.findIndex((photo) => photo.id === this.data.photoId)
       if (currentIndex < 0) {
         try {
-          const selectedPhoto = await reefApi.getPhoto(this.data.photoId)
+          const selectedPhoto = reefPhotoMedia.withMotionUrl(await reefApi.getPhoto(this.data.photoId))
           if (selectedPhoto) {
             photos.unshift(selectedPhoto)
             currentIndex = 0

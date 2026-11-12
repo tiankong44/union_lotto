@@ -1,6 +1,7 @@
 <view class="page-shell">
   <view class="tank-cover">
-    <image wx:if="{{tankCoverUrl}}" src="{{tankCoverUrl}}" mode="aspectFill"></image>
+    <video wx:if="{{tankCoverMotionUrl}}" src="{{tankCoverMotionUrl}}" poster="{{tankCoverUrl}}" controls show-center-play-btn object-fit="cover"></video>
+    <image wx:elif="{{tankCoverUrl}}" src="{{tankCoverUrl}}" mode="aspectFill"></image>
     <text wx:else>还没有鱼缸封面</text>
   </view>
   <view class="tank-heading">

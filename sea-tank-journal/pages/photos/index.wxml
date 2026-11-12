@@ -4,13 +4,13 @@
   <view wx:if="{{recent.length}}">
     <text class="group-title">最近 30 天</text>
     <view class="photo-grid">
-      <view wx:for="{{recent}}" wx:key="id" class="photo-tile" data-id="{{item.id}}" bindtap="previewPhoto"><image src="{{item.contentUrl}}" mode="aspectFill"></image><view class="photo-caption"><text>{{item.title || '影像记录'}}</text><text>{{item.dateLabel}}</text></view></view>
+      <view wx:for="{{recent}}" wx:key="id" class="photo-tile" data-id="{{item.id}}" bindtap="previewPhoto"><image src="{{item.contentUrl}}" mode="aspectFill"></image><text wx:if="{{item.motionContentUrl}}" class="live-badge">实况</text><view class="photo-caption"><text>{{item.title || '影像记录'}}</text><text>{{item.dateLabel}}</text></view></view>
     </view>
   </view>
   <view wx:if="{{older.length}}">
     <text class="group-title">更早</text>
     <view class="photo-grid">
-      <view wx:for="{{older}}" wx:key="id" class="photo-tile" data-id="{{item.id}}" bindtap="previewPhoto"><image src="{{item.contentUrl}}" mode="aspectFill"></image><view class="photo-caption"><text>{{item.title || '影像记录'}}</text><text>{{item.dateLabel}}</text></view></view>
+      <view wx:for="{{older}}" wx:key="id" class="photo-tile" data-id="{{item.id}}" bindtap="previewPhoto"><image src="{{item.contentUrl}}" mode="aspectFill"></image><text wx:if="{{item.motionContentUrl}}" class="live-badge">实况</text><view class="photo-caption"><text>{{item.title || '影像记录'}}</text><text>{{item.dateLabel}}</text></view></view>
     </view>
   </view>
   <empty-state wx:if="{{!recent.length && !older.length && !loading}}" icon="▧" title="{{selectedCategory ? '没有符合条件的影像' : '还没有影像记录'}}" description="{{selectedCategory ? '调整筛选条件后再看看' : '添加鱼缸、生物或设备照片'}}"></empty-state>

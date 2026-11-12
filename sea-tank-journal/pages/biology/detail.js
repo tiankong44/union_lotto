@@ -4,6 +4,7 @@
  * @Date 2026-11-12
  */
 const reefApi = require('../../services/reef-api')
+const reefPhotoMedia = require('../../services/reef-photo-media')
 const { shanghaiDateTimeParts } = require('../../services/date-time')
 const { EVENT_TYPES, BIOLOGY_STATUSES } = require('../../services/aquarium-catalog')
 
@@ -36,7 +37,8 @@ Page({
         fromTankName: tanks.find((tank) => tank.id === event.fromTankId)?.name ?? '',
         toTankName: tanks.find((tank) => tank.id === event.toTankId)?.name ?? '',
         quantityLabel: event.quantity === null || event.quantity === undefined ? '' : `数量：${event.quantity}` }))
-      this.setData({ biology: biology ?? {}, events: decoratedEvents, photos: photoResult?.list ?? photoResult ?? [],
+      const photos = (photoResult?.list ?? photoResult ?? []).map(reefPhotoMedia.withMotionUrl)
+      this.setData({ biology: biology ?? {}, events: decoratedEvents, photos,
         tanks, targetTanks, targetTankNames: targetTanks.map((tank) => tank.name), imageIndex: 0 })
     } catch (error) { wx.showToast({ title: error?.message ?? '生物资料暂时无法读取', icon: 'none' }) }
   },

@@ -12,6 +12,8 @@
     <van-field label="缸内位置" value="{{form.positionNote}}" data-field="positionNote" bind:change="onFieldInput" placeholder="选填"></van-field>
     <van-field label="来源" value="{{form.source}}" data-field="source" bind:change="onFieldInput" placeholder="选填"></van-field>
     <van-field label="备注" type="textarea" autosize value="{{form.note}}" data-field="note" bind:change="onFieldInput" placeholder="记录补充信息"></van-field>
+    <view class="form-row photo-row"><text>实况照片</text></view>
+    <live-photo-picker image-path="{{imagePath}}" motion-path="{{motionPath}}" image-locked="{{pendingPhotoId}}" disabled="{{saving || loading}}" bind:change="onPhotoInput"></live-photo-picker>
   </view>
   <van-button type="primary" block round loading="{{saving}}" disabled="{{saving || loading}}" bind:click="saveBiology">保存资料</van-button>
 </view>

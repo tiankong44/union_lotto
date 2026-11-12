@@ -6,7 +6,7 @@ import com.tiankong44.tool.common.entity.CloudFile;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
- * 公共文件服务接口，定义云端文件上传和读取能力。
+ * 公共文件服务接口，定义图片、视频上传及云端文件读取能力。
  *
  * @Author zhanghao_SMEICS
  * @Date 2026-08-06
@@ -21,7 +21,17 @@ public interface CommonService {
     BaseRes<CloudFileUploadResponse> uploadIcon(MultipartFile file);
 
     /**
-     * 按文件编号读取云端图片内容。
+     * 上传允许格式的视频文件并将内容保存到云端 MySQL。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-12
+     * @param file 待上传的 MP4、MOV、M4V 或 3GP 视频
+     * @return 文件访问信息，参数非法或保存失败时返回失败响应
+     */
+    BaseRes<CloudFileUploadResponse> uploadVideo(MultipartFile file);
+
+    /**
+     * 按文件编号读取云端图片或视频内容。
      *
      * @param fileKey 文件编号
      * @return 文件实体，不存在时返回空值

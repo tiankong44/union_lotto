@@ -13,19 +13,20 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Locale;
 import java.util.UUID;
 
+import static com.tiankong44.tool.common.CloudFileConstants.MAX_FILE_BYTES;
+import static com.tiankong44.tool.common.CloudFileConstants.VIDEO_CONTENT_TYPES;
+
 /**
- * 公共文件服务，负责将新上传图片保存到云端 MySQL。
+ * 公共文件服务，负责将新上传图片和视频保存到云端 MySQL。
  *
  * @Author zhanghao_SMEICS
  * @Date 2026-08-06
  */
 @Service
 public class CommonServiceImpl implements CommonService {
-    // 图片内容上限与 multipart 配置保持一致，避免大文件占用过多服务内存。
-    private static final long MAX_IMAGE_SIZE = 10 * 1024 * 1024L;
-
     @Resource
     private CloudFileMapper cloudFileMapper;
 
@@ -40,14 +41,47 @@ public class CommonServiceImpl implements CommonService {
         if (uploadFile == null || uploadFile.isEmpty()) {
             return BaseRes.failure("上传图片不能为空");
         }
-        if (uploadFile.getSize() > MAX_IMAGE_SIZE) {
+        if (uploadFile.getSize() > MAX_FILE_BYTES) {
             return BaseRes.failure("图片大小不能超过10MB");
         }
         String contentType = uploadFile.getContentType();
-        if (contentType == null || !contentType.toLowerCase().startsWith("image/")) {
+        if (contentType == null || !contentType.toLowerCase(Locale.ROOT).startsWith("image/")) {
             return BaseRes.failure("只允许上传图片文件");
         }
+        // 将头像图片交给公共方法写入共享云端文件表。
+        return storeFile(uploadFile, contentType, "图片");
+    }
 
+    /**
+     * 校验实况照片动态片段格式后保存到共享云端文件表。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-12
+     * @param uploadFile 实况照片对应的视频片段
+     * @return 文件访问信息，参数非法或保存失败时返回失败响应
+     */
+    @Override
+    public BaseRes<CloudFileUploadResponse> uploadVideo(MultipartFile uploadFile) {
+        if (uploadFile == null || uploadFile.isEmpty()) return BaseRes.failure("先选择实况照片的动态片段");
+        if (uploadFile.getSize() > MAX_FILE_BYTES) return BaseRes.failure("动态片段大小不能超过10MB");
+        String contentType = uploadFile.getContentType();
+        String normalizedType = contentType == null ? "" : contentType.toLowerCase(Locale.ROOT);
+        if (!VIDEO_CONTENT_TYPES.contains(normalizedType)) return BaseRes.failure("动态片段仅支持 MP4、MOV、M4V 或 3GP 格式");
+        // 将通过类型白名单校验的视频片段交给公共方法写入共享云端文件表。
+        return storeFile(uploadFile, normalizedType, "动态片段");
+    }
+
+    /**
+     * 将经过类型校验的文件写入共享云端文件表。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-12
+     * @param uploadFile 已校验的 multipart 文件
+     * @param contentType 已校验的媒体类型
+     * @param label 用于返回具体错误信息的媒体名称
+     * @return 文件访问信息或明确的保存错误
+     */
+    private BaseRes<CloudFileUploadResponse> storeFile(MultipartFile uploadFile, String contentType, String label) {
         try {
             // 先在内存中读取上传内容，避免业务文件写入服务器本地目录。
             byte[] content = uploadFile.getBytes();
@@ -60,7 +94,7 @@ public class CommonServiceImpl implements CommonService {
                 originalName = originalName.substring(originalName.lastIndexOf('/') + 1).replaceAll("[\\p{Cntrl}]", "").trim();
                 if (originalName.length() > 255) originalName = originalName.substring(0, 255);
             }
-            cloudFile.setOriginalName(originalName == null || originalName.isEmpty() ? "图片" : originalName);
+            cloudFile.setOriginalName(originalName == null || originalName.isEmpty() ? label : originalName);
             cloudFile.setContentType(contentType);
             cloudFile.setFileSize((long) content.length);
             cloudFile.setFileMd5(DigestUtil.md5Hex(content));
@@ -78,9 +112,9 @@ public class CommonServiceImpl implements CommonService {
             response.setDownloadUrl("/tabs/common/files/" + fileKey);
             return BaseRes.success(response);
         } catch (IOException exception) {
-            return BaseRes.failure("读取上传图片失败");
+            return BaseRes.failure("读取上传" + label + "失败");
         } catch (RuntimeException exception) {
-            return BaseRes.failure("保存上传图片失败");
+            return BaseRes.failure("保存上传" + label + "失败");
         }
     }
 

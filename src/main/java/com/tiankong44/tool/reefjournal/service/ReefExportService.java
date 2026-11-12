@@ -188,7 +188,10 @@ public class ReefExportService {
             if (result.size() >= Long.parseLong(page.getTotal()) || page.getList().isEmpty()) break;
             pageNum++;
         }
-        for (ReefPhotoDto photo : result) photo.setContentUrl(null);
+        for (ReefPhotoDto photo : result) {
+            photo.setContentUrl(null);
+            photo.setMotionContentUrl(null);
+        }
         return result;
     }
 }

@@ -9,7 +9,7 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * 云端文件实体，保存图片元数据和 MySQL 二进制内容。
+ * 云端文件实体，保存图片或视频元数据及 MySQL 二进制内容。
  *
  * @Author zhanghao_SMEICS
  * @Date 2026-08-06

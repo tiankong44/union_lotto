@@ -4,6 +4,7 @@
  * @Date 2026-11-12
  */
 const reefApi = require('./reef-api')
+const reefPhotoMedia = require('./reef-photo-media')
 const fs = wx.getFileSystemManager()
 const BATCH_SIZE = 25
 const BACKUP_FORMAT = 'water-journal-backup'
@@ -34,18 +35,29 @@ function writeText(filePath, data, append = false, encoding = 'utf8') {
 }
 
 /** 下载当前用户有权访问的照片，读取服务端返回的图片类型。 @Author zhanghao_SMEICS @Date 2026-11-12 */
-async function downloadPhoto(id) {
-  const photo = await reefApi.getPhoto(id)
+async function downloadMedia(url, label) {
   return new Promise((resolve, reject) => {
     let contentType = ''
-    const task = wx.downloadFile({ url: photo.contentUrl,
-      success: (result) => result.statusCode === 200 ? resolve({ filePath: result.tempFilePath, contentType }) : reject(new Error('备份照片下载失败')),
-      fail: () => reject(new Error('备份照片下载中断，请检查网络')) })
+    const task = wx.downloadFile({ url,
+      success: (result) => result.statusCode === 200 ? resolve({ filePath: result.tempFilePath, contentType }) : reject(new Error(`${label}下载失败`)),
+      fail: () => reject(new Error(`${label}下载中断，请检查网络`)) })
     if (task.onHeadersReceived) task.onHeadersReceived((result) => {
       const headers = result.header ?? {}
       contentType = String(headers['Content-Type'] ?? headers['content-type'] ?? '').split(';')[0]
     })
   })
+}
+
+/** 下载实况照片的静态画面和可选动效，保留服务端实际返回的媒体类型。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+async function downloadPhoto(id) {
+  const photo = reefPhotoMedia.withMotionUrl(await reefApi.getPhoto(id))
+  const image = await downloadMedia(photo.contentUrl, '备份照片')
+  const contentType = image.contentType.startsWith('image/') ? image.contentType : await imageType(image.filePath)
+  const content = await readText(image.filePath, 'base64')
+  if (!photo.motionContentUrl) return { contentType, content }
+  const motion = await downloadMedia(photo.motionContentUrl, '备份动态片段')
+  if (!motion.contentType.startsWith('video/')) throw new Error('备份动态片段类型无法识别')
+  return { contentType, content, motionContentType: motion.contentType, motionContent: await readText(motion.filePath, 'base64') }
 }
 
 /** 若下载响应未提供图片类型，使用微信图片信息识别。 @Author zhanghao_SMEICS @Date 2026-11-12 */
@@ -68,13 +80,11 @@ async function exportBackup(progress) {
   const photos = data?.photos ?? []
   const filePath = `${wx.env.USER_DATA_PATH}/水境日记备份-${Date.now()}.json`
   try {
-    await writeText(filePath, `{"format":"${BACKUP_FORMAT}","version":2,"data":${JSON.stringify(data)},"images":[`)
+    await writeText(filePath, `{"format":"${BACKUP_FORMAT}","version":3,"data":${JSON.stringify(data)},"images":[`)
     for (let index = 0; index < photos.length; index += 1) {
-      progress(`正在备份照片 ${index + 1}/${photos.length}…`)
-      const downloaded = /** @type {{filePath: string, contentType: string}} */ (await downloadPhoto(photos[index].id))
-      const contentType = downloaded.contentType.startsWith('image/') ? downloaded.contentType : await imageType(downloaded.filePath)
-      const content = await readText(downloaded.filePath, 'base64')
-      await writeText(filePath, `${index ? ',' : ''}${JSON.stringify({ id: photos[index].id, contentType, content })}`, true)
+      progress(`正在备份影像 ${index + 1}/${photos.length}…`)
+      const downloaded = /** @type {{contentType: string, content: string, motionContentType?: string, motionContent?: string}} */ (await downloadPhoto(photos[index].id))
+      await writeText(filePath, `${index ? ',' : ''}${JSON.stringify({ id: photos[index].id, ...downloaded })}`, true)
     }
     await writeText(filePath, ']}', true)
     return filePath
@@ -95,7 +105,7 @@ function chooseBackup() {
 /** 校验备份完整性后再开始恢复，旧版缺少关联关系的导出不作为完整备份。 @Author zhanghao_SMEICS @Date 2026-11-12 */
 function validateBackup(backup) {
   const data = backup?.data
-  if (backup?.format !== BACKUP_FORMAT || backup?.version !== 2 || !data?.backupId || !Array.isArray(backup?.images)) {
+  if (backup?.format !== BACKUP_FORMAT || ![2, 3].includes(backup?.version) || !data?.backupId || !Array.isArray(backup?.images)) {
     throw new Error('请选择新版水境日记完整备份文件')
   }
   for (const key of [...RESTORE_STAGES, 'photos']) if (!Array.isArray(data[key])) throw new Error('备份文件缺少记录，请重新导出')
@@ -107,6 +117,11 @@ function validateBackup(backup) {
   if (backup.images.some((item) => !item?.content || !String(item?.contentType ?? '').startsWith('image/'))) {
     throw new Error('备份中的照片内容无法读取')
   }
+  if (backup.images.some((item) => {
+    const hasMotionContent = typeof item?.motionContent === 'string'
+    const hasMotionType = typeof item?.motionContentType === 'string'
+    return hasMotionContent !== hasMotionType || (hasMotionContent && (!item.motionContent || !item.motionContentType.startsWith('video/')))
+  })) throw new Error('备份中的动态片段不完整，请重新导出')
 }
 
 /**
@@ -145,14 +160,21 @@ async function restoreBackup(progress) {
     const image = backup.images[index]
     const photo = photosById.get(image.id)
     const tempPath = `${wx.env.USER_DATA_PATH}/reef-restore-${Date.now()}-${index}.img`
+    const motionTempPath = `${wx.env.USER_DATA_PATH}/reef-restore-${Date.now()}-${index}.mov`
     try {
       // 一次只解码一张照片，上传后删除本次临时文件。
       await writeText(tempPath, image.content, false, 'base64')
-      await reefApi.restoreBackupPhoto(restoreId, tempPath, { originalId: image.id, category: photo.category,
+      const restoredPhotoId = await reefApi.restoreBackupPhoto(restoreId, tempPath, { originalId: image.id, category: photo.category,
         title: photo.title ?? '', referenceType: photo.referenceType ?? '', referenceId: photo.referenceId ?? '',
         recordedAt: photo.recordedAt, note: photo.note ?? '', contentType: image.contentType })
+      if (image.motionContent) {
+        // 动效通过受保护的照片接口绑定，重复恢复时服务端保持幂等。
+        await writeText(motionTempPath, image.motionContent, false, 'base64')
+        await reefPhotoMedia.uploadMotion(restoredPhotoId, motionTempPath)
+      }
     } finally {
       try { fs.unlinkSync(tempPath) } catch (ignored) { /* 临时文件不存在时无需清理。 */ }
+      try { fs.unlinkSync(motionTempPath) } catch (ignored) { /* 没有动态片段时无需清理。 */ }
     }
   }
   // 完整恢复后清除本机续传标记，用户下次可选择再次创建副本。

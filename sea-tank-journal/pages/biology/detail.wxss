@@ -10,6 +10,7 @@
 
 .biology-swiper { width: 100%; height: 52vw; }
 .biology-image { display: block; width: 100%; height: 100%; }
+.biology-swiper video { border-radius: 20rpx; }
 
 .hero-placeholder { color: #68a8cc; font-size: 26rpx; }
 .hero-dots { position: absolute; bottom: 18rpx; display: flex; gap: 12rpx; }

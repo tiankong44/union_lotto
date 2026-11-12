@@ -4,6 +4,7 @@
 .viewer-top button { color: #e5ebee; font-size: 24rpx; }
 .photo-swiper { display: flex; width: 100%; flex: 1; align-items: center; }
 .viewer-image { display: block; width: 100%; height: 100%; }
+.photo-swiper video { background: #171a1c; }
 .viewer-loading, .viewer-empty { display: flex; flex: 1; align-items: center; justify-content: center; color: #aab4ba; font-size: 23rpx; }
 .viewer-info { display: flex; align-items: center; gap: 20rpx; padding: 22rpx 26rpx calc(22rpx + env(safe-area-inset-bottom)); background: #ffffff; color: #30495e; }
 .viewer-copy { display: flex; min-width: 0; flex: 1; flex-direction: column; gap: 8rpx; }
