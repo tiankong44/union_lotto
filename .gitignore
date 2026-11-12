@@ -48,3 +48,4 @@ build/
 
 # 本机微信凭证仅本地使用，禁止提交密钥文件。
 /config/application-out.yml
+/logs/lotto/
