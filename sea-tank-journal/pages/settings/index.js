@@ -1,13 +1,29 @@
 /**
  * 提醒与通用设置场景，保存用户偏好、订阅结果和 JSON 导出。
  * @Author zhanghao_SMEICS
- * @Date 2026-11-05
+ * @Date 2026-11-12
  */
 const reefApi = require('../../services/reef-api')
 const { API_BASE_URL } = require('../../config/env')
 const { resetLogin } = require('../../services/auth')
 const { syncTabBar } = require('../../services/tab-bar')
 const { exportBackup, restoreBackup } = require('../../services/backup')
+
+// 让原生选择器完成启动后再释放取消路径的短时防重锁。
+const AVATAR_PICKER_LOCK_MS = 1200
+/** @typedef {{ locked: boolean, timer: ReturnType<typeof setTimeout> | null }} AvatarPickerLock */
+/** @type {WeakMap<object, AvatarPickerLock>} */
+const AVATAR_PICKER_LOCKS = new WeakMap()
+
+/** 获取当前页面实例独立的头像选择锁。 @Author zhanghao_SMEICS @Date 2026-11-12
+ * @param {object} page 当前设置页实例
+ * @returns {AvatarPickerLock} 当前实例对应的锁
+ */
+function getAvatarPickerLock(page) {
+  const lock = AVATAR_PICKER_LOCKS.get(page) ?? { locked: false, timer: null }
+  AVATAR_PICKER_LOCKS.set(page, lock)
+  return lock
+}
 
 const REMINDER_DEFAULTS = [
   { type: 'WATER_CHANGE', label: '换水提醒', frequency: '每 14 天', icon: '↻', enabled: true },
@@ -18,13 +34,19 @@ const REMINDER_DEFAULTS = [
 
 Page({
   data: { reminders: REMINDER_DEFAULTS, sendTime: '', cacheSize: '读取中…', backupBusy: false, backupProgress: '',
-    profile: { nickname: '', avatarFileKey: '', avatarUrl: '' }, avatarTempPath: '', profileBusy: false },
+    profile: { nickname: '', avatarFileKey: '', avatarUrl: '' }, avatarTempPath: '', profileBusy: false, avatarPickerBusy: false },
   onShow() {
     // 将全局导航选中项同步到“我的”页。
     syncTabBar(this, 3)
     this.loadProfile()
     this.loadSettings()
     this.loadCacheSize()
+  },
+  onUnload() {
+    // 页面离开时清除头像选择锁的回收计时器。
+    const lock = AVATAR_PICKER_LOCKS.get(this)
+    if (lock?.timer) clearTimeout(lock.timer)
+    AVATAR_PICKER_LOCKS.delete(this)
   },
 
   /** 读取当前账号的资料并显示头像云端地址。 @Author zhanghao_SMEICS @Date 2026-11-12 */
@@ -40,7 +62,7 @@ Page({
 
   /** 保存用户选择的头像与填写的昵称。 @Author zhanghao_SMEICS @Date 2026-11-12 */
   async saveProfile() {
-    if (this.data.profileBusy) return
+    if (this.data.profileBusy || this.data.avatarPickerBusy) return
     const nickname = (this.data.profile?.nickname ?? '').trim()
     if (!nickname) {
       wx.showToast({ title: '请填写昵称后保存', icon: 'none' })
@@ -66,10 +88,32 @@ Page({
     }
   },
 
+  /** 为原生头像选择器加短时防重锁，并在用户取消后自动恢复按钮。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  onAvatarPickerTap() {
+    const lock = getAvatarPickerLock(this)
+    if (lock.locked || this.data.profileBusy) return
+    lock.locked = true
+    // 暂时禁用头像和资料操作，阻止选择器启动期间的重复触发。
+    this.setData({ avatarPickerBusy: true })
+    // 取消选择没有头像结果回调，超时后恢复头像和资料操作。
+    lock.timer = setTimeout(() => {
+      lock.locked = false
+      lock.timer = null
+      // 释放选择锁后恢复再次选择和保存资料的能力。
+      this.setData({ avatarPickerBusy: false })
+    }, AVATAR_PICKER_LOCK_MS)
+  },
+
   /** 将用户选中的临时头像仅保留在当前页面，等待点击保存后上传。 @Author zhanghao_SMEICS @Date 2026-11-12 */
   onChooseAvatar(event) {
     const avatarTempPath = event?.detail?.avatarUrl ?? ''
-    this.setData({ avatarTempPath, 'profile.avatarUrl': avatarTempPath })
+    const lock = getAvatarPickerLock(this)
+    // 选择结果已返回，取消超时回收并立即释放选择锁。
+    if (lock.timer) clearTimeout(lock.timer)
+    lock.timer = null
+    lock.locked = false
+    // 更新头像预览并恢复资料页操作。
+    this.setData({ avatarPickerBusy: false, avatarTempPath, 'profile.avatarUrl': avatarTempPath })
   },
 
   /** 更新昵称输入内容，避免直接修改页面数据对象。 @Author zhanghao_SMEICS @Date 2026-11-12 */
