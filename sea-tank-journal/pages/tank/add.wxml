@@ -9,6 +9,26 @@
     <text class="form-label">容量（L）</text>
     <input class="form-input" type="digit" value="{{form.capacityLiter}}" data-field="capacityLiter" bindinput="onFieldInput" placeholder="选填" />
   </view>
+  <view class="form-card card volume-calculator">
+    <text class="form-label">按尺寸估算容量</text>
+    <view class="dimension-fields">
+      <label class="dimension-field"><text>长（cm）</text><input type="digit" value="{{volumeForm.length}}" data-field="length" bindinput="onVolumeInput" placeholder="长" /></label>
+      <label class="dimension-field"><text>宽（cm）</text><input type="digit" value="{{volumeForm.width}}" data-field="width" bindinput="onVolumeInput" placeholder="宽" /></label>
+      <label class="dimension-field"><text>高（cm）</text><input type="digit" value="{{volumeForm.height}}" data-field="height" bindinput="onVolumeInput" placeholder="高" /></label>
+    </view>
+    <view class="adjustment-fields">
+      <label class="adjustment-field"><text>水面低于缸沿</text><view><input type="digit" value="{{volumeForm.waterGapCm}}" data-field="waterGapCm" bindinput="onVolumeInput" /> cm</view></label>
+      <label class="adjustment-field"><text>底砂厚度</text><view><input type="digit" value="{{volumeForm.substrateDepthCm}}" data-field="substrateDepthCm" bindinput="onVolumeInput" /> cm</view></label>
+      <label class="adjustment-field"><text>底砂和造景占比</text><view><input type="digit" value="{{volumeForm.displacementPercent}}" data-field="displacementPercent" bindinput="onVolumeInput" /> %</view></label>
+    </view>
+    <text class="volume-hint">尺寸按鱼缸内侧填写。默认留空 2 cm、底砂厚 4 cm（按一半厚度折算）、造景扣除 10%；外侧尺寸会受玻璃厚度影响。</text>
+    <view wx:if="{{volumeEstimate}}" class="volume-result">
+      <view class="volume-result-main"><text>标称容积</text><text>{{volumeEstimate.grossLiters}} L</text></view>
+      <view class="volume-result-main estimated"><text>估算实际水量</text><text>约 {{volumeEstimate.estimatedLiters}} L</text></view>
+      <text class="volume-result-range">经验范围：{{volumeEstimate.estimatedMinLiters}}–{{volumeEstimate.estimatedMaxLiters}} L（留空 1–3 cm，底砂按一半厚度折算，造景扣除 5%–15%）</text>
+      <button class="text-action volume-use" bindtap="useEstimatedVolume">使用估算水量</button>
+    </view>
+  </view>
   <view class="form-card card">
     <text class="form-label">系统类型</text>
     <input class="form-input" value="{{form.systemType}}" data-field="systemType" bindinput="onFieldInput" maxlength="64" placeholder="可填写原有系统说明" />

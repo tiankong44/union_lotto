@@ -1,11 +1,12 @@
 /**
- * 新增鱼缸表单，保存用户填写的容量、系统类型、开缸日期和备注。
+ * 新增鱼缸表单，估算容量并保存用户填写的鱼缸资料。
  * @Author zhanghao_SMEICS
  * @Date 2026-11-05
  */
 const reefApi = require('../../services/reef-api')
 const { shanghaiDateTimeParts } = require('../../services/date-time')
 const { WATER_TYPES, THEMES, METRICS, LEGACY_METRICS, suggestedMetrics, splitSelection } = require('../../services/aquarium-catalog')
+const { estimateRectangularTankVolume } = require('../../services/aquarium-volume')
 
 Page({
   data: {
@@ -14,6 +15,8 @@ Page({
     themeOptions: THEMES.map((item) => ({ ...item, checked: false })),
     metricOptions: METRICS.map((item) => ({ ...item, checked: LEGACY_METRICS.includes(item.key) })),
     selectedThemes: [], selectedMetrics: LEGACY_METRICS,
+    volumeForm: { length: '', width: '', height: '', waterGapCm: '2', substrateDepthCm: '4', displacementPercent: '10' },
+    volumeEstimate: null,
     form: { name: '', capacityLiter: '', systemType: '', startedAt: '', note: '', waterType: '', archived: false }
   },
 
@@ -69,6 +72,27 @@ Page({
   onFieldInput(event) {
     const field = event.currentTarget.dataset.field
     this.setData({ [`form.${field}`]: event.detail.value })
+  },
+
+  /** 更新鱼缸尺寸和经验扣减输入。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  onVolumeInput(event) {
+    const field = event.currentTarget.dataset.field
+    const volumeForm = { ...this.data.volumeForm, [field]: event.detail.value }
+    // 每次修改尺寸或经验参数时，按最新输入实时刷新估算结果。
+    const volumeEstimate = estimateRectangularTankVolume(volumeForm)
+    this.setData({ volumeForm, volumeEstimate })
+  },
+
+  /** 将经验估算值回填到鱼缸容量字段，用户仍可继续修改。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  useEstimatedVolume() {
+    // 回填前按当前输入重新计算，避免容量字段使用过期估算值。
+    const estimate = this.data.volumeEstimate || estimateRectangularTankVolume(this.data.volumeForm)
+    if (!estimate) {
+      wx.showToast({ title: '请填写有效尺寸和底砂参数', icon: 'none' })
+      return
+    }
+    this.setData({ volumeEstimate: estimate })
+    this.setData({ volumeEstimate: estimate, 'form.capacityLiter': String(estimate.estimatedLiters) })
   },
 
   /**
