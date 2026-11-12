@@ -40,6 +40,12 @@ public class LogAspect {
     public void controllerReqCut() {
     }
 
+    /**
+     * 记录接口参数与返回值；上传文件只记录类型标识，避免序列化文件资源对象。
+     *
+     * @Author zhanghao_SMEICS
+     * @Date 2026-11-12
+     */
     @Around("controllerReqCut()")
     public Object interceptorReq(ProceedingJoinPoint joinPoint) throws Throwable {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
@@ -76,7 +82,10 @@ public class LogAspect {
         String funcName = o.getClass() + "." + currentMethod.getName();
         StringBuilder bf = new StringBuilder(funcName + "方法入参：");
         for (int i = 0; i < args.length; i++) {
-            String jsonString = JSONObject.toJSONString(args[i]);
+            // 上传文件包含 Spring 资源对象，Fastjson 无法按普通 JavaBean 序列化。
+            String jsonString = args[i] instanceof MultipartFile
+                    ? "[MultipartFile omitted]"
+                    : JSONObject.toJSONString(args[i]);
             bf.append(jsonString);
 
         }
