@@ -5,7 +5,7 @@
  */
 const reefApi = require('../../services/reef-api')
 const { shanghaiDateTimeParts } = require('../../services/date-time')
-const { syncTabBar, setTabBarHidden, logTabNavigation } = require('../../services/tab-bar')
+const { syncTabBar, setTabBarHidden } = require('../../services/tab-bar')
 const { describeTank } = require('../../services/aquarium-catalog')
 
 Page({
@@ -19,8 +19,6 @@ Page({
   },
 
   onShow() {
-    // 记录首页显示时刻，与底部菜单点击日志关联。
-    logTabNavigation('/pages/home/home', 'onShow')
     // 将全局导航选中项同步到首页。
     syncTabBar(this, 0)
     // 离开表单返回首页时恢复底部导航，并关闭残留菜单。
@@ -29,12 +27,6 @@ Page({
     const hour = Number(shanghaiDateTimeParts(new Date()).time.slice(0, 2))
     this.setData({ greeting: hour < 11 ? '早上好' : hour < 18 ? '下午好' : '晚上好' })
     this.loadDashboard()
-  },
-
-  /** 记录首页首次渲染就绪时刻，便于定位首次进入耗时。 @Author zhanghao_SMEICS @Date 2026-11-12 */
-  onReady() {
-    // 输出首页首次就绪相对菜单点击的耗时。
-    logTabNavigation('/pages/home/home', 'onReady')
   },
 
   /** 下拉后重新读取首页鱼缸数据。 @Author zhanghao_SMEICS @Date 2026-11-12 */

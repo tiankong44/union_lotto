@@ -4,7 +4,7 @@
  * @Date 2026-11-05
  */
 const reefApi = require('../../services/reef-api')
-const { syncTabBar, logTabNavigation } = require('../../services/tab-bar')
+const { syncTabBar } = require('../../services/tab-bar')
 const { exportBackup, restoreBackup } = require('../../services/backup')
 
 const REMINDER_DEFAULTS = [
@@ -17,18 +17,10 @@ const REMINDER_DEFAULTS = [
 Page({
   data: { reminders: REMINDER_DEFAULTS, sendTime: '', cacheSize: '读取中…', backupBusy: false, backupProgress: '' },
   onShow() {
-    // 记录“我的”页显示时刻，与底部菜单点击日志关联。
-    logTabNavigation('/pages/settings/index', 'onShow')
     // 将全局导航选中项同步到“我的”页。
     syncTabBar(this, 3)
     this.loadSettings()
     this.loadCacheSize()
-  },
-
-  /** 记录“我的”页首次渲染就绪时刻，便于定位首次进入耗时。 @Author zhanghao_SMEICS @Date 2026-11-12 */
-  onReady() {
-    // 输出“我的”页首次就绪相对菜单点击的耗时。
-    logTabNavigation('/pages/settings/index', 'onReady')
   },
 
   async loadSettings() {

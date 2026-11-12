@@ -5,7 +5,7 @@
  */
 const reefApi = require('../../services/reef-api')
 const { shanghaiDateTimeParts } = require('../../services/date-time')
-const { syncTabBar, logTabNavigation } = require('../../services/tab-bar')
+const { syncTabBar } = require('../../services/tab-bar')
 
 const CATEGORIES = [
   { value: '', label: '全部' }, { value: 'TANK', label: '鱼缸' }, { value: 'FISH', label: '鱼' },
@@ -19,16 +19,9 @@ Page({
   },
 
   onShow() {
-    // 记录影像页显示时刻，与底部菜单点击日志关联。
-    logTabNavigation('/pages/photos/index', 'onShow')
     // 将全局导航选中项同步到影像页。
     syncTabBar(this, 2)
     this.loadPhotos()
-  },
-  /** 记录影像页首次渲染就绪时刻，便于定位首次进入耗时。 @Author zhanghao_SMEICS @Date 2026-11-12 */
-  onReady() {
-    // 输出影像页首次就绪相对菜单点击的耗时。
-    logTabNavigation('/pages/photos/index', 'onReady')
   },
   /** 下拉后按当前分类重新读取影像第一页。 @Author zhanghao_SMEICS @Date 2026-11-12 */
   async onPullDownRefresh() {

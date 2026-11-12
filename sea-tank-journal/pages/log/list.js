@@ -4,7 +4,7 @@
  * @Date 2026-11-12
  */
 const reefApi = require('../../services/reef-api')
-const { syncTabBar, logTabNavigation } = require('../../services/tab-bar')
+const { syncTabBar } = require('../../services/tab-bar')
 const { LOG_TYPES } = require('../../services/aquarium-catalog')
 
 const FILTERS = [{ value: '', label: '全部' }, ...LOG_TYPES]
@@ -12,8 +12,6 @@ const FILTERS = [{ value: '', label: '全部' }, ...LOG_TYPES]
 Page({
   data: { filters: FILTERS, selectedType: '', selectedTypeLabel: '全部', selectedTankId: '', selectedTankName: '', selectedTankArchived: false, groups: [], logs: [], pageNum: 0, hasMore: true, loading: false, loadVersion: 0 },
   onShow() {
-    // 记录日志页显示时刻，与底部菜单点击日志关联。
-    logTabNavigation('/pages/log/list', 'onShow')
     // 将全局导航选中项同步到日志页。
     syncTabBar(this, 1)
     const app = getApp()
@@ -22,11 +20,6 @@ Page({
       app.globalData.pendingLogTank = null
     }
     this.loadLogs()
-  },
-  /** 记录日志页首次渲染就绪时刻，便于定位首次进入耗时。 @Author zhanghao_SMEICS @Date 2026-11-12 */
-  onReady() {
-    // 输出日志页首次就绪相对菜单点击的耗时。
-    logTabNavigation('/pages/log/list', 'onReady')
   },
   /** 下拉后按当前筛选条件重新读取日志第一页。 @Author zhanghao_SMEICS @Date 2026-11-12 */
   async onPullDownRefresh() {
