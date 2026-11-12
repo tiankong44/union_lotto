@@ -10,7 +10,7 @@
     <view class="profile-editor">
       <view class="profile-fields">
         <text class="setting-title">昵称</text>
-        <input class="profile-nickname" type="nickname" value="{{profile.nickname}}" placeholder="填写昵称" maxlength="32" bindinput="onNicknameInput" />
+        <input class="profile-nickname" type="nickname" value="{{profile.nickname}}" placeholder="选择微信昵称或自行填写" maxlength="32" bindinput="onNicknameInput" />
       </view>
       <button class="profile-save" loading="{{profileBusy}}" disabled="{{profileBusy}}" bindtap="saveProfile">保存资料</button>
     </view>
