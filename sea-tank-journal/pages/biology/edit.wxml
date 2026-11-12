@@ -6,7 +6,7 @@
     <view class="form-row"><text>分类</text><picker range="{{categoryLabels}}" bindchange="onCategoryChange">{{form.categoryLabel}} ›</picker></view>
     <view class="form-row"><text>当前状态</text><picker range="{{statusLabels}}" bindchange="onStatusChange">{{form.statusLabel}} ›</picker></view>
     <view class="form-row"><text>记录方式</text><picker range="{{modeLabels}}" bindchange="onModeChange">{{form.modeLabel}} ›</picker></view>
-    <van-field label="当前数量" type="number" value="{{form.quantity}}" data-field="quantity" bind:change="onFieldInput"></van-field>
+    <van-field label="{{form.trackingMode === 'SINGLE' ? '当前数量（固定为1）' : '当前数量'}}" type="number" value="{{form.quantity}}" readonly="{{form.trackingMode === 'SINGLE'}}" data-field="quantity" bind:change="onFieldInput"></van-field>
     <view class="form-row"><text>入缸日期</text><picker mode="date" value="{{form.addedAt}}" bindchange="onDateChange">{{form.addedAt}} ›</picker></view>
     <van-field label="大小（cm）" type="digit" value="{{form.bodyLengthCm}}" data-field="bodyLengthCm" bind:change="onFieldInput" placeholder="选填"></van-field>
     <van-field label="缸内位置" value="{{form.positionNote}}" data-field="positionNote" bind:change="onFieldInput" placeholder="选填"></van-field>

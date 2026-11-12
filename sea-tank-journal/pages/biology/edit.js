@@ -33,14 +33,20 @@ Page({
         status: biology?.status ?? 'NORMAL', statusLabel: BIOLOGY_STATUSES.find((item) => item.value === biology?.status)?.label ?? '正常',
         addedAt: biology?.addedAt ?? '', bodyLengthCm: biology?.bodyLengthCm ?? '', source: biology?.source ?? '',
         trackingMode: biology?.trackingMode ?? 'SINGLE', modeLabel: biology?.trackingMode === 'BATCH' ? '批次' : '个体',
-        quantity: String(biology?.quantity ?? 1), positionNote: biology?.positionNote ?? '', note: biology?.note ?? ''
+        quantity: biology?.trackingMode === 'SINGLE' ? '1' : String(biology?.quantity ?? 1),
+        positionNote: biology?.positionNote ?? '', note: biology?.note ?? ''
       } })
     } catch (error) {
       wx.showToast({ title: error?.message ?? '生物资料暂时无法读取', icon: 'none' })
     } finally { this.setData({ loading: false }) }
   },
 
-  onFieldInput(event) { this.setData({ [`form.${event.currentTarget.dataset.field}`]: event.detail?.value ?? event.detail }) },
+  /** 更新可编辑字段；个体数量固定为1，不接受控件事件覆盖。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  onFieldInput(event) {
+    const field = event.currentTarget.dataset.field
+    if (field === 'quantity' && this.data.form.trackingMode === 'SINGLE') return
+    this.setData({ [`form.${field}`]: event.detail?.value ?? event.detail })
+  },
   onDateChange(event) { this.setData({ 'form.addedAt': event.detail.value }) },
   onCategoryChange(event) {
     const selected = BIOLOGY_CATEGORIES[Number(event.detail.value)]
@@ -50,6 +56,7 @@ Page({
     const selected = BIOLOGY_STATUSES[Number(event.detail.value)]
     this.setData({ 'form.status': selected.value, 'form.statusLabel': selected.label })
   },
+  /** 切换个体或批次记录；个体始终保留一个档案单位。 @Author zhanghao_SMEICS @Date 2026-11-12 */
   onModeChange(event) {
     const batch = Number(event.detail.value) === 1
     this.setData({ 'form.trackingMode': batch ? 'BATCH' : 'SINGLE', 'form.modeLabel': batch ? '批次' : '个体',
@@ -60,10 +67,10 @@ Page({
   async saveBiology() {
     if (this.data.saving || this.data.loading) return
     const form = this.data.form
-    const quantity = Number(form.quantity)
+    const quantity = form.trackingMode === 'SINGLE' ? 1 : Number(form.quantity)
     if (!form.name.trim() || !form.addedAt || !this.data.tankId) return wx.showToast({ title: '请填写名称和入缸日期', icon: 'none' })
-    if (!Number.isInteger(quantity) || quantity < 0 || (form.trackingMode === 'SINGLE' && quantity > 1)) {
-      return wx.showToast({ title: '请填写有效数量，个体数量为 0 或 1', icon: 'none' })
+    if (!Number.isInteger(quantity) || quantity < 0) {
+      return wx.showToast({ title: '请填写不小于0的整数数量', icon: 'none' })
     }
     this.setData({ saving: true })
     try {
