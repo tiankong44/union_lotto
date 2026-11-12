@@ -23,6 +23,16 @@ Page({
     syncTabBar(this, 2)
     this.loadPhotos()
   },
+  /** 下拉后按当前分类重新读取影像第一页。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  async onPullDownRefresh() {
+    try {
+      // 保留当前影像分类，并重置分页后重新读取列表。
+      await this.loadPhotos(true)
+    } finally {
+      // 无论请求成功或失败都结束系统刷新动画。
+      wx.stopPullDownRefresh()
+    }
+  },
   onReachBottom() { if (this.data.hasMore) this.loadPhotos(false) },
 
   async loadPhotos(reset = true) {

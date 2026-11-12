@@ -25,6 +25,16 @@ Page({
     this.loadTanks()
   },
   onShow() { this.loadEquipment(true) },
+  /** 下拉后重新读取鱼缸筛选项和当前设备列表。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  async onPullDownRefresh() {
+    try {
+      // 同步更新鱼缸选项与设备列表，保留当前设备筛选。
+      await Promise.all([this.loadTanks(), this.loadEquipment(true)])
+    } finally {
+      // 无论请求成功或失败都结束系统刷新动画。
+      wx.stopPullDownRefresh()
+    }
+  },
   onReachBottom() { if (this.data.hasMore) this.loadEquipment(false) },
 
   async loadTanks() {

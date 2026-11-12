@@ -21,6 +21,16 @@ Page({
     }
     this.loadLogs()
   },
+  /** 下拉后按当前筛选条件重新读取日志第一页。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  async onPullDownRefresh() {
+    try {
+      // 保留当前日志筛选，并重置分页后重新读取列表。
+      await this.loadLogs(true)
+    } finally {
+      // 无论请求成功或失败都结束系统刷新动画。
+      wx.stopPullDownRefresh()
+    }
+  },
   onReachBottom() { if (this.data.hasMore) this.loadLogs(false) },
 
   async loadLogs(reset = true) {

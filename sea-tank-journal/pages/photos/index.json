@@ -1,5 +1,6 @@
 {
   "navigationBarTitleText": "影像记录",
+  "enablePullDownRefresh": true,
   "usingComponents": {
     "searchable-filter": "/components/common/searchable-filter"
   }

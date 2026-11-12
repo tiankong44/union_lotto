@@ -139,7 +139,7 @@ Page({
       this.setData({ tanks, selectedTankId, selectedMetric: enabled[0] ?? 'temperature', isTankLoading: false })
       if (selectedTankId) {
         // 鱼缸列表确认后读取对应参数的历史看板。
-        this.loadDashboard()
+        await this.loadDashboard()
       }
     } catch (error) {
       if (this.data.pageClosed) return
@@ -147,6 +147,17 @@ Page({
         isTankLoading: false,
         loadError: error?.message ?? '鱼缸列表暂时无法读取，请稍后重试'
       })
+    }
+  },
+
+  /** 下拉后更新鱼缸列表及当前所选水质趋势。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  async onPullDownRefresh() {
+    try {
+      // 保留当前鱼缸入口编号，并重新加载其水质历史看板。
+      await this.loadTanks()
+    } finally {
+      // 无论请求成功或失败都结束系统刷新动画。
+      wx.stopPullDownRefresh()
     }
   },
 

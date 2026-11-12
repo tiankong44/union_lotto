@@ -29,6 +29,17 @@ Page({
     this.loadDashboard()
   },
 
+  /** 下拉后重新读取首页鱼缸数据。 @Author zhanghao_SMEICS @Date 2026-11-12 */
+  async onPullDownRefresh() {
+    try {
+      // 下拉刷新重新读取用户的鱼缸总览。
+      await this.loadDashboard()
+    } finally {
+      // 无论请求成功或失败都结束系统刷新动画。
+      wx.stopPullDownRefresh()
+    }
+  },
+
   async loadDashboard() {
     this.setData({ loading: true, errorMessage: '' })
     try {

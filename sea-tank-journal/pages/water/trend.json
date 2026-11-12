@@ -1,3 +1,4 @@
 {
-  "navigationBarTitleText": "水质趋势"
+  "navigationBarTitleText": "水质趋势",
+  "enablePullDownRefresh": true
 }
